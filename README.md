@@ -250,3 +250,73 @@ Os subworkflows foram desenhados para:
 
 Essa abordagem reflete uma arquitetura próxima de produção, com separação clara entre **orquestração**, **processamento**, **análise**, **consolidação** e **apresentação**.
 
+---
+
+## Fluxo 3 — Consolidação Final e Fan-In Global (`fan-in_parse_output`)
+
+Este fluxo é responsável por **finalizar a execução do lote**, realizando o **fan-in global** de todos os subworkflows executados em paralelo e gerando **um único payload final**, pronto para consumo pelo frontend.
+
+Ele representa o ponto de convergência de toda a arquitetura.
+
+---
+
+### Entrada de Dados
+
+Cada subworkflow envia sua saída de forma independente para este fluxo, sempre associada ao mesmo `batchId`.
+
+Os dados chegam **parcialmente consolidados**, persistidos em uma tabela intermediária, onde:
+- cada coluna representa um tipo de visualização (`pie`, `bar`, `area`, `table`, `big_number`, `unknown`)
+- os valores são armazenados como **strings JSON**, conforme exigência do banco de dados
+
+O fan-in só é considerado completo quando **todos os tipos esperados para o lote estiverem preenchidos**.
+
+---
+
+### Desserialização e Preparação do Fan-In  
+**Code node:** `fan_in_deserialize_db_row`
+
+Nesta etapa, o fluxo:
+- recupera a linha correspondente ao `batchId`
+- converte cada coluna armazenada como string JSON em estruturas nativas (arrays/objetos)
+- aplica tratamento defensivo para valores nulos, vazios ou inválidos
+- consolida todos os resultados parciais em uma única estrutura intermediária
+
+---
+
+### Flatten e Normalização Global  
+**Code node:** `fan_in_build_frontend_payload`
+
+Com os dados já unificados, o fluxo executa uma série de transformações finais:
+   - Suporte a múltiplos formatos intermediários (`pieItems`, `parse_<kind>`, widgets diretos)
+   - Conversão de tudo para uma lista única de widgets
+   - Remoção de itens com `status: "ignore"`
+   - Manutenção explícita de widgets `ready` e `no_data` (com warnings)
+   - Garantia de campos mínimos consistentes para todos os widgets:
+
+Essa etapa garante que **todos os widgets sigam o mesmo contrato**, independentemente da origem ou do caminho percorrido nos fluxos anteriores.
+
+---
+
+### Construção do Payload Final
+
+Após a normalização, o fluxo gera o payload final no formato:
+
+- Identificador do lote (`batchId`)
+- Tipo fixo (`kind: "fan_in"`)
+- Contagem total de widgets processados
+- Lista completa de widgets prontos para renderização e análise
+
+Esse payload é **único, previsível e consistente**, permitindo que o frontend consuma os dados sem lógica defensiva adicional.
+
+---
+
+### Intenção Arquitetural
+
+Este fluxo fecha o ciclo de processamento ao:
+
+- sincronizar execuções paralelas
+- centralizar a consolidação final dos dados
+- desacoplar persistência intermediária da entrega ao frontend
+- garantir previsibilidade mesmo em cenários de dados incompletos
+
+A separação entre **fan-out distribuído** e **fan-in centralizado** simula um padrão real de arquiteturas orientadas a eventos, comum em ambientes de produção escaláveis.
