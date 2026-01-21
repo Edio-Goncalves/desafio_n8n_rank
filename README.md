@@ -18,16 +18,6 @@ O n8n atua como:
 
 O desenho do fluxo prioriza **previsibilidade, escalabilidade e tolerância a falhas**.
 
-## Papel do n8n na Arquitetura
-
-O n8n atua como:
-- Orquestrador de fluxos complexos
-- Controlador de paralelismo (fan-out / fan-in)
-- Camada de validação e normalização de dados
-- Base para agentes analíticos e geração de insights
-
-O desenho do fluxo prioriza **previsibilidade, escalabilidade e tolerância a falhas**.
-
 Além disso, o n8n é responsável por **retornar um payload estruturado e consistente para o frontend**, independentemente da variação ou qualidade dos dados de entrada.
 
 De forma geral, o payload de saída segue um contrato pensado para fácil consumo pelo painel, contendo:
@@ -42,6 +32,8 @@ Essa abordagem reduz a complexidade no frontend e garante que a interface possa 
 ---
 
 ## Fluxo 1 — Orquestração Inicial e Preparação dos Dados
+
+![Workflow 1 — Initial Orchestration](assets/img/workflow_1_orchestration.png)
 
 ### Entrada de Dados
 
@@ -152,6 +144,8 @@ A prioridade foi criar uma automação **robusta, extensível e observável**, e
 
 ## Fluxo 2 — Subworkflows de Processamento, Análise e IA
 
+![Workflow 2 — Subworkflow Processing](assets/img/workflow_2_subworkflow.png)
+
 Os subworkflows são responsáveis por **processar cada grupo de dados (`kind`) de forma independente**, transformando dados normalizados em informações estruturadas, analisáveis e prontas para geração de insights.
 
 Todos os subworkflows seguem **o mesmo padrão base**, garantindo consistência, paralelismo e fan-in previsível no fluxo principal.
@@ -254,6 +248,8 @@ Essa abordagem reflete uma arquitetura próxima de produção, com separação c
 
 ## Fluxo 3 — Consolidação Final e Fan-In Global (`fan-in_parse_output`)
 
+![Workflow 3 — Global Fan_In](assets/img/workflow_3_fan_in.png)
+
 Este fluxo é responsável por **finalizar a execução do lote**, realizando o **fan-in global** de todos os subworkflows executados em paralelo e gerando **um único payload final**, pronto para consumo pelo frontend.
 
 Ele representa o ponto de convergência de toda a arquitetura.
@@ -320,3 +316,9 @@ Este fluxo fecha o ciclo de processamento ao:
 - garantir previsibilidade mesmo em cenários de dados incompletos
 
 A separação entre **fan-out distribuído** e **fan-in centralizado** simula um padrão real de arquiteturas orientadas a eventos, comum em ambientes de produção escaláveis.
+
+---
+
+Este projeto demonstra uma abordagem orientada à produção para automações complexas,
+priorizando **robustez, paralelismo controlado e contratos claros de dados**,
+com foco em escalabilidade e integração com camadas analíticas e de IA.
