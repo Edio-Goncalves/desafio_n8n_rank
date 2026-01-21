@@ -150,3 +150,103 @@ A prioridade foi criar uma automação **robusta, extensível e observável**, e
 
 ---
 
+## Fluxo 2 — Subworkflows de Processamento, Análise e IA
+
+Os subworkflows são responsáveis por **processar cada grupo de dados (`kind`) de forma independente**, transformando dados normalizados em informações estruturadas, analisáveis e prontas para geração de insights.
+
+Todos os subworkflows seguem **o mesmo padrão base**, garantindo consistência, paralelismo e fan-in previsível no fluxo principal.
+
+---
+
+### Entrada dos Subworkflows
+
+Cada subworkflow recebe um payload já agrupado por `kind`, contendo:
+- `batchId` do lote
+- Lista de itens do tipo correspondente (ex.: `areaItems`)
+- Itens previamente normalizados e validados no fluxo principal para nao repetir validações globais
+
+---
+
+### Normalização e Split por Item
+
+O grupo recebido é normalizado e, em seguida, dividido para que **cada arquivo/widget seja tratado individualmente**.
+
+Essa abordagem permite:
+- processamento paralelo por item
+- isolamento de falhas
+- melhor controle de fluxo e observabilidade
+
+---
+
+### Controle de Fluxo (Itens Válidos vs. Stubs)
+
+Cada item passa por uma verificação:
+- Se o item for um **stub**, `kind=unknown` ou `status` diferente de `ready`, ele é encaminhado para um fluxo `warn_<kind>`, que apenas preserva o item para manter a simetria do fan-in.
+- Se o item for válido, ele segue para o pipeline de processamento.
+
+Essa estratégia garante que **todos os itens do lote retornem**, mesmo quando não há dados processáveis.
+
+---
+
+### Parse de Dados (`parse_<kind>`)
+
+Nesta etapa, os dados brutos são transformados em um formato **data-first**, amigável ao frontend e à análise.
+
+Exemplo (para `area`):
+- Deduplicação por data (mantendo o maior valor do dia)
+- Ordenação temporal
+- Geração de séries (`x`, `y`)
+- Cálculo de métricas iniciais (crescimento absoluto, percentual, média diária)
+
+O payload original é substituído por uma estrutura parseada, mais leve e previsível.
+
+---
+
+### Construção da Análise (`build_analysis_<kind>`)
+
+Após o parse, cada item é enriquecido com uma camada de análise estruturada, contendo:
+- Métricas consolidadas (`features`)
+- Detecção de padrões básicos (crescimento, estabilidade, aceleração)
+- Preview reduzido da série para leitura rápida
+- Fallbacks automáticos quando dados parciais estão disponíveis
+
+Essa camada prepara os dados para **consumo direto pelo frontend** e para **análise por IA**, sem depender do dataset completo.
+
+---
+
+### Geração de Insights com IA
+
+Com os dados já estruturados, um modelo de linguagem é utilizado para:
+- interpretar métricas e padrões
+- identificar tendências relevantes
+- gerar insights textuais claros e acionáveis
+
+A IA atua apenas sobre **dados preparados**, evitando análises superficiais ou baseadas em dados inconsistentes.
+
+---
+
+### Agregação e Encaminhamento para o Workflow Consolidador
+
+Após o processamento de cada item (incluindo análise estruturada, geração de insights por IA ou warnings), os resultados são **agregados dentro do próprio subworkflow**.
+
+Em seguida, cada subworkflow envia sua saída para um **workflow consolidador dedicado**, responsável por receber todas as execuções paralelas.
+
+Esse workflow consolidador:
+- sincroniza os resultados provenientes de múltiplos subworkflows
+- executa o fan-in global das execuções simultâneas
+- constrói um **payload único, estruturado e previsível**
+
+Somente após essa consolidação final o payload é preparado e disponibilizado para consumo pelo frontend.
+
+---
+
+### Intenção Arquitetural
+
+Os subworkflows foram desenhados para:
+- modularizar a lógica por tipo de dado (`kind`)
+- permitir evolução independente de cada módulo
+- manter paralelismo com fan-in controlado
+- preparar dados de forma consistente para análise por IA e visualização
+
+Essa abordagem reflete uma arquitetura próxima de produção, com separação clara entre **orquestração**, **processamento**, **análise**, **consolidação** e **apresentação**.
+
