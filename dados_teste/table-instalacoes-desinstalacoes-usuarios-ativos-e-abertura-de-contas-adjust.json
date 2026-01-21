@@ -1,0 +1,146 @@
+{
+  "documentId": "xguk2gig4msgrcvcj9mq19va",
+  "name": "INSTALAÇÕES, DESINSTALAÇÕES, USUÁRIOS ATIVOS E ABERTURA DE CONTAS (ADJUST)",
+  "slug": "table-instalacoes-desinstalacoes-usuarios-ativos-e-abertura-de-contas-adjust",
+  "kind": "table",
+  "xField": "None",
+  "yField": "columns",
+  "description": "Tabela que exibe a quantidade de Instalações, Desinstalações, DAU (dados do Google Console) e Abertura de contas (Adjust) do aplicativo no período selecionado.",
+  "combineData": true,
+  "labels": null,
+  "colors": {
+    "default": "#09738a"
+  },
+  "config": {
+    "add-competitors": "False",
+    "aggregationMode": "average",
+    "increase-is-positive": "True",
+    "invert-y-axis": "False",
+    "is-pro": "False",
+    "is-public": "False",
+    "kind": "table",
+    "show-percentage": "False",
+    "sort": {
+      "field": "installs",
+      "order": "desc"
+    },
+    "title": {
+      "align": "center",
+      "position": "top",
+      "text": "INSTALAÇÕES, DESINSTALAÇÕES, USUÁRIOS ATIVOS E ABERTURA DE CONTAS"
+    },
+    "yAxis": [
+      {
+        "field": "installs",
+        "format": "0.000a",
+        "label": "Instalações"
+      },
+      {
+        "field": "uninstalls",
+        "format": "0.000a",
+        "label": "Desinstalações"
+      },
+      {
+        "field": "dau",
+        "format": "0.000a",
+        "label": "DAU"
+      },
+      {
+        "field": "account_opening",
+        "format": "0.000a",
+        "label": "Abertura de contas"
+      }
+    ],
+    "yField": [
+      "installs",
+      "uninstalls",
+      "dau",
+      "account_opening"
+    ]
+  },
+  "exampleData": {
+    "appId": [
+      {
+        "columns": [
+          {
+            "field": "installs",
+            "type": "raw",
+            "value": 2381849
+          },
+          {
+            "field": "uninstalls",
+            "type": "raw",
+            "value": 3772548
+          },
+          {
+            "field": "dau",
+            "type": "raw",
+            "value": 8123560.714285715
+          },
+          {
+            "field": "account_opening",
+            "type": "raw",
+            "value": 81558
+          }
+        ],
+        "date": ""
+      }
+    ]
+  },
+  "dataSource": {
+    "type": "api",
+    "id": "1609",
+    "url": "http://metrics-api:39120/data-rank/table/installs_uninstalls_dau_and_account_opening_adjust_table",
+    "method": "POST",
+    "params": null,
+    "body": {
+      "appId": "{{.AppID}}",
+      "country": "{{.Country}}",
+      "endDate": "{{.EndDate}}",
+      "internalId": "{{.InternalID}}",
+      "lang": "{{.Lang}}",
+      "startDate": "{{.StartDate}}",
+      "store": "{{.Store}}"
+    },
+    "headers": null
+  },
+  "stores": [
+    "google",
+    "apple"
+  ],
+  "source": "Console",
+  "data": {
+    "br.com.bb.android_google_br_pt-BR": [
+      {
+        "columns": [
+          {
+            "field": "installs",
+            "type": "raw",
+            "value": 934543
+          },
+          {
+            "field": "uninstalls",
+            "type": "raw",
+            "value": 2179435
+          },
+          {
+            "field": "dau",
+            "type": "raw",
+            "value": 8040085.866666666
+          },
+          {
+            "field": "account_opening",
+            "type": "raw",
+            "value": null
+          }
+        ],
+        "date": ""
+      }
+    ]
+  },
+  "category": {
+    "name": "Adjust",
+    "slug": "adjust",
+    "documentId": "ksh7qnps0syb67ga37qg064i"
+  }
+}

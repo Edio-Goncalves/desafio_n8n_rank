@@ -1,0 +1,2257 @@
+{
+  "name": "[2.00]_areaItems_parse_and_insights",
+  "nodes": [
+    {
+      "parameters": {
+        "workflowInputs": {
+          "values": [
+            {
+              "name": "batchId"
+            },
+            {
+              "name": "areaItems",
+              "type": "array"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -592,
+        -64
+      ],
+      "id": "93af4b91-609c-4429-a255-c0cf169a793d",
+      "name": "When Executed by Another Workflow"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "6724a1af-0baf-4fd8-85f0-43e78b9cede9",
+              "name": "batchId",
+              "value": "={{ $json.batchId }}",
+              "type": "string"
+            },
+            {
+              "id": "6639b785-217a-4cd6-9de3-ad3cc6de729c",
+              "name": "areaItems",
+              "value": "={{ $json.areaItems }}",
+              "type": "array"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -352,
+        -64
+      ],
+      "id": "f247461b-06ff-4b82-8839-0e39e7989c77",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "areaItems",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        -144,
+        -64
+      ],
+      "id": "2e58e7ff-3a04-4e80-abcd-64eee8489671",
+      "name": "Split Out"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "d6a5e87c-819a-409b-b234-30a697977b87",
+              "leftValue": "={{ $json.status }}",
+              "rightValue": "ready",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        112,
+        -64
+      ],
+      "id": "0ea3100c-b200-4f65-9e14-7d61538f8c28",
+      "name": "If4"
+    },
+    {
+      "parameters": {
+        "jsCode": "// n8n Code node — parse_area (data-first) for ALL items (dedup + sort)\n\nfunction parseAreaData(data) {\n  const rows = Array.isArray(data) ? data : [];\n\n  // 1) normaliza e deduplica por data (mantém o MAIOR valor do dia)\n  const byDate = new Map();\n\n  for (const r of rows) {\n    const date = r?.createdAt;\n    const val = Number(r?.maxinstalls);\n\n    if (!date || !Number.isFinite(val)) continue;\n\n    const prev = byDate.get(date);\n    if (prev == null || val > prev) byDate.set(date, val);\n  }\n\n  // 2) transforma em série e ordena por data\n  const series = Array.from(byDate.entries())\n    .map(([x, y]) => ({ x, y }))\n    .sort((a, b) => String(a.x).localeCompare(String(b.x)));\n\n  if (series.length === 0) {\n    return { series: [], metrics: null };\n  }\n\n  const first = series[0].y;\n  const last = series[series.length - 1].y;\n\n  const absoluteGrowth = last - first;\n  const percentageGrowth = first ? absoluteGrowth / first : null;\n\n  const avgDailyGrowth = absoluteGrowth / (series.length - 1 || 1);\n\n  return {\n    series,\n    metrics: {\n      firstValue: first,\n      lastValue: last,\n      absoluteGrowth,\n      percentageGrowth,\n      avgDailyGrowth,\n      points: series.length,\n      removedDuplicates: rows.length - series.length,\n    }\n  };\n}\n\nreturn $input.all().map(({ json }) => {\n  // segurança: se cair aqui sem ready, não quebra\n  if (json.status && json.status !== \"ready\") {\n    const { data, appKey, payload, ...rest } = json;\n    return { json: { ...rest, payload: null } };\n  }\n\n  const parsed = parseAreaData(json.data);\n\n  const { data, appKey, payload, ...rest } = json;\n\n  return {\n    json: {\n      ...rest,\n      payload: parsed,\n    }\n  };\n});"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        432,
+        -144
+      ],
+      "id": "4ed5bf4a-2b58-4398-aceb-4d8e47c92f41",
+      "name": "parse_area",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "jsCode": "// warn_pie — apenas passa o item (já validado no normalize)\n\nreturn $input.all().map(({ json }) => ({\n  json\n}));"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        432,
+        16
+      ],
+      "id": "8db1b1a5-c100-42b8-b98f-d8c141ec0eca",
+      "name": "warn_area",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Você é um Analista de Métricas de Produto.\n\nSeu objetivo é gerar INSIGHTS EXECUTIVOS curtos e acionáveis a partir de dados agregados (ratings, distribuições, médias), sem explicações longas.\n\nVocê receberá como entrada:\n- Um título da métrica {{ $json.title }}\n- Um contexto explicativo {{ $json.context }}\n- Informações de defasagem de atualização\n- Um objeto JSON com métricas agregadas e distribuições (ex: total, média, proporções, séries categóricas) {{ $json.analysis.toJsonString() }}\n\nOs dados representam apenas o estado atual da métrica.\n\nTAREFA:\n- Identificar o principal padrão ou desvio relevante\n- Apontar um impacto potencial de negócio\n- Sugerir uma recomendação prática\n\nFORMATO DE RESPOSTA (OBRIGATÓRIO):\n- Responder em NO MÁXIMO 5 LINHAS\n- Usar frases curtas e diretas\n- Não repetir números em excesso\n- Não usar listas longas\n\nESTRUTURA FIXA:\n\nInsight:\n<1 frase objetiva sobre o padrão observado>\n\nImpacto:\n<1 frase sobre risco ou oportunidade>\n\nRecomendação:\n<1–2 frases com ação prática>\n\nREGRAS:\n- Não inventar histórico inexistente\n- Usar termos como “indício” ou “sinal potencial”\n- Linguagem executiva, clara e sucinta",
+        "batching": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.7,
+      "position": [
+        1472,
+        -128
+      ],
+      "id": "310815aa-0cf7-4a31-a0e7-be628d738ff3",
+      "name": "Basic LLM Chain4"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4.1-mini"
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        1376,
+        80
+      ],
+      "id": "31452ba6-ca32-4475-86f2-cc326b7bc12f",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "359UYsT5wB2V8yWR",
+          "name": "OpenAi account 8"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "0e14bade-eafc-4323-a5ec-6fb0387e7613",
+              "name": "parse_area",
+              "value": "={{ \n  (() => {\n    const { analysis, ...rest } = $('parse_area').item.json;\n    return rest;\n  })()\n}}",
+              "type": "object"
+            },
+            {
+              "id": "47bc7f58-c1fb-4af0-a438-0c5f596b9057",
+              "name": "parse_area.insights",
+              "value": "={{ $json.text }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1824,
+        -128
+      ],
+      "id": "0fd3c5b9-7142-40df-b37b-00fba86c82a6",
+      "name": "Edit Fields6"
+    },
+    {
+      "parameters": {
+        "jsCode": "// n8n Code node — build_analysis_area (payload já parseado)\n// Entrada: widget kind=\"area\" com payload { series:[{x,y}], metrics:{...} }\n// Saída: adiciona json.analysis com features/preview\n\nfunction safeArray(v) {\n  return Array.isArray(v) ? v : [];\n}\n\nfunction toNumber(v) {\n  const n = Number(v);\n  return Number.isFinite(n) ? n : null;\n}\n\nfunction round(n, d = 6) {\n  if (!Number.isFinite(n)) return null;\n  const p = 10 ** d;\n  return Math.round(n * p) / p;\n}\n\nfunction seriesPreview(series, limit = 12) {\n  const arr = safeArray(series);\n  if (arr.length <= limit) return arr;\n  const head = arr.slice(0, Math.ceil(limit / 2));\n  const tail = arr.slice(arr.length - Math.floor(limit / 2));\n  return [...head, { _truncated: true, total: arr.length }, ...tail];\n}\n\nfunction computeFallbackMetrics(series) {\n  const points = series.length;\n  if (!points) return { points: 0 };\n\n  const first = series[0];\n  const last = series[points - 1];\n\n  const firstValue = toNumber(first?.y);\n  const lastValue = toNumber(last?.y);\n\n  const absoluteGrowth =\n    (firstValue !== null && lastValue !== null) ? (lastValue - firstValue) : null;\n\n  const percentageGrowth =\n    (firstValue !== null && lastValue !== null && firstValue !== 0)\n      ? round((lastValue - firstValue) / firstValue, 6)\n      : null;\n\n  const avgDailyGrowth =\n    (absoluteGrowth !== null && points > 1) ? round(absoluteGrowth / (points - 1), 2) : null;\n\n  let flatDays = 0;\n  for (let i = 1; i < points; i++) {\n    if (toNumber(series[i]?.y) === toNumber(series[i - 1]?.y)) flatDays++;\n  }\n\n  const ys = series.map(p => toNumber(p?.y)).filter(v => v !== null);\n  const minValue = ys.length ? Math.min(...ys) : null;\n  const maxValue = ys.length ? Math.max(...ys) : null;\n\n  return {\n    points,\n    firstDate: first?.x ?? null,\n    lastDate: last?.x ?? null,\n    firstValue,\n    lastValue,\n    absoluteGrowth,\n    percentageGrowth,\n    avgDailyGrowth,\n    minValue,\n    maxValue,\n    flatDays\n  };\n}\n\nfunction last7Growth(series) {\n  if (series.length < 14) return null;\n\n  const a0 = toNumber(series[series.length - 14]?.y);\n  const a1 = toNumber(series[series.length - 8]?.y);\n  const b0 = toNumber(series[series.length - 7]?.y);\n  const b1 = toNumber(series[series.length - 1]?.y);\n\n  const g1 = (a0 !== null && a1 !== null) ? (a1 - a0) : null;\n  const g2 = (b0 !== null && b1 !== null) ? (b1 - b0) : null;\n\n  if (g1 === null || g2 === null) return null;\n\n  return {\n    prev7: round(g1, 2),\n    last7: round(g2, 2),\n    acceleration: round(g2 - g1, 2)\n  };\n}\n\nreturn $input.all().map(({ json }) => {\n  const base = { ...json };\n\n  if (json.status !== \"ready\" || json.kind !== \"area\") {\n    return { json: { ...base, analysis: null } };\n  }\n\n  const p = json.payload ?? {};\n  const series = safeArray(p.series);\n\n  // metrics vindo do parse_area (preferencial)\n  const m = (p.metrics && typeof p.metrics === \"object\") ? p.metrics : null;\n\n  const featuresFromParse = m ? {\n    points: toNumber(m.points),\n    firstValue: toNumber(m.firstValue),\n    lastValue: toNumber(m.lastValue),\n    absoluteGrowth: toNumber(m.absoluteGrowth),\n    percentageGrowth: round(toNumber(m.percentageGrowth), 6),\n    avgDailyGrowth: round(toNumber(m.avgDailyGrowth), 2),\n    removedDuplicates: toNumber(m.removedDuplicates)\n  } : null;\n\n  const fallback = computeFallbackMetrics(series);\n\n  // combina: o que vier do parse tem prioridade, mas completa com datas/min/max/flatDays via fallback\n  const features = {\n    points: featuresFromParse?.points ?? toNumber(fallback.points) ?? 0,\n    firstDate: fallback.firstDate ?? (series[0]?.x ?? null),\n    lastDate: fallback.lastDate ?? (series[series.length - 1]?.x ?? null),\n\n    firstValue: featuresFromParse?.firstValue ?? fallback.firstValue ?? null,\n    lastValue: featuresFromParse?.lastValue ?? fallback.lastValue ?? null,\n    absoluteGrowth: featuresFromParse?.absoluteGrowth ?? fallback.absoluteGrowth ?? null,\n    percentageGrowth: (featuresFromParse?.percentageGrowth ?? fallback.percentageGrowth) ?? null,\n    avgDailyGrowth: (featuresFromParse?.avgDailyGrowth ?? fallback.avgDailyGrowth) ?? null,\n\n    minValue: fallback.minValue ?? null,\n    maxValue: fallback.maxValue ?? null,\n    flatDays: fallback.flatDays ?? 0,\n\n    removedDuplicates: featuresFromParse?.removedDuplicates ?? 0,\n    last7Growth: last7Growth(series)\n  };\n\n  return {\n    json: {\n      ...base,\n      analysis: {\n        kind: \"area\",\n        yKey: \"y\",\n        features,\n        preview: {\n          series: seriesPreview(series, 12)\n        }\n      }\n    }\n  };\n});\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        752,
+        -144
+      ],
+      "id": "e9a04455-a927-46d2-98ac-f3d64d842fb8",
+      "name": "build_analys_area"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        1168,
+        -144
+      ],
+      "id": "9ac62849-9f1b-4aa6-a254-20d8ac8682cd",
+      "name": "loop_area"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        2144,
+        -128
+      ],
+      "id": "5fcac71e-f2fe-4d5b-b4fe-e6f0f1f446d6",
+      "name": "Merge5"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://webhook.digital-ai.tech/webhook/coleta_fan-in",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "batchId",
+              "value": "={{ $('Edit Fields').item.json.batchId }}"
+            },
+            {
+              "name": "kind",
+              "value": "area"
+            },
+            {
+              "name": "data",
+              "value": "={{ $json.area_data }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        2640,
+        -128
+      ],
+      "id": "65837d21-44fd-487a-92bf-294fec8c1402",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "aggregate": "aggregateAllItemData",
+        "destinationFieldName": "area_data",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        2400,
+        -128
+      ],
+      "id": "0f5d1e55-8399-4870-ac06-5467f089e8b9",
+      "name": "Aggregate"
+    }
+  ],
+  "pinData": {
+    "When Executed by Another Workflow": [
+      {
+        "json": {
+          "batchId": "2026-01-20T22:56:14.094Z",
+          "areaItems": [
+            {
+              "batchId": "2026-01-20T22:56:14.094Z",
+              "fileId": "msdqnn3f0fbzyibwdalmd0nw",
+              "filename": "area-total-de-novas-instalacoes-acumuladas-1-mes.json",
+              "slug": "area-total-de-novas-instalacoes-acumuladas",
+              "kind": "area",
+              "categorySlug": "ativacao",
+              "title": "TOTAL DE NOVAS INSTALAÇÕES (ACUMULADAS)",
+              "context": "Novas instalações que foram acumuladas durante todo o tempo de vida do app. A cada dia, as novas instalações vão sendo somadas com o histórico.\n\nPeríodo de atualização Google: D-1",
+              "payload": {
+                "br.com.bb.android_google_br_pt-BR": [
+                  {
+                    "createdAt": "2025-06-01",
+                    "maxinstalls": 109400043
+                  },
+                  {
+                    "createdAt": "2025-06-02",
+                    "maxinstalls": 109424412
+                  },
+                  {
+                    "createdAt": "2025-06-03",
+                    "maxinstalls": 109469742
+                  },
+                  {
+                    "createdAt": "2025-06-04",
+                    "maxinstalls": 109521545
+                  },
+                  {
+                    "createdAt": "2025-06-05",
+                    "maxinstalls": 109544721
+                  },
+                  {
+                    "createdAt": "2025-06-06",
+                    "maxinstalls": 109594991
+                  },
+                  {
+                    "createdAt": "2025-06-07",
+                    "maxinstalls": 109604446
+                  },
+                  {
+                    "createdAt": "2025-06-08",
+                    "maxinstalls": 109643588
+                  },
+                  {
+                    "createdAt": "2025-06-09",
+                    "maxinstalls": 109687397
+                  },
+                  {
+                    "createdAt": "2025-06-10",
+                    "maxinstalls": 109726953
+                  },
+                  {
+                    "createdAt": "2025-06-11",
+                    "maxinstalls": 109764182
+                  },
+                  {
+                    "createdAt": "2025-06-12",
+                    "maxinstalls": 109786884
+                  },
+                  {
+                    "createdAt": "2025-06-13",
+                    "maxinstalls": 109827217
+                  },
+                  {
+                    "createdAt": "2025-06-14",
+                    "maxinstalls": 109855460
+                  },
+                  {
+                    "createdAt": "2025-06-15",
+                    "maxinstalls": 109881184
+                  },
+                  {
+                    "createdAt": "2025-06-16",
+                    "maxinstalls": 109918955
+                  },
+                  {
+                    "createdAt": "2025-06-17",
+                    "maxinstalls": 109954889
+                  },
+                  {
+                    "createdAt": "2025-06-18",
+                    "maxinstalls": 110007447
+                  },
+                  {
+                    "createdAt": "2025-06-19",
+                    "maxinstalls": 110028289
+                  },
+                  {
+                    "createdAt": "2025-06-20",
+                    "maxinstalls": 110062382
+                  },
+                  {
+                    "createdAt": "2025-06-21",
+                    "maxinstalls": 110091293
+                  },
+                  {
+                    "createdAt": "2025-06-22",
+                    "maxinstalls": 110115327
+                  },
+                  {
+                    "createdAt": "2025-06-23",
+                    "maxinstalls": 110137328
+                  },
+                  {
+                    "createdAt": "2025-06-24",
+                    "maxinstalls": 110171416
+                  },
+                  {
+                    "createdAt": "2025-06-25",
+                    "maxinstalls": 110210205
+                  },
+                  {
+                    "createdAt": "2025-06-26",
+                    "maxinstalls": 110243405
+                  },
+                  {
+                    "createdAt": "2025-06-27",
+                    "maxinstalls": 110280928
+                  },
+                  {
+                    "createdAt": "2025-06-28",
+                    "maxinstalls": 110296205
+                  },
+                  {
+                    "createdAt": "2025-06-29",
+                    "maxinstalls": 110334586
+                  }
+                ]
+              },
+              "appKey": "br.com.bb.android_google_br_pt-BR",
+              "data": [
+                {
+                  "createdAt": "2025-06-01",
+                  "maxinstalls": 109400043
+                },
+                {
+                  "createdAt": "2025-06-02",
+                  "maxinstalls": 109424412
+                },
+                {
+                  "createdAt": "2025-06-03",
+                  "maxinstalls": 109469742
+                },
+                {
+                  "createdAt": "2025-06-04",
+                  "maxinstalls": 109521545
+                },
+                {
+                  "createdAt": "2025-06-05",
+                  "maxinstalls": 109544721
+                },
+                {
+                  "createdAt": "2025-06-06",
+                  "maxinstalls": 109594991
+                },
+                {
+                  "createdAt": "2025-06-07",
+                  "maxinstalls": 109604446
+                },
+                {
+                  "createdAt": "2025-06-08",
+                  "maxinstalls": 109643588
+                },
+                {
+                  "createdAt": "2025-06-09",
+                  "maxinstalls": 109687397
+                },
+                {
+                  "createdAt": "2025-06-10",
+                  "maxinstalls": 109726953
+                },
+                {
+                  "createdAt": "2025-06-11",
+                  "maxinstalls": 109764182
+                },
+                {
+                  "createdAt": "2025-06-12",
+                  "maxinstalls": 109786884
+                },
+                {
+                  "createdAt": "2025-06-13",
+                  "maxinstalls": 109827217
+                },
+                {
+                  "createdAt": "2025-06-14",
+                  "maxinstalls": 109855460
+                },
+                {
+                  "createdAt": "2025-06-15",
+                  "maxinstalls": 109881184
+                },
+                {
+                  "createdAt": "2025-06-16",
+                  "maxinstalls": 109918955
+                },
+                {
+                  "createdAt": "2025-06-17",
+                  "maxinstalls": 109954889
+                },
+                {
+                  "createdAt": "2025-06-18",
+                  "maxinstalls": 110007447
+                },
+                {
+                  "createdAt": "2025-06-19",
+                  "maxinstalls": 110028289
+                },
+                {
+                  "createdAt": "2025-06-20",
+                  "maxinstalls": 110062382
+                },
+                {
+                  "createdAt": "2025-06-21",
+                  "maxinstalls": 110091293
+                },
+                {
+                  "createdAt": "2025-06-22",
+                  "maxinstalls": 110115327
+                },
+                {
+                  "createdAt": "2025-06-23",
+                  "maxinstalls": 110137328
+                },
+                {
+                  "createdAt": "2025-06-24",
+                  "maxinstalls": 110171416
+                },
+                {
+                  "createdAt": "2025-06-25",
+                  "maxinstalls": 110210205
+                },
+                {
+                  "createdAt": "2025-06-26",
+                  "maxinstalls": 110243405
+                },
+                {
+                  "createdAt": "2025-06-27",
+                  "maxinstalls": 110280928
+                },
+                {
+                  "createdAt": "2025-06-28",
+                  "maxinstalls": 110296205
+                },
+                {
+                  "createdAt": "2025-06-29",
+                  "maxinstalls": 110334586
+                }
+              ],
+              "status": "ready",
+              "validation": {
+                "isValid": true,
+                "code": null,
+                "errors": []
+              },
+              "warning": null
+            },
+            {
+              "batchId": "2026-01-20T22:56:14.094Z",
+              "fileId": "msdqnn3f0fbzyibwdalmd0nw",
+              "filename": "area-total-de-novas-instalacoes-acumuladas-6-meses.json",
+              "slug": "area-total-de-novas-instalacoes-acumuladas",
+              "kind": "area",
+              "categorySlug": "ativacao",
+              "title": "TOTAL DE NOVAS INSTALAÇÕES (ACUMULADAS)",
+              "context": "Novas instalações que foram acumuladas durante todo o tempo de vida do app. A cada dia, as novas instalações vão sendo somadas com o histórico.\n\nPeríodo de atualização Google: D-1",
+              "payload": {
+                "br.com.bb.android_google_br_pt-BR": [
+                  {
+                    "createdAt": "2025-01-01",
+                    "maxinstalls": 104334221
+                  },
+                  {
+                    "createdAt": "2025-01-02",
+                    "maxinstalls": 104365627
+                  },
+                  {
+                    "createdAt": "2025-01-03",
+                    "maxinstalls": 104382062
+                  },
+                  {
+                    "createdAt": "2025-01-04",
+                    "maxinstalls": 104419158
+                  },
+                  {
+                    "createdAt": "2025-01-05",
+                    "maxinstalls": 104441403
+                  },
+                  {
+                    "createdAt": "2025-01-06",
+                    "maxinstalls": 104459111
+                  },
+                  {
+                    "createdAt": "2025-01-07",
+                    "maxinstalls": 104462268
+                  },
+                  {
+                    "createdAt": "2025-01-08",
+                    "maxinstalls": 104462268
+                  },
+                  {
+                    "createdAt": "2025-01-09",
+                    "maxinstalls": 104462268
+                  },
+                  {
+                    "createdAt": "2025-01-10",
+                    "maxinstalls": 104629717
+                  },
+                  {
+                    "createdAt": "2025-01-11",
+                    "maxinstalls": 104664114
+                  },
+                  {
+                    "createdAt": "2025-01-12",
+                    "maxinstalls": 104693113
+                  },
+                  {
+                    "createdAt": "2025-01-13",
+                    "maxinstalls": 104713035
+                  },
+                  {
+                    "createdAt": "2025-01-14",
+                    "maxinstalls": 104757849
+                  },
+                  {
+                    "createdAt": "2025-01-15",
+                    "maxinstalls": 104780677
+                  },
+                  {
+                    "createdAt": "2025-01-16",
+                    "maxinstalls": 104828019
+                  },
+                  {
+                    "createdAt": "2025-01-17",
+                    "maxinstalls": 104851570
+                  },
+                  {
+                    "createdAt": "2025-01-18",
+                    "maxinstalls": 104885124
+                  },
+                  {
+                    "createdAt": "2025-01-19",
+                    "maxinstalls": 104901149
+                  },
+                  {
+                    "createdAt": "2025-01-20",
+                    "maxinstalls": 104927116
+                  },
+                  {
+                    "createdAt": "2025-01-21",
+                    "maxinstalls": 104958983
+                  },
+                  {
+                    "createdAt": "2025-01-22",
+                    "maxinstalls": 104992369
+                  },
+                  {
+                    "createdAt": "2025-01-23",
+                    "maxinstalls": 105026655
+                  },
+                  {
+                    "createdAt": "2025-01-24",
+                    "maxinstalls": 105074628
+                  },
+                  {
+                    "createdAt": "2025-01-25",
+                    "maxinstalls": 105078689
+                  },
+                  {
+                    "createdAt": "2025-01-26",
+                    "maxinstalls": 105110741
+                  },
+                  {
+                    "createdAt": "2025-01-27",
+                    "maxinstalls": 105137709
+                  },
+                  {
+                    "createdAt": "2025-01-28",
+                    "maxinstalls": 105165103
+                  },
+                  {
+                    "createdAt": "2025-01-29",
+                    "maxinstalls": 105202217
+                  },
+                  {
+                    "createdAt": "2025-01-30",
+                    "maxinstalls": 105244841
+                  },
+                  {
+                    "createdAt": "2025-01-31",
+                    "maxinstalls": 105288000
+                  },
+                  {
+                    "createdAt": "2025-02-01",
+                    "maxinstalls": 105304911
+                  },
+                  {
+                    "createdAt": "2025-02-02",
+                    "maxinstalls": 105337381
+                  },
+                  {
+                    "createdAt": "2025-02-03",
+                    "maxinstalls": 105347993
+                  },
+                  {
+                    "createdAt": "2025-02-04",
+                    "maxinstalls": 105386955
+                  },
+                  {
+                    "createdAt": "2025-02-05",
+                    "maxinstalls": 105413243
+                  },
+                  {
+                    "createdAt": "2025-02-06",
+                    "maxinstalls": 105464735
+                  },
+                  {
+                    "createdAt": "2025-02-07",
+                    "maxinstalls": 105488217
+                  },
+                  {
+                    "createdAt": "2025-02-08",
+                    "maxinstalls": 105509057
+                  },
+                  {
+                    "createdAt": "2025-02-09",
+                    "maxinstalls": 105533700
+                  },
+                  {
+                    "createdAt": "2025-02-10",
+                    "maxinstalls": 105546719
+                  },
+                  {
+                    "createdAt": "2025-02-11",
+                    "maxinstalls": 105577618
+                  },
+                  {
+                    "createdAt": "2025-02-12",
+                    "maxinstalls": 105612787
+                  },
+                  {
+                    "createdAt": "2025-02-13",
+                    "maxinstalls": 105647305
+                  },
+                  {
+                    "createdAt": "2025-02-14",
+                    "maxinstalls": 105670563
+                  },
+                  {
+                    "createdAt": "2025-02-15",
+                    "maxinstalls": 105694007
+                  },
+                  {
+                    "createdAt": "2025-02-16",
+                    "maxinstalls": 105720120
+                  },
+                  {
+                    "createdAt": "2025-02-17",
+                    "maxinstalls": 105763654
+                  },
+                  {
+                    "createdAt": "2025-02-18",
+                    "maxinstalls": 105779540
+                  },
+                  {
+                    "createdAt": "2025-02-19",
+                    "maxinstalls": 105779540
+                  },
+                  {
+                    "createdAt": "2025-02-20",
+                    "maxinstalls": 105835188
+                  },
+                  {
+                    "createdAt": "2025-02-21",
+                    "maxinstalls": 105895350
+                  },
+                  {
+                    "createdAt": "2025-02-22",
+                    "maxinstalls": 105915785
+                  },
+                  {
+                    "createdAt": "2025-02-23",
+                    "maxinstalls": 105940887
+                  },
+                  {
+                    "createdAt": "2025-02-24",
+                    "maxinstalls": 105959962
+                  },
+                  {
+                    "createdAt": "2025-02-25",
+                    "maxinstalls": 106013019
+                  },
+                  {
+                    "createdAt": "2025-02-26",
+                    "maxinstalls": 106048548
+                  },
+                  {
+                    "createdAt": "2025-02-27",
+                    "maxinstalls": 106106836
+                  },
+                  {
+                    "createdAt": "2025-02-28",
+                    "maxinstalls": 106140207
+                  },
+                  {
+                    "createdAt": "2025-03-01",
+                    "maxinstalls": 106148672
+                  },
+                  {
+                    "createdAt": "2025-03-02",
+                    "maxinstalls": 106188003
+                  },
+                  {
+                    "createdAt": "2025-03-03",
+                    "maxinstalls": 106202608
+                  },
+                  {
+                    "createdAt": "2025-03-04",
+                    "maxinstalls": 106230188
+                  },
+                  {
+                    "createdAt": "2025-03-05",
+                    "maxinstalls": 106264726
+                  },
+                  {
+                    "createdAt": "2025-03-06",
+                    "maxinstalls": 106283764
+                  },
+                  {
+                    "createdAt": "2025-03-07",
+                    "maxinstalls": 106328250
+                  },
+                  {
+                    "createdAt": "2025-03-08",
+                    "maxinstalls": 106365637
+                  },
+                  {
+                    "createdAt": "2025-03-09",
+                    "maxinstalls": 106389539
+                  },
+                  {
+                    "createdAt": "2025-03-10",
+                    "maxinstalls": 106416268
+                  },
+                  {
+                    "createdAt": "2025-03-11",
+                    "maxinstalls": 106453145
+                  },
+                  {
+                    "createdAt": "2025-03-12",
+                    "maxinstalls": 106485827
+                  },
+                  {
+                    "createdAt": "2025-03-13",
+                    "maxinstalls": 106526109
+                  },
+                  {
+                    "createdAt": "2025-03-14",
+                    "maxinstalls": 106570031
+                  },
+                  {
+                    "createdAt": "2025-03-15",
+                    "maxinstalls": 106586966
+                  },
+                  {
+                    "createdAt": "2025-03-16",
+                    "maxinstalls": 106610383
+                  },
+                  {
+                    "createdAt": "2025-03-17",
+                    "maxinstalls": 106634621
+                  },
+                  {
+                    "createdAt": "2025-03-18",
+                    "maxinstalls": 106673675
+                  },
+                  {
+                    "createdAt": "2025-03-19",
+                    "maxinstalls": 106719568
+                  },
+                  {
+                    "createdAt": "2025-03-20",
+                    "maxinstalls": 106749388
+                  },
+                  {
+                    "createdAt": "2025-03-21",
+                    "maxinstalls": 106802486
+                  },
+                  {
+                    "createdAt": "2025-03-22",
+                    "maxinstalls": 106818922
+                  },
+                  {
+                    "createdAt": "2025-03-23",
+                    "maxinstalls": 106852490
+                  },
+                  {
+                    "createdAt": "2025-03-24",
+                    "maxinstalls": 106896533
+                  },
+                  {
+                    "createdAt": "2025-03-27",
+                    "maxinstalls": 107025769
+                  },
+                  {
+                    "createdAt": "2025-03-28",
+                    "maxinstalls": 107073681
+                  },
+                  {
+                    "createdAt": "2025-03-29",
+                    "maxinstalls": 107111949
+                  },
+                  {
+                    "createdAt": "2025-03-30",
+                    "maxinstalls": 107111949
+                  },
+                  {
+                    "createdAt": "2025-03-30",
+                    "maxinstalls": 107141928
+                  },
+                  {
+                    "createdAt": "2025-03-31",
+                    "maxinstalls": 107156448
+                  },
+                  {
+                    "createdAt": "2025-03-31",
+                    "maxinstalls": 107167925
+                  },
+                  {
+                    "createdAt": "2025-04-01",
+                    "maxinstalls": 107167925
+                  },
+                  {
+                    "createdAt": "2025-04-01",
+                    "maxinstalls": 107216765
+                  },
+                  {
+                    "createdAt": "2025-04-02",
+                    "maxinstalls": 107253699
+                  },
+                  {
+                    "createdAt": "2025-04-02",
+                    "maxinstalls": 107265652
+                  },
+                  {
+                    "createdAt": "2025-04-03",
+                    "maxinstalls": 107274500
+                  },
+                  {
+                    "createdAt": "2025-04-05",
+                    "maxinstalls": 107372539
+                  },
+                  {
+                    "createdAt": "2025-04-06",
+                    "maxinstalls": 107398635
+                  },
+                  {
+                    "createdAt": "2025-04-07",
+                    "maxinstalls": 107429993
+                  },
+                  {
+                    "createdAt": "2025-04-07",
+                    "maxinstalls": 107421388
+                  },
+                  {
+                    "createdAt": "2025-04-08",
+                    "maxinstalls": 107463932
+                  },
+                  {
+                    "createdAt": "2025-04-08",
+                    "maxinstalls": 107475328
+                  },
+                  {
+                    "createdAt": "2025-04-09",
+                    "maxinstalls": 107514013
+                  },
+                  {
+                    "createdAt": "2025-04-09",
+                    "maxinstalls": 107475328
+                  },
+                  {
+                    "createdAt": "2025-04-10",
+                    "maxinstalls": 107514013
+                  },
+                  {
+                    "createdAt": "2025-04-10",
+                    "maxinstalls": 107541606
+                  },
+                  {
+                    "createdAt": "2025-04-11",
+                    "maxinstalls": 107591226
+                  },
+                  {
+                    "createdAt": "2025-04-11",
+                    "maxinstalls": 107541606
+                  },
+                  {
+                    "createdAt": "2025-04-12",
+                    "maxinstalls": 107591226
+                  },
+                  {
+                    "createdAt": "2025-04-12",
+                    "maxinstalls": 107608359
+                  },
+                  {
+                    "createdAt": "2025-04-13",
+                    "maxinstalls": 107632676
+                  },
+                  {
+                    "createdAt": "2025-04-14",
+                    "maxinstalls": 107654691
+                  },
+                  {
+                    "createdAt": "2025-04-14",
+                    "maxinstalls": 107632676
+                  },
+                  {
+                    "createdAt": "2025-04-15",
+                    "maxinstalls": 107654691
+                  },
+                  {
+                    "createdAt": "2025-04-15",
+                    "maxinstalls": 107703474
+                  },
+                  {
+                    "createdAt": "2025-04-16",
+                    "maxinstalls": 107726376
+                  },
+                  {
+                    "createdAt": "2025-04-17",
+                    "maxinstalls": 107768838
+                  },
+                  {
+                    "createdAt": "2025-04-18",
+                    "maxinstalls": 107810638
+                  },
+                  {
+                    "createdAt": "2025-04-19",
+                    "maxinstalls": 107810638
+                  },
+                  {
+                    "createdAt": "2025-04-20",
+                    "maxinstalls": 107810638
+                  },
+                  {
+                    "createdAt": "2025-04-21",
+                    "maxinstalls": 107895758
+                  },
+                  {
+                    "createdAt": "2025-04-22",
+                    "maxinstalls": 107914885
+                  },
+                  {
+                    "createdAt": "2025-04-23",
+                    "maxinstalls": 107967694
+                  },
+                  {
+                    "createdAt": "2025-04-24",
+                    "maxinstalls": 108000653
+                  },
+                  {
+                    "createdAt": "2025-04-25",
+                    "maxinstalls": 108064303
+                  },
+                  {
+                    "createdAt": "2025-04-26",
+                    "maxinstalls": 108064303
+                  },
+                  {
+                    "createdAt": "2025-04-27",
+                    "maxinstalls": 108114435
+                  },
+                  {
+                    "createdAt": "2025-04-28",
+                    "maxinstalls": 108145366
+                  },
+                  {
+                    "createdAt": "2025-04-29",
+                    "maxinstalls": 108188586
+                  },
+                  {
+                    "createdAt": "2025-04-30",
+                    "maxinstalls": 108228838
+                  },
+                  {
+                    "createdAt": "2025-05-01",
+                    "maxinstalls": 108270206
+                  },
+                  {
+                    "createdAt": "2025-05-02",
+                    "maxinstalls": 108316026
+                  },
+                  {
+                    "createdAt": "2025-05-03",
+                    "maxinstalls": 108337562
+                  },
+                  {
+                    "createdAt": "2025-05-04",
+                    "maxinstalls": 108370136
+                  },
+                  {
+                    "createdAt": "2025-05-05",
+                    "maxinstalls": 108398326
+                  },
+                  {
+                    "createdAt": "2025-05-06",
+                    "maxinstalls": 108443461
+                  },
+                  {
+                    "createdAt": "2025-05-07",
+                    "maxinstalls": 108489130
+                  },
+                  {
+                    "createdAt": "2025-05-08",
+                    "maxinstalls": 108535553
+                  },
+                  {
+                    "createdAt": "2025-05-09",
+                    "maxinstalls": 108579286
+                  },
+                  {
+                    "createdAt": "2025-05-10",
+                    "maxinstalls": 108617759
+                  },
+                  {
+                    "createdAt": "2025-05-11",
+                    "maxinstalls": 108645903
+                  },
+                  {
+                    "createdAt": "2025-05-12",
+                    "maxinstalls": 108674163
+                  },
+                  {
+                    "createdAt": "2025-05-13",
+                    "maxinstalls": 108726577
+                  },
+                  {
+                    "createdAt": "2025-05-14",
+                    "maxinstalls": 108757694
+                  },
+                  {
+                    "createdAt": "2025-05-15",
+                    "maxinstalls": 108806061
+                  },
+                  {
+                    "createdAt": "2025-05-16",
+                    "maxinstalls": 108837928
+                  },
+                  {
+                    "createdAt": "2025-05-17",
+                    "maxinstalls": 108861355
+                  },
+                  {
+                    "createdAt": "2025-05-18",
+                    "maxinstalls": 108901316
+                  },
+                  {
+                    "createdAt": "2025-05-19",
+                    "maxinstalls": 108933732
+                  },
+                  {
+                    "createdAt": "2025-05-20",
+                    "maxinstalls": 108973406
+                  },
+                  {
+                    "createdAt": "2025-05-21",
+                    "maxinstalls": 109009264
+                  },
+                  {
+                    "createdAt": "2025-05-22",
+                    "maxinstalls": 109047030
+                  },
+                  {
+                    "createdAt": "2025-05-23",
+                    "maxinstalls": 109095293
+                  },
+                  {
+                    "createdAt": "2025-05-24",
+                    "maxinstalls": 109121800
+                  },
+                  {
+                    "createdAt": "2025-05-25",
+                    "maxinstalls": 109152444
+                  },
+                  {
+                    "createdAt": "2025-05-26",
+                    "maxinstalls": 109176165
+                  },
+                  {
+                    "createdAt": "2025-05-27",
+                    "maxinstalls": 109233287
+                  },
+                  {
+                    "createdAt": "2025-05-28",
+                    "maxinstalls": 109266672
+                  },
+                  {
+                    "createdAt": "2025-05-29",
+                    "maxinstalls": 109294489
+                  },
+                  {
+                    "createdAt": "2025-05-30",
+                    "maxinstalls": 109336732
+                  },
+                  {
+                    "createdAt": "2025-05-31",
+                    "maxinstalls": 109370089
+                  },
+                  {
+                    "createdAt": "2025-06-01",
+                    "maxinstalls": 109400043
+                  },
+                  {
+                    "createdAt": "2025-06-02",
+                    "maxinstalls": 109424412
+                  },
+                  {
+                    "createdAt": "2025-06-03",
+                    "maxinstalls": 109469742
+                  },
+                  {
+                    "createdAt": "2025-06-04",
+                    "maxinstalls": 109521545
+                  },
+                  {
+                    "createdAt": "2025-06-05",
+                    "maxinstalls": 109544721
+                  },
+                  {
+                    "createdAt": "2025-06-06",
+                    "maxinstalls": 109594991
+                  },
+                  {
+                    "createdAt": "2025-06-07",
+                    "maxinstalls": 109604446
+                  },
+                  {
+                    "createdAt": "2025-06-08",
+                    "maxinstalls": 109643588
+                  },
+                  {
+                    "createdAt": "2025-06-09",
+                    "maxinstalls": 109687397
+                  },
+                  {
+                    "createdAt": "2025-06-10",
+                    "maxinstalls": 109726953
+                  },
+                  {
+                    "createdAt": "2025-06-11",
+                    "maxinstalls": 109764182
+                  },
+                  {
+                    "createdAt": "2025-06-12",
+                    "maxinstalls": 109786884
+                  },
+                  {
+                    "createdAt": "2025-06-13",
+                    "maxinstalls": 109827217
+                  },
+                  {
+                    "createdAt": "2025-06-14",
+                    "maxinstalls": 109855460
+                  },
+                  {
+                    "createdAt": "2025-06-15",
+                    "maxinstalls": 109881184
+                  },
+                  {
+                    "createdAt": "2025-06-16",
+                    "maxinstalls": 109918955
+                  },
+                  {
+                    "createdAt": "2025-06-17",
+                    "maxinstalls": 109954889
+                  },
+                  {
+                    "createdAt": "2025-06-18",
+                    "maxinstalls": 110007447
+                  },
+                  {
+                    "createdAt": "2025-06-19",
+                    "maxinstalls": 110028289
+                  },
+                  {
+                    "createdAt": "2025-06-20",
+                    "maxinstalls": 110062382
+                  },
+                  {
+                    "createdAt": "2025-06-21",
+                    "maxinstalls": 110091293
+                  },
+                  {
+                    "createdAt": "2025-06-22",
+                    "maxinstalls": 110115327
+                  },
+                  {
+                    "createdAt": "2025-06-23",
+                    "maxinstalls": 110137328
+                  },
+                  {
+                    "createdAt": "2025-06-24",
+                    "maxinstalls": 110171416
+                  },
+                  {
+                    "createdAt": "2025-06-25",
+                    "maxinstalls": 110210205
+                  },
+                  {
+                    "createdAt": "2025-06-26",
+                    "maxinstalls": 110243405
+                  },
+                  {
+                    "createdAt": "2025-06-27",
+                    "maxinstalls": 110280928
+                  },
+                  {
+                    "createdAt": "2025-06-28",
+                    "maxinstalls": 110296205
+                  },
+                  {
+                    "createdAt": "2025-06-29",
+                    "maxinstalls": 110334586
+                  }
+                ]
+              },
+              "appKey": "br.com.bb.android_google_br_pt-BR",
+              "data": [
+                {
+                  "createdAt": "2025-01-01",
+                  "maxinstalls": 104334221
+                },
+                {
+                  "createdAt": "2025-01-02",
+                  "maxinstalls": 104365627
+                },
+                {
+                  "createdAt": "2025-01-03",
+                  "maxinstalls": 104382062
+                },
+                {
+                  "createdAt": "2025-01-04",
+                  "maxinstalls": 104419158
+                },
+                {
+                  "createdAt": "2025-01-05",
+                  "maxinstalls": 104441403
+                },
+                {
+                  "createdAt": "2025-01-06",
+                  "maxinstalls": 104459111
+                },
+                {
+                  "createdAt": "2025-01-07",
+                  "maxinstalls": 104462268
+                },
+                {
+                  "createdAt": "2025-01-08",
+                  "maxinstalls": 104462268
+                },
+                {
+                  "createdAt": "2025-01-09",
+                  "maxinstalls": 104462268
+                },
+                {
+                  "createdAt": "2025-01-10",
+                  "maxinstalls": 104629717
+                },
+                {
+                  "createdAt": "2025-01-11",
+                  "maxinstalls": 104664114
+                },
+                {
+                  "createdAt": "2025-01-12",
+                  "maxinstalls": 104693113
+                },
+                {
+                  "createdAt": "2025-01-13",
+                  "maxinstalls": 104713035
+                },
+                {
+                  "createdAt": "2025-01-14",
+                  "maxinstalls": 104757849
+                },
+                {
+                  "createdAt": "2025-01-15",
+                  "maxinstalls": 104780677
+                },
+                {
+                  "createdAt": "2025-01-16",
+                  "maxinstalls": 104828019
+                },
+                {
+                  "createdAt": "2025-01-17",
+                  "maxinstalls": 104851570
+                },
+                {
+                  "createdAt": "2025-01-18",
+                  "maxinstalls": 104885124
+                },
+                {
+                  "createdAt": "2025-01-19",
+                  "maxinstalls": 104901149
+                },
+                {
+                  "createdAt": "2025-01-20",
+                  "maxinstalls": 104927116
+                },
+                {
+                  "createdAt": "2025-01-21",
+                  "maxinstalls": 104958983
+                },
+                {
+                  "createdAt": "2025-01-22",
+                  "maxinstalls": 104992369
+                },
+                {
+                  "createdAt": "2025-01-23",
+                  "maxinstalls": 105026655
+                },
+                {
+                  "createdAt": "2025-01-24",
+                  "maxinstalls": 105074628
+                },
+                {
+                  "createdAt": "2025-01-25",
+                  "maxinstalls": 105078689
+                },
+                {
+                  "createdAt": "2025-01-26",
+                  "maxinstalls": 105110741
+                },
+                {
+                  "createdAt": "2025-01-27",
+                  "maxinstalls": 105137709
+                },
+                {
+                  "createdAt": "2025-01-28",
+                  "maxinstalls": 105165103
+                },
+                {
+                  "createdAt": "2025-01-29",
+                  "maxinstalls": 105202217
+                },
+                {
+                  "createdAt": "2025-01-30",
+                  "maxinstalls": 105244841
+                },
+                {
+                  "createdAt": "2025-01-31",
+                  "maxinstalls": 105288000
+                },
+                {
+                  "createdAt": "2025-02-01",
+                  "maxinstalls": 105304911
+                },
+                {
+                  "createdAt": "2025-02-02",
+                  "maxinstalls": 105337381
+                },
+                {
+                  "createdAt": "2025-02-03",
+                  "maxinstalls": 105347993
+                },
+                {
+                  "createdAt": "2025-02-04",
+                  "maxinstalls": 105386955
+                },
+                {
+                  "createdAt": "2025-02-05",
+                  "maxinstalls": 105413243
+                },
+                {
+                  "createdAt": "2025-02-06",
+                  "maxinstalls": 105464735
+                },
+                {
+                  "createdAt": "2025-02-07",
+                  "maxinstalls": 105488217
+                },
+                {
+                  "createdAt": "2025-02-08",
+                  "maxinstalls": 105509057
+                },
+                {
+                  "createdAt": "2025-02-09",
+                  "maxinstalls": 105533700
+                },
+                {
+                  "createdAt": "2025-02-10",
+                  "maxinstalls": 105546719
+                },
+                {
+                  "createdAt": "2025-02-11",
+                  "maxinstalls": 105577618
+                },
+                {
+                  "createdAt": "2025-02-12",
+                  "maxinstalls": 105612787
+                },
+                {
+                  "createdAt": "2025-02-13",
+                  "maxinstalls": 105647305
+                },
+                {
+                  "createdAt": "2025-02-14",
+                  "maxinstalls": 105670563
+                },
+                {
+                  "createdAt": "2025-02-15",
+                  "maxinstalls": 105694007
+                },
+                {
+                  "createdAt": "2025-02-16",
+                  "maxinstalls": 105720120
+                },
+                {
+                  "createdAt": "2025-02-17",
+                  "maxinstalls": 105763654
+                },
+                {
+                  "createdAt": "2025-02-18",
+                  "maxinstalls": 105779540
+                },
+                {
+                  "createdAt": "2025-02-19",
+                  "maxinstalls": 105779540
+                },
+                {
+                  "createdAt": "2025-02-20",
+                  "maxinstalls": 105835188
+                },
+                {
+                  "createdAt": "2025-02-21",
+                  "maxinstalls": 105895350
+                },
+                {
+                  "createdAt": "2025-02-22",
+                  "maxinstalls": 105915785
+                },
+                {
+                  "createdAt": "2025-02-23",
+                  "maxinstalls": 105940887
+                },
+                {
+                  "createdAt": "2025-02-24",
+                  "maxinstalls": 105959962
+                },
+                {
+                  "createdAt": "2025-02-25",
+                  "maxinstalls": 106013019
+                },
+                {
+                  "createdAt": "2025-02-26",
+                  "maxinstalls": 106048548
+                },
+                {
+                  "createdAt": "2025-02-27",
+                  "maxinstalls": 106106836
+                },
+                {
+                  "createdAt": "2025-02-28",
+                  "maxinstalls": 106140207
+                },
+                {
+                  "createdAt": "2025-03-01",
+                  "maxinstalls": 106148672
+                },
+                {
+                  "createdAt": "2025-03-02",
+                  "maxinstalls": 106188003
+                },
+                {
+                  "createdAt": "2025-03-03",
+                  "maxinstalls": 106202608
+                },
+                {
+                  "createdAt": "2025-03-04",
+                  "maxinstalls": 106230188
+                },
+                {
+                  "createdAt": "2025-03-05",
+                  "maxinstalls": 106264726
+                },
+                {
+                  "createdAt": "2025-03-06",
+                  "maxinstalls": 106283764
+                },
+                {
+                  "createdAt": "2025-03-07",
+                  "maxinstalls": 106328250
+                },
+                {
+                  "createdAt": "2025-03-08",
+                  "maxinstalls": 106365637
+                },
+                {
+                  "createdAt": "2025-03-09",
+                  "maxinstalls": 106389539
+                },
+                {
+                  "createdAt": "2025-03-10",
+                  "maxinstalls": 106416268
+                },
+                {
+                  "createdAt": "2025-03-11",
+                  "maxinstalls": 106453145
+                },
+                {
+                  "createdAt": "2025-03-12",
+                  "maxinstalls": 106485827
+                },
+                {
+                  "createdAt": "2025-03-13",
+                  "maxinstalls": 106526109
+                },
+                {
+                  "createdAt": "2025-03-14",
+                  "maxinstalls": 106570031
+                },
+                {
+                  "createdAt": "2025-03-15",
+                  "maxinstalls": 106586966
+                },
+                {
+                  "createdAt": "2025-03-16",
+                  "maxinstalls": 106610383
+                },
+                {
+                  "createdAt": "2025-03-17",
+                  "maxinstalls": 106634621
+                },
+                {
+                  "createdAt": "2025-03-18",
+                  "maxinstalls": 106673675
+                },
+                {
+                  "createdAt": "2025-03-19",
+                  "maxinstalls": 106719568
+                },
+                {
+                  "createdAt": "2025-03-20",
+                  "maxinstalls": 106749388
+                },
+                {
+                  "createdAt": "2025-03-21",
+                  "maxinstalls": 106802486
+                },
+                {
+                  "createdAt": "2025-03-22",
+                  "maxinstalls": 106818922
+                },
+                {
+                  "createdAt": "2025-03-23",
+                  "maxinstalls": 106852490
+                },
+                {
+                  "createdAt": "2025-03-24",
+                  "maxinstalls": 106896533
+                },
+                {
+                  "createdAt": "2025-03-27",
+                  "maxinstalls": 107025769
+                },
+                {
+                  "createdAt": "2025-03-28",
+                  "maxinstalls": 107073681
+                },
+                {
+                  "createdAt": "2025-03-29",
+                  "maxinstalls": 107111949
+                },
+                {
+                  "createdAt": "2025-03-30",
+                  "maxinstalls": 107111949
+                },
+                {
+                  "createdAt": "2025-03-30",
+                  "maxinstalls": 107141928
+                },
+                {
+                  "createdAt": "2025-03-31",
+                  "maxinstalls": 107156448
+                },
+                {
+                  "createdAt": "2025-03-31",
+                  "maxinstalls": 107167925
+                },
+                {
+                  "createdAt": "2025-04-01",
+                  "maxinstalls": 107167925
+                },
+                {
+                  "createdAt": "2025-04-01",
+                  "maxinstalls": 107216765
+                },
+                {
+                  "createdAt": "2025-04-02",
+                  "maxinstalls": 107253699
+                },
+                {
+                  "createdAt": "2025-04-02",
+                  "maxinstalls": 107265652
+                },
+                {
+                  "createdAt": "2025-04-03",
+                  "maxinstalls": 107274500
+                },
+                {
+                  "createdAt": "2025-04-05",
+                  "maxinstalls": 107372539
+                },
+                {
+                  "createdAt": "2025-04-06",
+                  "maxinstalls": 107398635
+                },
+                {
+                  "createdAt": "2025-04-07",
+                  "maxinstalls": 107429993
+                },
+                {
+                  "createdAt": "2025-04-07",
+                  "maxinstalls": 107421388
+                },
+                {
+                  "createdAt": "2025-04-08",
+                  "maxinstalls": 107463932
+                },
+                {
+                  "createdAt": "2025-04-08",
+                  "maxinstalls": 107475328
+                },
+                {
+                  "createdAt": "2025-04-09",
+                  "maxinstalls": 107514013
+                },
+                {
+                  "createdAt": "2025-04-09",
+                  "maxinstalls": 107475328
+                },
+                {
+                  "createdAt": "2025-04-10",
+                  "maxinstalls": 107514013
+                },
+                {
+                  "createdAt": "2025-04-10",
+                  "maxinstalls": 107541606
+                },
+                {
+                  "createdAt": "2025-04-11",
+                  "maxinstalls": 107591226
+                },
+                {
+                  "createdAt": "2025-04-11",
+                  "maxinstalls": 107541606
+                },
+                {
+                  "createdAt": "2025-04-12",
+                  "maxinstalls": 107591226
+                },
+                {
+                  "createdAt": "2025-04-12",
+                  "maxinstalls": 107608359
+                },
+                {
+                  "createdAt": "2025-04-13",
+                  "maxinstalls": 107632676
+                },
+                {
+                  "createdAt": "2025-04-14",
+                  "maxinstalls": 107654691
+                },
+                {
+                  "createdAt": "2025-04-14",
+                  "maxinstalls": 107632676
+                },
+                {
+                  "createdAt": "2025-04-15",
+                  "maxinstalls": 107654691
+                },
+                {
+                  "createdAt": "2025-04-15",
+                  "maxinstalls": 107703474
+                },
+                {
+                  "createdAt": "2025-04-16",
+                  "maxinstalls": 107726376
+                },
+                {
+                  "createdAt": "2025-04-17",
+                  "maxinstalls": 107768838
+                },
+                {
+                  "createdAt": "2025-04-18",
+                  "maxinstalls": 107810638
+                },
+                {
+                  "createdAt": "2025-04-19",
+                  "maxinstalls": 107810638
+                },
+                {
+                  "createdAt": "2025-04-20",
+                  "maxinstalls": 107810638
+                },
+                {
+                  "createdAt": "2025-04-21",
+                  "maxinstalls": 107895758
+                },
+                {
+                  "createdAt": "2025-04-22",
+                  "maxinstalls": 107914885
+                },
+                {
+                  "createdAt": "2025-04-23",
+                  "maxinstalls": 107967694
+                },
+                {
+                  "createdAt": "2025-04-24",
+                  "maxinstalls": 108000653
+                },
+                {
+                  "createdAt": "2025-04-25",
+                  "maxinstalls": 108064303
+                },
+                {
+                  "createdAt": "2025-04-26",
+                  "maxinstalls": 108064303
+                },
+                {
+                  "createdAt": "2025-04-27",
+                  "maxinstalls": 108114435
+                },
+                {
+                  "createdAt": "2025-04-28",
+                  "maxinstalls": 108145366
+                },
+                {
+                  "createdAt": "2025-04-29",
+                  "maxinstalls": 108188586
+                },
+                {
+                  "createdAt": "2025-04-30",
+                  "maxinstalls": 108228838
+                },
+                {
+                  "createdAt": "2025-05-01",
+                  "maxinstalls": 108270206
+                },
+                {
+                  "createdAt": "2025-05-02",
+                  "maxinstalls": 108316026
+                },
+                {
+                  "createdAt": "2025-05-03",
+                  "maxinstalls": 108337562
+                },
+                {
+                  "createdAt": "2025-05-04",
+                  "maxinstalls": 108370136
+                },
+                {
+                  "createdAt": "2025-05-05",
+                  "maxinstalls": 108398326
+                },
+                {
+                  "createdAt": "2025-05-06",
+                  "maxinstalls": 108443461
+                },
+                {
+                  "createdAt": "2025-05-07",
+                  "maxinstalls": 108489130
+                },
+                {
+                  "createdAt": "2025-05-08",
+                  "maxinstalls": 108535553
+                },
+                {
+                  "createdAt": "2025-05-09",
+                  "maxinstalls": 108579286
+                },
+                {
+                  "createdAt": "2025-05-10",
+                  "maxinstalls": 108617759
+                },
+                {
+                  "createdAt": "2025-05-11",
+                  "maxinstalls": 108645903
+                },
+                {
+                  "createdAt": "2025-05-12",
+                  "maxinstalls": 108674163
+                },
+                {
+                  "createdAt": "2025-05-13",
+                  "maxinstalls": 108726577
+                },
+                {
+                  "createdAt": "2025-05-14",
+                  "maxinstalls": 108757694
+                },
+                {
+                  "createdAt": "2025-05-15",
+                  "maxinstalls": 108806061
+                },
+                {
+                  "createdAt": "2025-05-16",
+                  "maxinstalls": 108837928
+                },
+                {
+                  "createdAt": "2025-05-17",
+                  "maxinstalls": 108861355
+                },
+                {
+                  "createdAt": "2025-05-18",
+                  "maxinstalls": 108901316
+                },
+                {
+                  "createdAt": "2025-05-19",
+                  "maxinstalls": 108933732
+                },
+                {
+                  "createdAt": "2025-05-20",
+                  "maxinstalls": 108973406
+                },
+                {
+                  "createdAt": "2025-05-21",
+                  "maxinstalls": 109009264
+                },
+                {
+                  "createdAt": "2025-05-22",
+                  "maxinstalls": 109047030
+                },
+                {
+                  "createdAt": "2025-05-23",
+                  "maxinstalls": 109095293
+                },
+                {
+                  "createdAt": "2025-05-24",
+                  "maxinstalls": 109121800
+                },
+                {
+                  "createdAt": "2025-05-25",
+                  "maxinstalls": 109152444
+                },
+                {
+                  "createdAt": "2025-05-26",
+                  "maxinstalls": 109176165
+                },
+                {
+                  "createdAt": "2025-05-27",
+                  "maxinstalls": 109233287
+                },
+                {
+                  "createdAt": "2025-05-28",
+                  "maxinstalls": 109266672
+                },
+                {
+                  "createdAt": "2025-05-29",
+                  "maxinstalls": 109294489
+                },
+                {
+                  "createdAt": "2025-05-30",
+                  "maxinstalls": 109336732
+                },
+                {
+                  "createdAt": "2025-05-31",
+                  "maxinstalls": 109370089
+                },
+                {
+                  "createdAt": "2025-06-01",
+                  "maxinstalls": 109400043
+                },
+                {
+                  "createdAt": "2025-06-02",
+                  "maxinstalls": 109424412
+                },
+                {
+                  "createdAt": "2025-06-03",
+                  "maxinstalls": 109469742
+                },
+                {
+                  "createdAt": "2025-06-04",
+                  "maxinstalls": 109521545
+                },
+                {
+                  "createdAt": "2025-06-05",
+                  "maxinstalls": 109544721
+                },
+                {
+                  "createdAt": "2025-06-06",
+                  "maxinstalls": 109594991
+                },
+                {
+                  "createdAt": "2025-06-07",
+                  "maxinstalls": 109604446
+                },
+                {
+                  "createdAt": "2025-06-08",
+                  "maxinstalls": 109643588
+                },
+                {
+                  "createdAt": "2025-06-09",
+                  "maxinstalls": 109687397
+                },
+                {
+                  "createdAt": "2025-06-10",
+                  "maxinstalls": 109726953
+                },
+                {
+                  "createdAt": "2025-06-11",
+                  "maxinstalls": 109764182
+                },
+                {
+                  "createdAt": "2025-06-12",
+                  "maxinstalls": 109786884
+                },
+                {
+                  "createdAt": "2025-06-13",
+                  "maxinstalls": 109827217
+                },
+                {
+                  "createdAt": "2025-06-14",
+                  "maxinstalls": 109855460
+                },
+                {
+                  "createdAt": "2025-06-15",
+                  "maxinstalls": 109881184
+                },
+                {
+                  "createdAt": "2025-06-16",
+                  "maxinstalls": 109918955
+                },
+                {
+                  "createdAt": "2025-06-17",
+                  "maxinstalls": 109954889
+                },
+                {
+                  "createdAt": "2025-06-18",
+                  "maxinstalls": 110007447
+                },
+                {
+                  "createdAt": "2025-06-19",
+                  "maxinstalls": 110028289
+                },
+                {
+                  "createdAt": "2025-06-20",
+                  "maxinstalls": 110062382
+                },
+                {
+                  "createdAt": "2025-06-21",
+                  "maxinstalls": 110091293
+                },
+                {
+                  "createdAt": "2025-06-22",
+                  "maxinstalls": 110115327
+                },
+                {
+                  "createdAt": "2025-06-23",
+                  "maxinstalls": 110137328
+                },
+                {
+                  "createdAt": "2025-06-24",
+                  "maxinstalls": 110171416
+                },
+                {
+                  "createdAt": "2025-06-25",
+                  "maxinstalls": 110210205
+                },
+                {
+                  "createdAt": "2025-06-26",
+                  "maxinstalls": 110243405
+                },
+                {
+                  "createdAt": "2025-06-27",
+                  "maxinstalls": 110280928
+                },
+                {
+                  "createdAt": "2025-06-28",
+                  "maxinstalls": 110296205
+                },
+                {
+                  "createdAt": "2025-06-29",
+                  "maxinstalls": 110334586
+                }
+              ],
+              "status": "ready",
+              "validation": {
+                "isValid": true,
+                "code": null,
+                "errors": []
+              },
+              "warning": null
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "connections": {
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Split Out",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If4": {
+      "main": [
+        [
+          {
+            "node": "parse_area",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "warn_area",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "parse_area": {
+      "main": [
+        [
+          {
+            "node": "build_analys_area",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "warn_area": {
+      "main": [
+        [
+          {
+            "node": "Merge5",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Basic LLM Chain4": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields6",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Basic LLM Chain4",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields6": {
+      "main": [
+        [
+          {
+            "node": "loop_area",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "build_analys_area": {
+      "main": [
+        [
+          {
+            "node": "loop_area",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "loop_area": {
+      "main": [
+        [
+          {
+            "node": "Merge5",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Basic LLM Chain4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Out": {
+      "main": [
+        [
+          {
+            "node": "If4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge5": {
+      "main": [
+        [
+          {
+            "node": "Aggregate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aggregate": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "b8feed63-7c6d-434e-a9da-50cee7c0c432",
+  "meta": {
+    "instanceId": "33738330930e3881dd5571eca013f36ddf8aab20e4ea5c1f2ebaf4a2b4668ac6"
+  },
+  "id": "iVK69Mt7cbh0AKvd",
+  "tags": []
+}

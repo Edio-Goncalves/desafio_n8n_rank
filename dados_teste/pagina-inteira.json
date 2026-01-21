@@ -1,0 +1,1151 @@
+[
+{
+  "documentId": "cpbeqkvknnfuu9z5sgyqqikh",
+  "name": "SESSÕES POR USUÁRIOS (ADJUST)",
+  "slug": "card-sessoes-por-usuarios-adjust",
+  "kind": "big_number",
+  "xField": "None",
+  "yField": "big_number",
+  "description": "Média de Sessões comparadas aos Usuários Ativos Diários.",
+  "combineData": true,
+  "labels": null,
+  "colors": {
+    "default": "#09738a"
+  },
+  "config": {
+    "add-competitors": "False",
+    "aggregationMode": "average",
+    "bigNumber": {
+      "fontWeight": "bold",
+      "format": "0"
+    },
+    "increase-is-positive": "True",
+    "invert-y-axis": "False",
+    "is-pro": "False",
+    "is-public": "False",
+    "show-percentage": "False",
+    "title": {
+      "align": "center",
+      "position": "top",
+      "text": "SESSÕES POR USUÁRIOS"
+    }
+  },
+  "exampleData": {
+    "appId": [
+      {
+        "big_number": 2,
+        "percentage": {
+          "value": null
+        },
+        "variations": {
+          "month": {
+            "type": "up",
+            "value": 2.03
+          },
+          "year": {
+            "type": null,
+            "value": null
+          }
+        }
+      }
+    ]
+  },
+  "dataSource": {
+    "type": "api",
+    "id": "1639",
+    "url": "http://metrics-api:39120/data-rank/big-number/sessions_by_users_adjust_card",
+    "method": "POST",
+    "params": null,
+    "body": {
+      "appId": "{{.AppID}}",
+      "country": "{{.Country}}",
+      "endDate": "{{.EndDate}}",
+      "internalId": "{{.InternalID}}",
+      "lang": "{{.Lang}}",
+      "startDate": "{{.StartDate}}",
+      "store": "{{.Store}}"
+    },
+    "headers": null
+  },
+  "stores": [
+    "google",
+    "apple"
+  ],
+  "source": "Console",
+  "data": {
+    "br.com.bb.android_google_br_pt-BR": [
+      {
+        "big_number": 2,
+        "percentage": {
+          "value": null
+        },
+        "variations": {
+          "month": {
+            "type": "up",
+            "value": 1.94
+          },
+          "year": {
+            "type": null,
+            "value": null
+          }
+        }
+      }
+    ]
+  },
+  "category": {
+    "name": "Adjust",
+    "slug": "adjust",
+    "documentId": "ksh7qnps0syb67ga37qg064i"
+  }
+},
+{
+  "documentId": "fguehexg6aetb1wa8vgwv9t8",
+  "name": "MÉDIA DE SEGUNDOS POR SESSÃO (ADJUST)",
+  "slug": "card-media-de-segundos-por-sessao-adjust",
+  "kind": "big_number",
+  "xField": "None",
+  "yField": "big_number",
+  "description": "Tempo médio que os usuários passaram no app durante o período (em segundos).",
+  "combineData": true,
+  "labels": null,
+  "colors": {
+    "default": "#09738a"
+  },
+  "config": {
+    "add-competitors": "False",
+    "aggregationMode": "average",
+    "bigNumber": {
+      "fontWeight": "bold",
+      "format": "0"
+    },
+    "increase-is-positive": "True",
+    "invert-y-axis": "False",
+    "is-pro": "False",
+    "is-public": "False",
+    "show-percentage": "False",
+    "title": {
+      "align": "center",
+      "position": "top",
+      "text": "MÉDIA DE SEGUNDOS POR SESSÃO"
+    }
+  },
+  "exampleData": {
+    "appId": [
+      {
+        "big_number": 11,
+        "percentage": {
+          "value": null
+        },
+        "variations": {
+          "month": {
+            "type": "down",
+            "value": -4.88
+          },
+          "year": {
+            "type": null,
+            "value": null
+          }
+        }
+      }
+    ]
+  },
+  "dataSource": {
+    "type": "api",
+    "id": "1408",
+    "url": "http://metrics-api:39120/data-rank/big-number/average_seconds_per_session_adjust_card",
+    "method": "POST",
+    "params": null,
+    "body": {
+      "appId": "{{.AppID}}",
+      "country": "{{.Country}}",
+      "endDate": "{{.EndDate}}",
+      "internalId": "{{.InternalID}}",
+      "lang": "{{.Lang}}",
+      "startDate": "{{.StartDate}}",
+      "store": "{{.Store}}"
+    },
+    "headers": null
+  },
+  "stores": [
+    "google",
+    "apple"
+  ],
+  "source": "Console",
+  "data": {
+    "br.com.bb.android_google_br_pt-BR": [
+      {
+        "big_number": 2,
+        "percentage": {
+          "value": null
+        },
+        "variations": {
+          "month": {
+            "type": "down",
+            "value": -100
+          },
+          "year": {
+            "type": null,
+            "value": null
+          }
+        }
+      }
+    ]
+  },
+  "category": {
+    "name": "Adjust",
+    "slug": "adjust",
+    "documentId": "ksh7qnps0syb67ga37qg064i"
+  }
+},
+{
+  "documentId": "e6f7foxafotixyx7sgbjr48q",
+  "name": "TAXA DE RETENÇÃO MÉDIA (ADJUST)",
+  "slug": "card-taxa-de-retencao-media-adjust",
+  "kind": "big_number",
+  "xField": "None",
+  "yField": "big_number",
+  "description": "Média das Taxas de Retenção (calculadas de acordo com os dias D1 até D10 da coorte) do período.",
+  "combineData": true,
+  "labels": null,
+  "colors": {
+    "default": "#09738a"
+  },
+  "config": {
+    "add-competitors": "False",
+    "aggregationMode": "average",
+    "bigNumber": {
+      "fontWeight": "bold",
+      "format": "0.00",
+      "suffix": "%"
+    },
+    "increase-is-positive": "True",
+    "invert-y-axis": "False",
+    "is-pro": "False",
+    "is-public": "False",
+    "show-percentage": "False",
+    "title": {
+      "align": "center",
+      "position": "top",
+      "text": "TAXA DE RETENÇÃO MÉDIA"
+    }
+  },
+  "exampleData": {
+    "appId": [
+      {
+        "big_number": 5.65,
+        "percentage": {
+          "value": null
+        },
+        "variations": {
+          "month": {
+            "type": null,
+            "value": null
+          },
+          "year": {
+            "type": null,
+            "value": null
+          }
+        }
+      }
+    ]
+  },
+  "dataSource": {
+    "type": "api",
+    "id": "1545",
+    "url": "http://metrics-api:39120/data-rank/big-number/average_retention_rate_adjust_card",
+    "method": "POST",
+    "params": null,
+    "body": {
+      "appId": "{{.AppID}}",
+      "country": "{{.Country}}",
+      "endDate": "{{.EndDate}}",
+      "internalId": "{{.InternalID}}",
+      "lang": "{{.Lang}}",
+      "startDate": "{{.StartDate}}",
+      "store": "{{.Store}}"
+    },
+    "headers": null
+  },
+  "stores": [
+    "google",
+    "apple"
+  ],
+  "source": "Console",
+  "data": {
+    "br.com.bb.android_google_br_pt-BR": [
+      {
+        "big_number": 20.69,
+        "percentage": {
+          "value": null
+        },
+        "variations": {
+          "month": {
+            "type": "down",
+            "value": -65.78
+          },
+          "year": {
+            "type": null,
+            "value": null
+          }
+        }
+      }
+    ]
+  },
+  "category": {
+    "name": "Adjust",
+    "slug": "adjust",
+    "documentId": "ksh7qnps0syb67ga37qg064i"
+  }
+},
+{
+  "documentId": "aiglpkix3bqowxyowuitb8k3",
+  "name": "TAXA MÉDIA DE FALHAS",
+  "slug": "card-taxa-media-de-falhas",
+  "kind": "big_number",
+  "xField": "None",
+  "yField": "big_number",
+  "description": "Média das Taxas de Falhas no período.\n\nPeríodo de atualização Google: D-2\nPeríodo de atualização Apple: D-23",
+  "combineData": true,
+  "labels": null,
+  "colors": {
+    "default": "#09738a"
+  },
+  "config": {
+    "add-competitors": "False",
+    "aggregationMode": "average",
+    "bigNumber": {
+      "fontWeight": "bold",
+      "format": "0.00",
+      "suffix": "%"
+    },
+    "increase-is-positive": "False",
+    "invert-y-axis": "False",
+    "is-pro": "False",
+    "is-public": "False",
+    "show-percentage": "False",
+    "title": {
+      "align": "center",
+      "position": "top",
+      "text": "TAXA MÉDIA DE FALHAS"
+    }
+  },
+  "exampleData": {
+    "appId": [
+      {
+        "big_number": 4.32,
+        "percentage": {
+          "value": null
+        },
+        "variations": {
+          "month": {
+            "type": "up",
+            "value": 12.48
+          },
+          "year": {
+            "type": "up",
+            "value": 355.25
+          }
+        }
+      }
+    ]
+  },
+  "dataSource": {
+    "type": "api",
+    "id": "1082",
+    "url": "http://metrics-api:39120/data-rank/big-number/average_crashes_rate_card",
+    "method": "POST",
+    "params": null,
+    "body": {
+      "appId": "{{.AppID}}",
+      "country": "{{.Country}}",
+      "endDate": "{{.EndDate}}",
+      "internalId": "{{.InternalID}}",
+      "lang": "{{.Lang}}",
+      "startDate": "{{.StartDate}}",
+      "store": "{{.Store}}"
+    },
+    "headers": null
+  },
+  "stores": [
+    "google",
+    "apple"
+  ],
+  "source": "Console",
+  "data": {
+    "br.com.bb.android_google_br_pt-BR": [
+      {
+        "big_number": 1.25,
+        "percentage": {
+          "value": null
+        },
+        "variations": {
+          "month": {
+            "type": "up",
+            "value": 4.59
+          },
+          "year": {
+            "type": null,
+            "value": null
+          }
+        }
+      }
+    ]
+  },
+  "category": {
+    "name": "Satisfação",
+    "slug": "satisfacao",
+    "documentId": "fclgwsltljmkd11ieukxy3ff"
+  }
+},
+{
+  "documentId": "lzvi6pdx7m7nvyu3lm9gt3ib",
+  "name": "SESSÕES VS DAU (ADJUST)",
+  "slug": "line-sessoes-vs-dau-adjust",
+  "kind": "line",
+  "xField": "date",
+  "yField": "total_sessions, total_daus",
+  "description": "Evolução dos Usuários Ativos Diários (DAU) e das Sessões ao longo do tempo.",
+  "combineData": true,
+  "labels": null,
+  "colors": {
+    "default": "#09738a"
+  },
+  "config": {
+    "add-competitors": "False",
+    "aggregationMode": "average",
+    "invert-y-axis": "False",
+    "is-pro": "False",
+    "is-public": "False",
+    "kind": "line",
+    "legend": {
+      "align": "left",
+      "position": "top",
+      "symbolType": "line"
+    },
+    "show-percentage": "False",
+    "title": {
+      "align": "center",
+      "position": "top",
+      "text": "SESSÕES VS DAU"
+    },
+    "tooltip": {
+      "shared": true,
+      "xDateFormat": "DD/MM/yyyy"
+    },
+    "xAxis": {
+      "format": "DD/MM",
+      "label": "Date",
+      "rotateLabels": true
+    },
+    "xField": "date",
+    "yAxis": [
+      {
+        "field": "total_sessions",
+        "format": "0.000a",
+        "label": "Sessões"
+      },
+      {
+        "field": "total_daus",
+        "format": "0.000a",
+        "label": "DAU"
+      }
+    ],
+    "yField": [
+      "total_sessions",
+      "total_daus"
+    ]
+  },
+  "exampleData": {
+    "appId": [
+      {
+        "date": "2025-08-28",
+        "total_daus": 27197,
+        "total_sessions": 52028
+      },
+      {
+        "date": "2025-08-29",
+        "total_daus": 18486,
+        "total_sessions": 28498
+      }
+    ]
+  },
+  "dataSource": {
+    "type": "api",
+    "id": "1525",
+    "url": "http://metrics-api:39120/data-rank/line/sessions_vs_dau_adjust",
+    "method": "POST",
+    "params": null,
+    "body": {
+      "appId": "{{.AppID}}",
+      "country": "{{.Country}}",
+      "endDate": "{{.EndDate}}",
+      "internalId": "{{.InternalID}}",
+      "lang": "{{.Lang}}",
+      "startDate": "{{.StartDate}}",
+      "store": "{{.Store}}"
+    },
+    "headers": null
+  },
+  "stores": [
+    "google",
+    "apple"
+  ],
+  "source": "Console",
+  "data": {
+    "br.com.bb.android_google_br_pt-BR": [
+      {
+        "date": "2025-06-26",
+        "total_daus": 8546964,
+        "total_sessions": 16891929
+      },
+      {
+        "date": "2025-06-27",
+        "total_daus": 8955342,
+        "total_sessions": 18682197
+      },
+      {
+        "date": "2025-06-28",
+        "total_daus": 8217849,
+        "total_sessions": 16423827
+      },
+      {
+        "date": "2025-06-29",
+        "total_daus": 6964350,
+        "total_sessions": 12246051
+      },
+      {
+        "date": "2025-06-30",
+        "total_daus": 9632379,
+        "total_sessions": 20795397
+      }
+    ]
+  },
+  "category": {
+    "name": "Adjust",
+    "slug": "adjust",
+    "documentId": "ksh7qnps0syb67ga37qg064i"
+  }
+},
+{
+  "documentId": "r6uc0gqif82582pn51bnzee9",
+  "name": "TEMPO MÉDIO GASTO POR SESSÃO (ADJUST)",
+  "slug": "line-tempo-medio-gasto-por-sessao-adjust",
+  "kind": "line",
+  "xField": "date",
+  "yField": "avg_time_per_session",
+  "description": "Evolução da quantidade de segundos que os usuários passam utilizando o app por sessão, em média.",
+  "combineData": true,
+  "labels": null,
+  "colors": {
+    "default": "#09738a"
+  },
+  "config": {
+    "add-competitors": "False",
+    "aggregationMode": "average",
+    "invert-y-axis": "False",
+    "is-pro": "False",
+    "is-public": "False",
+    "kind": "line",
+    "legend": {
+      "align": "left",
+      "position": "top",
+      "symbolType": "line"
+    },
+    "show-percentage": "False",
+    "title": {
+      "align": "center",
+      "position": "top",
+      "text": "TEMPO MÉDIO GASTO POR SESSÃO"
+    },
+    "tooltip": {
+      "shared": true,
+      "xDateFormat": "DD/MM/yyyy"
+    },
+    "xAxis": {
+      "format": "DD/MM",
+      "label": "Date",
+      "rotateLabels": true
+    },
+    "xField": "date",
+    "yAxis": [
+      {
+        "field": "avg_time_per_session",
+        "format": "0.000a",
+        "label": "Tempo médio gasto por sessão (segundos)"
+      }
+    ],
+    "yField": "avg_time_per_session"
+  },
+  "exampleData": {
+    "appId": [
+      {
+        "avg_time_per_session": 15,
+        "date": "2025-06-01"
+      },
+      {
+        "avg_time_per_session": 21,
+        "date": "2025-06-02"
+      },
+      {
+        "avg_time_per_session": 8,
+        "date": "2025-06-03"
+      },
+      {
+        "avg_time_per_session": 13,
+        "date": "2025-06-04"
+      },
+      {
+        "avg_time_per_session": 5,
+        "date": "2025-06-05"
+      },
+      {
+        "avg_time_per_session": 12,
+        "date": "2025-06-06"
+      },
+      {
+        "avg_time_per_session": 11,
+        "date": "2025-06-07"
+      },
+      {
+        "avg_time_per_session": 9,
+        "date": "2025-06-08"
+      },
+      {
+        "avg_time_per_session": 8,
+        "date": "2025-06-09"
+      },
+      {
+        "avg_time_per_session": 12,
+        "date": "2025-06-10"
+      },
+      {
+        "avg_time_per_session": 8,
+        "date": "2025-06-11"
+      },
+      {
+        "avg_time_per_session": 13,
+        "date": "2025-06-12"
+      },
+      {
+        "avg_time_per_session": 14,
+        "date": "2025-06-13"
+      },
+      {
+        "avg_time_per_session": 12,
+        "date": "2025-06-14"
+      },
+      {
+        "avg_time_per_session": 9,
+        "date": "2025-06-15"
+      },
+      {
+        "avg_time_per_session": 13,
+        "date": "2025-06-16"
+      },
+      {
+        "avg_time_per_session": 23,
+        "date": "2025-06-17"
+      },
+      {
+        "avg_time_per_session": 8,
+        "date": "2025-06-18"
+      },
+      {
+        "avg_time_per_session": 14,
+        "date": "2025-06-19"
+      },
+      {
+        "avg_time_per_session": 8,
+        "date": "2025-06-20"
+      },
+      {
+        "avg_time_per_session": 6,
+        "date": "2025-06-21"
+      },
+      {
+        "avg_time_per_session": 11,
+        "date": "2025-06-22"
+      },
+      {
+        "avg_time_per_session": 11,
+        "date": "2025-06-23"
+      },
+      {
+        "avg_time_per_session": 9,
+        "date": "2025-06-24"
+      },
+      {
+        "avg_time_per_session": 13,
+        "date": "2025-06-25"
+      },
+      {
+        "avg_time_per_session": 17,
+        "date": "2025-06-26"
+      },
+      {
+        "avg_time_per_session": 8,
+        "date": "2025-06-27"
+      },
+      {
+        "avg_time_per_session": 8,
+        "date": "2025-06-28"
+      },
+      {
+        "avg_time_per_session": 13,
+        "date": "2025-06-29"
+      },
+      {
+        "avg_time_per_session": 13,
+        "date": "2025-06-30"
+      }
+    ]
+  },
+  "dataSource": {
+    "type": "api",
+    "id": "1554",
+    "url": "http://metrics-api:39120/data-rank/line/average_time_spent_per_session_adjust",
+    "method": "POST",
+    "params": null,
+    "body": {
+      "appId": "{{.AppID}}",
+      "country": "{{.Country}}",
+      "endDate": "{{.EndDate}}",
+      "internalId": "{{.InternalID}}",
+      "lang": "{{.Lang}}",
+      "startDate": "{{.StartDate}}",
+      "store": "{{.Store}}"
+    },
+    "headers": null
+  },
+  "stores": [
+    "google",
+    "apple"
+  ],
+  "source": "Console",
+  "data": {
+    "br.com.bb.android_google_br_pt-BR": [
+      {
+        "avg_time_per_session": 2,
+        "date": "2025-06-26"
+      },
+      {
+        "avg_time_per_session": 2,
+        "date": "2025-06-27"
+      },
+      {
+        "avg_time_per_session": 2,
+        "date": "2025-06-28"
+      },
+      {
+        "avg_time_per_session": 2,
+        "date": "2025-06-29"
+      },
+      {
+        "avg_time_per_session": 2,
+        "date": "2025-06-30"
+      }
+    ]
+  },
+  "category": {
+    "name": "Adjust",
+    "slug": "adjust",
+    "documentId": "ksh7qnps0syb67ga37qg064i"
+  }
+},
+{
+  "documentId": "djnqyv7n06wcowhfko22obzq",
+  "name": "TAXA DE RETENÇÃO POR DIA DO COORTE (ADJUST)",
+  "slug": "table-taxa-de-retencao-por-dia-do-coorte-adjust",
+  "kind": "table",
+  "xField": "None",
+  "yField": "date, columns",
+  "description": "Tabela que exibe a Taxa de Retenção para os dias D1, D3 e D7 do coorte.",
+  "combineData": true,
+  "labels": null,
+  "colors": {
+    "default": "#09738a"
+  },
+  "config": {
+    "add-competitors": "False",
+    "aggregationMode": "average",
+    "increase-is-positive": "True",
+    "invert-y-axis": "False",
+    "is-pro": "False",
+    "is-public": "False",
+    "kind": "table",
+    "show-percentage": "False",
+    "sort": {
+      "field": "value",
+      "order": "desc"
+    },
+    "title": {
+      "align": "center",
+      "position": "top",
+      "text": "TAXA DE RETENÇÃO POR DIA DO COORTE"
+    },
+    "yAxis": [
+      {
+        "field": "retention_d1",
+        "format": "0.00",
+        "label": "Retenção D1",
+        "suffix": "%"
+      },
+      {
+        "field": "retention_d3",
+        "format": "0.00",
+        "label": "Retenção D3",
+        "suffix": "%"
+      },
+      {
+        "field": "retention_d7",
+        "format": "0.00",
+        "label": "Retenção D7",
+        "suffix": "%"
+      }
+    ],
+    "yField": [
+      "retention_d1",
+      "retention_d3",
+      "retention_d7"
+    ]
+  },
+  "exampleData": {
+    "appId": [
+      {
+        "columns": [
+          {
+            "field": "retention_d1",
+            "type": "raw",
+            "value": 15.43
+          },
+          {
+            "field": "retention_d3",
+            "type": "raw",
+            "value": 9.05
+          },
+          {
+            "field": "retention_d7",
+            "type": "raw",
+            "value": 1.46
+          }
+        ],
+        "date": ""
+      }
+    ]
+  },
+  "dataSource": {
+    "type": "api",
+    "id": "1552",
+    "url": "http://metrics-api:39120/data-rank/table/retention_rate_by_cohort_adjust_table",
+    "method": "POST",
+    "params": null,
+    "body": {
+      "appId": "{{.AppID}}",
+      "country": "{{.Country}}",
+      "endDate": "{{.EndDate}}",
+      "internalId": "{{.InternalID}}",
+      "lang": "{{.Lang}}",
+      "startDate": "{{.StartDate}}",
+      "store": "{{.Store}}"
+    },
+    "headers": null
+  },
+  "stores": [
+    "google",
+    "apple"
+  ],
+  "source": "Console",
+  "data": {
+    "br.com.bb.android_google_br_pt-BR": [
+      {
+        "columns": [
+          {
+            "field": "retention_d1",
+            "type": "raw",
+            "value": 23.95
+          },
+          {
+            "field": "retention_d3",
+            "type": "raw",
+            "value": 22.07
+          },
+          {
+            "field": "retention_d7",
+            "type": "raw",
+            "value": 19.81
+          }
+        ],
+        "date": ""
+      }
+    ]
+  },
+  "category": {
+    "name": "Adjust",
+    "slug": "adjust",
+    "documentId": "ksh7qnps0syb67ga37qg064i"
+  }
+},
+{
+  "documentId": "xguk2gig4msgrcvcj9mq19va",
+  "name": "INSTALAÇÕES, DESINSTALAÇÕES, USUÁRIOS ATIVOS E ABERTURA DE CONTAS (ADJUST)",
+  "slug": "table-instalacoes-desinstalacoes-usuarios-ativos-e-abertura-de-contas-adjust",
+  "kind": "table",
+  "xField": "None",
+  "yField": "columns",
+  "description": "Tabela que exibe a quantidade de Instalações, Desinstalações, DAU (dados do Google Console) e Abertura de contas (Adjust) do aplicativo no período selecionado.",
+  "combineData": true,
+  "labels": null,
+  "colors": {
+    "default": "#09738a"
+  },
+  "config": {
+    "add-competitors": "False",
+    "aggregationMode": "average",
+    "increase-is-positive": "True",
+    "invert-y-axis": "False",
+    "is-pro": "False",
+    "is-public": "False",
+    "kind": "table",
+    "show-percentage": "False",
+    "sort": {
+      "field": "installs",
+      "order": "desc"
+    },
+    "title": {
+      "align": "center",
+      "position": "top",
+      "text": "INSTALAÇÕES, DESINSTALAÇÕES, USUÁRIOS ATIVOS E ABERTURA DE CONTAS"
+    },
+    "yAxis": [
+      {
+        "field": "installs",
+        "format": "0.000a",
+        "label": "Instalações"
+      },
+      {
+        "field": "uninstalls",
+        "format": "0.000a",
+        "label": "Desinstalações"
+      },
+      {
+        "field": "dau",
+        "format": "0.000a",
+        "label": "DAU"
+      },
+      {
+        "field": "account_opening",
+        "format": "0.000a",
+        "label": "Abertura de contas"
+      }
+    ],
+    "yField": [
+      "installs",
+      "uninstalls",
+      "dau",
+      "account_opening"
+    ]
+  },
+  "exampleData": {
+    "appId": [
+      {
+        "columns": [
+          {
+            "field": "installs",
+            "type": "raw",
+            "value": 2381849
+          },
+          {
+            "field": "uninstalls",
+            "type": "raw",
+            "value": 3772548
+          },
+          {
+            "field": "dau",
+            "type": "raw",
+            "value": 8123560.714285715
+          },
+          {
+            "field": "account_opening",
+            "type": "raw",
+            "value": 81558
+          }
+        ],
+        "date": ""
+      }
+    ]
+  },
+  "dataSource": {
+    "type": "api",
+    "id": "1609",
+    "url": "http://metrics-api:39120/data-rank/table/installs_uninstalls_dau_and_account_opening_adjust_table",
+    "method": "POST",
+    "params": null,
+    "body": {
+      "appId": "{{.AppID}}",
+      "country": "{{.Country}}",
+      "endDate": "{{.EndDate}}",
+      "internalId": "{{.InternalID}}",
+      "lang": "{{.Lang}}",
+      "startDate": "{{.StartDate}}",
+      "store": "{{.Store}}"
+    },
+    "headers": null
+  },
+  "stores": [
+    "google",
+    "apple"
+  ],
+  "source": "Console",
+  "data": {
+    "br.com.bb.android_google_br_pt-BR": [
+      {
+        "columns": [
+          {
+            "field": "installs",
+            "type": "raw",
+            "value": 934543
+          },
+          {
+            "field": "uninstalls",
+            "type": "raw",
+            "value": 2179435
+          },
+          {
+            "field": "dau",
+            "type": "raw",
+            "value": 8040085.866666666
+          },
+          {
+            "field": "account_opening",
+            "type": "raw",
+            "value": null
+          }
+        ],
+        "date": ""
+      }
+    ]
+  },
+  "category": {
+    "name": "Adjust",
+    "slug": "adjust",
+    "documentId": "ksh7qnps0syb67ga37qg064i"
+  }
+},
+{
+  "documentId": "n3xn9cx764mj3dtg2e1pamyv",
+  "name": "INSTALAÇÕES E ESTIMATIVA DE DESINSTALAÇÕES E USUÁRIOS ATIVOS (PREVISÃO)",
+  "slug": "table-instalacoes-e-estimativa-de-desinstalacoes-e-usuarios-ativos-previsao",
+  "kind": "table",
+  "xField": "None",
+  "yField": "columns",
+  "description": "Tabela que exibe a quantidade de Instalações, e dados preditivos de Desinstalações e DAU dos concorrentes no período selecionado.",
+  "combineData": true,
+  "labels": null,
+  "colors": {
+    "default": "#09738a"
+  },
+  "config": {
+    "add-competitors": "True",
+    "aggregationMode": "average",
+    "increase-is-positive": "True",
+    "invert-y-axis": "False",
+    "is-pro": "False",
+    "is-public": "False",
+    "kind": "table",
+    "show-percentage": "False",
+    "sort": {
+      "field": "installs",
+      "order": "desc"
+    },
+    "title": {
+      "align": "center",
+      "position": "top",
+      "text": "INSTALAÇÕES E ESTIMATIVA DE DESINSTALAÇÕES E USUÁRIOS ATIVOS"
+    },
+    "yAxis": [
+      {
+        "field": "title",
+        "format": "string",
+        "label": "Aplicativo"
+      },
+      {
+        "field": "installs",
+        "format": "0.000a",
+        "label": "Instalações"
+      },
+      {
+        "field": "uninstalls",
+        "format": "0.000a",
+        "label": "Desinstalações"
+      },
+      {
+        "field": "dau",
+        "format": "0.000a",
+        "label": "DAU"
+      }
+    ],
+    "yField": [
+      "title",
+      "installs",
+      "uninstalls",
+      "dau"
+    ]
+  },
+  "exampleData": {
+    "appId": [
+      {
+        "columns": [
+          {
+            "field": "title",
+            "type": "raw",
+            "value": "BB: Banco, Conta, Pix, Crédito"
+          },
+          {
+            "field": "installs",
+            "type": "raw",
+            "value": 2381849
+          },
+          {
+            "field": "uninstalls",
+            "type": "raw",
+            "value": 3846437
+          },
+          {
+            "field": "dau",
+            "type": "raw",
+            "value": 7322111.253968254
+          }
+        ],
+        "date": ""
+      }
+    ]
+  },
+  "dataSource": {
+    "type": "api",
+    "id": "1606",
+    "url": "http://metrics-api:39120/data-rank/table/installs_uninstalls_estimation_and_dau_estimation_table",
+    "method": "POST",
+    "params": null,
+    "body": {
+      "appId": "{{.AppID}}",
+      "country": "{{.Country}}",
+      "endDate": "{{.EndDate}}",
+      "internalId": "{{.InternalID}}",
+      "lang": "{{.Lang}}",
+      "startDate": "{{.StartDate}}",
+      "store": "{{.Store}}"
+    },
+    "headers": null
+  },
+  "stores": [
+    "google"
+  ],
+  "source": "Console",
+  "data": {},
+  "category": {
+    "name": "Engajamento",
+    "slug": "engajamento",
+    "documentId": "g90j664vfdq7btipplwoa5mg"
+  }
+}
+]

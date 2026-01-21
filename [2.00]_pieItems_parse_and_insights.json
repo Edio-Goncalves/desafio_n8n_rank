@@ -1,0 +1,498 @@
+{
+  "name": "[2.00]_pieItems_parse_and_insights",
+  "nodes": [
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "d6a5e87c-819a-409b-b234-30a697977b87",
+              "leftValue": "={{ $json.status }}",
+              "rightValue": "ready",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -1312,
+        32
+      ],
+      "id": "aebeb2db-13f3-48d4-bf59-43e6494f9293",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "jsCode": "// n8n Code node — parse_pie (payload = parsed only)\n\nfunction parsePieData(rows) {\n  const arr = Array.isArray(rows) ? rows : [];\n\n  const series = arr\n    .filter(r => r?.score != null && r?.total != null)\n    .map(r => ({ label: String(r.score), value: Number(r.total) }))\n    .filter(p => Number.isFinite(p.value));\n\n  const total = series.reduce((acc, r) => acc + r.value, 0);\n\n  const weightedAvg = total\n    ? series.reduce((acc, r) => acc + (Number(r.label) * r.value), 0) / total\n    : null;\n\n  const top = [...series].sort((a, b) => b.value - a.value)[0] || null;\n\n  return {\n    series,\n    metrics: {\n      totalRatings: total,\n      avgRating: Number.isFinite(weightedAvg) ? weightedAvg : null,\n      topScore: top ? top.label : null,\n      topScoreShare: (top && total) ? (top.value / total) : null,\n    }\n  };\n}\n\nreturn $input.all().map(({ json }) => {\n  // defensivo\n  if (json.status !== \"ready\") {\n    return {\n      json: {\n        ...json,\n        payload: null\n      }\n    };\n  }\n\n  const parsed = parsePieData(json.data);\n\n  return {\n    json: {\n      ...json,\n      payload: parsed, \n      data: undefined, \n      appKey: undefined\n    }\n  };\n});\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -992,
+        -48
+      ],
+      "id": "5ad4dd53-c7b7-4cd0-9432-038f1cfae96e",
+      "name": "parse_pie",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "jsCode": "// warn_pie — apenas passa o item (já validado no normalize)\n\nreturn $input.all().map(({ json }) => ({\n  json\n}));"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -992,
+        112
+      ],
+      "id": "2daaf8b1-3b23-4059-b978-eaf2e8ff4f60",
+      "name": "warn_pie",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Você é um Analista de Métricas de Produto.\n\nSeu objetivo é gerar INSIGHTS EXECUTIVOS curtos e acionáveis a partir de dados agregados (ratings, distribuições, médias), sem explicações longas.\n\nVocê receberá como entrada:\n- Um título da métrica {{ $json.title }}\n- Um contexto explicativo {{ $json.context }}\n- Informações de defasagem de atualização\n- Um objeto JSON com métricas agregadas e distribuições (ex: total, média, proporções, séries categóricas) {{ $json.analysis.toJsonString() }}\n\nOs dados representam apenas o estado atual da métrica.\n\nTAREFA:\n- Identificar o principal padrão ou desvio relevante\n- Apontar um impacto potencial de negócio\n- Sugerir uma recomendação prática\n\nFORMATO DE RESPOSTA (OBRIGATÓRIO):\n- Responder em NO MÁXIMO 5 LINHAS\n- Usar frases curtas e diretas\n- Não repetir números em excesso\n- Não usar listas longas\n\nESTRUTURA FIXA:\n\nInsight:\n<1 frase objetiva sobre o padrão observado>\n\nImpacto:\n<1 frase sobre risco ou oportunidade>\n\nRecomendação:\n<1–2 frases com ação prática>\n\nREGRAS:\n- Não inventar histórico inexistente\n- Usar termos como “indício” ou “sinal potencial”\n- Linguagem executiva, clara e sucinta",
+        "batching": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.7,
+      "position": [
+        -352,
+        -48
+      ],
+      "id": "1be4919c-02d0-4354-9ba0-1a43eef699a4",
+      "name": "Basic LLM Chain"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4.1-mini"
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        -432,
+        128
+      ],
+      "id": "f2ef4a78-2c8b-4c01-9e1b-4adaebeedf97",
+      "name": "OpenAI Chat Model1",
+      "credentials": {
+        "openAiApi": {
+          "id": "359UYsT5wB2V8yWR",
+          "name": "OpenAi account 8"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// n8n Code node — build_analysis_pie\n// Entrada: itens do kind=pie já parseados (payload = { series, metrics })\n// Saída: mantém o widget e adiciona analysis (IA-friendly)\n\nfunction toNumber(v) {\n  const n = Number(v);\n  return Number.isFinite(n) ? n : null;\n}\n\nfunction round(n, d = 4) {\n  if (!Number.isFinite(n)) return null;\n  const p = 10 ** d;\n  return Math.round(n * p) / p;\n}\n\nfunction safeArray(v) {\n  return Array.isArray(v) ? v : [];\n}\n\nfunction seriesPreview(series, limit = 10) {\n  const arr = safeArray(series);\n  return arr.length <= limit ? arr : arr.slice(0, limit);\n}\n\nreturn $input.all().map(({ json }) => {\n  const base = {\n    batchId: json.batchId ?? null,\n    fileId: json.fileId ?? null,\n    filename: json.filename ?? null,\n    slug: json.slug ?? null,\n    kind: json.kind ?? null,\n    categorySlug: json.categorySlug ?? null,\n    title: json.title ?? null,\n    context: json.context ?? null,\n    status: json.status ?? null,\n    validation: json.validation ?? null,\n    warning: json.warning ?? null,\n    payload: json.payload ?? null // UI continua intacto\n  };\n\n  // Se não está ready, analysis fica null\n  if (json.status !== \"ready\" || !json.payload) {\n    return { json: { ...base, analysis: null } };\n  }\n\n  const p = json.payload;\n  const m = p.metrics ?? {};\n  const series = safeArray(p.series);\n\n  const analysis = {\n    features: {\n      totalRatings: toNumber(m.totalRatings),\n      avgRating: round(toNumber(m.avgRating), 4),\n      topScore: m.topScore ?? null,\n      topScoreShare: round(toNumber(m.topScoreShare), 4),\n      seriesCount: series.length\n    },\n    preview: {\n      series: seriesPreview(series, 10)\n    }\n  };\n\n  return { json: { ...base, analysis } };\n});\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -672,
+        -48
+      ],
+      "id": "c294cf73-8250-4c26-8fa4-1d1e454fa6c5",
+      "name": "build_analysis_pie"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "0e14bade-eafc-4323-a5ec-6fb0387e7613",
+              "name": "parse_pie",
+              "value": "={{ \n  (() => {\n    const { analysis, ...rest } = $('parse_pie').item.json;\n    return rest;\n  })()\n}}",
+              "type": "object"
+            },
+            {
+              "id": "47bc7f58-c1fb-4af0-a438-0c5f596b9057",
+              "name": "parse_pie.insights",
+              "value": "={{ $json.text }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        96,
+        -48
+      ],
+      "id": "98b9aca5-ac9d-4ee6-91aa-8643afa2601a",
+      "name": "Edit Fields1"
+    },
+    {
+      "parameters": {
+        "workflowInputs": {
+          "values": [
+            {
+              "name": "batchId"
+            },
+            {
+              "name": "pieItems",
+              "type": "array"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -1984,
+        32
+      ],
+      "id": "04e11060-ba3b-48b6-aade-b9cf54557be4",
+      "name": "When Executed by Another Workflow"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "6724a1af-0baf-4fd8-85f0-43e78b9cede9",
+              "name": "batchId",
+              "value": "={{ $json.batchId }}",
+              "type": "string"
+            },
+            {
+              "id": "6639b785-217a-4cd6-9de3-ad3cc6de729c",
+              "name": "pieItems",
+              "value": "={{ $json.pieItems }}",
+              "type": "array"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -1744,
+        32
+      ],
+      "id": "14b5084c-f7c2-49ba-8b25-17c66843b347",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "pieItems",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        -1536,
+        32
+      ],
+      "id": "297d9906-47ab-4634-bc4f-639a35cf6913",
+      "name": "Split Out"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        336,
+        96
+      ],
+      "id": "c9b55892-ed83-415b-a296-18449517c43f",
+      "name": "Merge"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://webhook.digital-ai.tech/webhook/coleta_fan-in",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "batchId",
+              "value": "={{ $('Edit Fields').item.json.batchId }}"
+            },
+            {
+              "name": "kind",
+              "value": "pie"
+            },
+            {
+              "name": "data",
+              "value": "={{ $json.pie_data }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        832,
+        96
+      ],
+      "id": "84cbd7da-5c5a-4f7f-8a3d-70485a658b51",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "aggregate": "aggregateAllItemData",
+        "destinationFieldName": "pie_data",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        592,
+        96
+      ],
+      "id": "42b59909-d4ea-4908-a760-bdadcfbcdbaa",
+      "name": "Aggregate"
+    }
+  ],
+  "pinData": {
+    "When Executed by Another Workflow": [
+      {
+        "json": {
+          "batchId": "2026-01-20T22:56:14.094Z",
+          "pieItems": [
+            {
+              "batchId": "2026-01-20T22:56:14.094Z",
+              "fileId": "hzufxrg9kmevozy0k2bjlgda",
+              "filename": "donut-distribuicao-por-estrela.json",
+              "slug": "donut-distribuicao-por-estrela",
+              "kind": "pie",
+              "categorySlug": "satisfacao",
+              "title": "DISTRIBUIÇÃO POR ESTRELA (PIE CHART)",
+              "context": "Distribuição das notas (ratings) que foram atribuídas aos comentários (reviews) no período.\n\nPeríodo de atualização Google: D-3\nPeríodo de atualização Apple: D-3",
+              "payload": {
+                "br.com.bb.android_google_br_pt-BR": [
+                  {
+                    "score": 4,
+                    "total": 533
+                  },
+                  {
+                    "score": 5,
+                    "total": 10087
+                  },
+                  {
+                    "score": 2,
+                    "total": 281
+                  },
+                  {
+                    "score": 3,
+                    "total": 275
+                  },
+                  {
+                    "score": 1,
+                    "total": 1406
+                  }
+                ]
+              },
+              "appKey": "br.com.bb.android_google_br_pt-BR",
+              "data": [
+                {
+                  "score": 4,
+                  "total": 533
+                },
+                {
+                  "score": 5,
+                  "total": 10087
+                },
+                {
+                  "score": 2,
+                  "total": 281
+                },
+                {
+                  "score": 3,
+                  "total": 275
+                },
+                {
+                  "score": 1,
+                  "total": 1406
+                }
+              ],
+              "status": "ready",
+              "validation": {
+                "isValid": true,
+                "code": null,
+                "errors": []
+              },
+              "warning": null
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "connections": {
+    "If": {
+      "main": [
+        [
+          {
+            "node": "parse_pie",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "warn_pie",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "parse_pie": {
+      "main": [
+        [
+          {
+            "node": "build_analysis_pie",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Basic LLM Chain": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "build_analysis_pie": {
+      "main": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Split Out",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Out": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "warn_pie": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Edit Fields1": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aggregate": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "Aggregate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "c4adcd35-031a-4c27-bca9-2f44b23ee4ea",
+  "meta": {
+    "instanceId": "33738330930e3881dd5571eca013f36ddf8aab20e4ea5c1f2ebaf4a2b4668ac6"
+  },
+  "id": "z4pIaudCtBhvnrvm",
+  "tags": []
+}

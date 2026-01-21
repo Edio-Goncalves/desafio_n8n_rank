@@ -1,0 +1,944 @@
+{
+  "documentId": "msdqnn3f0fbzyibwdalmd0nw",
+  "name": "TOTAL DE NOVAS INSTALAÇÕES (ACUMULADAS)",
+  "slug": "area-total-de-novas-instalacoes-acumuladas",
+  "kind": "area",
+  "xField": "createdAt",
+  "yField": "maxinstalls",
+  "description": "Novas instalações que foram acumuladas durante todo o tempo de vida do app. A cada dia, as novas instalações vão sendo somadas com o histórico.\n\nPeríodo de atualização Google: D-1",
+  "combineData": true,
+  "labels": {
+    "default": "Instalações acumuladas"
+  },
+  "colors": {
+    "default": "#09738a",
+    "pv": "blue",
+    "uv": "green"
+  },
+  "config": {
+    "add-competitors": "False",
+    "aggregationMode": "sum",
+    "increase-is-positive": "True",
+    "invert-y-axis": "False",
+    "is-pro": "False",
+    "is-public": "True",
+    "show-percentage": "False",
+    "title": {
+      "align": "center",
+      "position": "top",
+      "text": "TOTAL DE NOVAS INSTALAÇÕES (ACUMULADAS)"
+    },
+    "tooltip": {
+      "format": "0.000a",
+      "shared": true,
+      "xDateFormat": "dd/MM/yyyy"
+    },
+    "xAxis": {
+      "format": "dd/MM",
+      "label": "Data",
+      "rotateLabels": true
+    },
+    "yAxis": {
+      "format": "0.000a",
+      "label": "Instalações acumuladas"
+    }
+  },
+  "exampleData": {
+    "appId": [
+      {
+        "createdAt": "2025-03-01",
+        "maxinstalls": 3018366
+      },
+      {
+        "createdAt": "2025-03-02",
+        "maxinstalls": 3020068
+      },
+      {
+        "createdAt": "2025-03-03",
+        "maxinstalls": 3021698
+      },
+      {
+        "createdAt": "2025-03-04",
+        "maxinstalls": 3022615
+      },
+      {
+        "createdAt": "2025-03-05",
+        "maxinstalls": 3024266
+      },
+      {
+        "createdAt": "2025-03-06",
+        "maxinstalls": 3025287
+      },
+      {
+        "createdAt": "2025-03-07",
+        "maxinstalls": 3027009
+      },
+      {
+        "createdAt": "2025-03-08",
+        "maxinstalls": 3029392
+      },
+      {
+        "createdAt": "2025-03-09",
+        "maxinstalls": 3030751
+      },
+      {
+        "createdAt": "2025-03-10",
+        "maxinstalls": 3033747
+      },
+      {
+        "createdAt": "2025-03-11",
+        "maxinstalls": 3035509
+      },
+      {
+        "createdAt": "2025-03-12",
+        "maxinstalls": 3036815
+      },
+      {
+        "createdAt": "2025-03-13",
+        "maxinstalls": 3037646
+      },
+      {
+        "createdAt": "2025-03-14",
+        "maxinstalls": 3040178
+      },
+      {
+        "createdAt": "2025-03-15",
+        "maxinstalls": 3042330
+      },
+      {
+        "createdAt": "2025-03-16",
+        "maxinstalls": 3043531
+      },
+      {
+        "createdAt": "2025-03-17",
+        "maxinstalls": 3044400
+      },
+      {
+        "createdAt": "2025-03-18",
+        "maxinstalls": 3045622
+      },
+      {
+        "createdAt": "2025-03-19",
+        "maxinstalls": 3050153
+      },
+      {
+        "createdAt": "2025-03-20",
+        "maxinstalls": 3051499
+      },
+      {
+        "createdAt": "2025-03-21",
+        "maxinstalls": 3053245
+      },
+      {
+        "createdAt": "2025-03-22",
+        "maxinstalls": 3054883
+      },
+      {
+        "createdAt": "2025-03-23",
+        "maxinstalls": 3056479
+      },
+      {
+        "createdAt": "2025-03-24",
+        "maxinstalls": 3058378
+      },
+      {
+        "createdAt": "2025-03-27",
+        "maxinstalls": 3063530
+      },
+      {
+        "createdAt": "2025-03-28",
+        "maxinstalls": 3063755
+      },
+      {
+        "createdAt": "2025-03-29",
+        "maxinstalls": 3065076
+      }
+    ]
+  },
+  "dataSource": {
+    "type": "api",
+    "id": "1061",
+    "url": "http://metrics-api:39120/data-rank/line/total_new_installations_accumulated",
+    "method": "POST",
+    "params": {},
+    "body": {
+      "appId": "{{.AppID}}",
+      "country": "{{.Country}}",
+      "endDate": "{{.EndDate}}",
+      "internalId": "{{.InternalID}}",
+      "lang": "{{.Lang}}",
+      "startDate": "{{.StartDate}}",
+      "store": "{{.Store}}"
+    },
+    "headers": {}
+  },
+  "stores": [
+    "google"
+  ],
+  "source": "Store",
+  "data": {
+    "br.com.bb.android_google_br_pt-BR": [
+      {
+        "createdAt": "2025-01-01",
+        "maxinstalls": 104334221
+      },
+      {
+        "createdAt": "2025-01-02",
+        "maxinstalls": 104365627
+      },
+      {
+        "createdAt": "2025-01-03",
+        "maxinstalls": 104382062
+      },
+      {
+        "createdAt": "2025-01-04",
+        "maxinstalls": 104419158
+      },
+      {
+        "createdAt": "2025-01-05",
+        "maxinstalls": 104441403
+      },
+      {
+        "createdAt": "2025-01-06",
+        "maxinstalls": 104459111
+      },
+      {
+        "createdAt": "2025-01-07",
+        "maxinstalls": 104462268
+      },
+      {
+        "createdAt": "2025-01-08",
+        "maxinstalls": 104462268
+      },
+      {
+        "createdAt": "2025-01-09",
+        "maxinstalls": 104462268
+      },
+      {
+        "createdAt": "2025-01-10",
+        "maxinstalls": 104629717
+      },
+      {
+        "createdAt": "2025-01-11",
+        "maxinstalls": 104664114
+      },
+      {
+        "createdAt": "2025-01-12",
+        "maxinstalls": 104693113
+      },
+      {
+        "createdAt": "2025-01-13",
+        "maxinstalls": 104713035
+      },
+      {
+        "createdAt": "2025-01-14",
+        "maxinstalls": 104757849
+      },
+      {
+        "createdAt": "2025-01-15",
+        "maxinstalls": 104780677
+      },
+      {
+        "createdAt": "2025-01-16",
+        "maxinstalls": 104828019
+      },
+      {
+        "createdAt": "2025-01-17",
+        "maxinstalls": 104851570
+      },
+      {
+        "createdAt": "2025-01-18",
+        "maxinstalls": 104885124
+      },
+      {
+        "createdAt": "2025-01-19",
+        "maxinstalls": 104901149
+      },
+      {
+        "createdAt": "2025-01-20",
+        "maxinstalls": 104927116
+      },
+      {
+        "createdAt": "2025-01-21",
+        "maxinstalls": 104958983
+      },
+      {
+        "createdAt": "2025-01-22",
+        "maxinstalls": 104992369
+      },
+      {
+        "createdAt": "2025-01-23",
+        "maxinstalls": 105026655
+      },
+      {
+        "createdAt": "2025-01-24",
+        "maxinstalls": 105074628
+      },
+      {
+        "createdAt": "2025-01-25",
+        "maxinstalls": 105078689
+      },
+      {
+        "createdAt": "2025-01-26",
+        "maxinstalls": 105110741
+      },
+      {
+        "createdAt": "2025-01-27",
+        "maxinstalls": 105137709
+      },
+      {
+        "createdAt": "2025-01-28",
+        "maxinstalls": 105165103
+      },
+      {
+        "createdAt": "2025-01-29",
+        "maxinstalls": 105202217
+      },
+      {
+        "createdAt": "2025-01-30",
+        "maxinstalls": 105244841
+      },
+      {
+        "createdAt": "2025-01-31",
+        "maxinstalls": 105288000
+      },
+      {
+        "createdAt": "2025-02-01",
+        "maxinstalls": 105304911
+      },
+      {
+        "createdAt": "2025-02-02",
+        "maxinstalls": 105337381
+      },
+      {
+        "createdAt": "2025-02-03",
+        "maxinstalls": 105347993
+      },
+      {
+        "createdAt": "2025-02-04",
+        "maxinstalls": 105386955
+      },
+      {
+        "createdAt": "2025-02-05",
+        "maxinstalls": 105413243
+      },
+      {
+        "createdAt": "2025-02-06",
+        "maxinstalls": 105464735
+      },
+      {
+        "createdAt": "2025-02-07",
+        "maxinstalls": 105488217
+      },
+      {
+        "createdAt": "2025-02-08",
+        "maxinstalls": 105509057
+      },
+      {
+        "createdAt": "2025-02-09",
+        "maxinstalls": 105533700
+      },
+      {
+        "createdAt": "2025-02-10",
+        "maxinstalls": 105546719
+      },
+      {
+        "createdAt": "2025-02-11",
+        "maxinstalls": 105577618
+      },
+      {
+        "createdAt": "2025-02-12",
+        "maxinstalls": 105612787
+      },
+      {
+        "createdAt": "2025-02-13",
+        "maxinstalls": 105647305
+      },
+      {
+        "createdAt": "2025-02-14",
+        "maxinstalls": 105670563
+      },
+      {
+        "createdAt": "2025-02-15",
+        "maxinstalls": 105694007
+      },
+      {
+        "createdAt": "2025-02-16",
+        "maxinstalls": 105720120
+      },
+      {
+        "createdAt": "2025-02-17",
+        "maxinstalls": 105763654
+      },
+      {
+        "createdAt": "2025-02-18",
+        "maxinstalls": 105779540
+      },
+      {
+        "createdAt": "2025-02-19",
+        "maxinstalls": 105779540
+      },
+      {
+        "createdAt": "2025-02-20",
+        "maxinstalls": 105835188
+      },
+      {
+        "createdAt": "2025-02-21",
+        "maxinstalls": 105895350
+      },
+      {
+        "createdAt": "2025-02-22",
+        "maxinstalls": 105915785
+      },
+      {
+        "createdAt": "2025-02-23",
+        "maxinstalls": 105940887
+      },
+      {
+        "createdAt": "2025-02-24",
+        "maxinstalls": 105959962
+      },
+      {
+        "createdAt": "2025-02-25",
+        "maxinstalls": 106013019
+      },
+      {
+        "createdAt": "2025-02-26",
+        "maxinstalls": 106048548
+      },
+      {
+        "createdAt": "2025-02-27",
+        "maxinstalls": 106106836
+      },
+      {
+        "createdAt": "2025-02-28",
+        "maxinstalls": 106140207
+      },
+      {
+        "createdAt": "2025-03-01",
+        "maxinstalls": 106148672
+      },
+      {
+        "createdAt": "2025-03-02",
+        "maxinstalls": 106188003
+      },
+      {
+        "createdAt": "2025-03-03",
+        "maxinstalls": 106202608
+      },
+      {
+        "createdAt": "2025-03-04",
+        "maxinstalls": 106230188
+      },
+      {
+        "createdAt": "2025-03-05",
+        "maxinstalls": 106264726
+      },
+      {
+        "createdAt": "2025-03-06",
+        "maxinstalls": 106283764
+      },
+      {
+        "createdAt": "2025-03-07",
+        "maxinstalls": 106328250
+      },
+      {
+        "createdAt": "2025-03-08",
+        "maxinstalls": 106365637
+      },
+      {
+        "createdAt": "2025-03-09",
+        "maxinstalls": 106389539
+      },
+      {
+        "createdAt": "2025-03-10",
+        "maxinstalls": 106416268
+      },
+      {
+        "createdAt": "2025-03-11",
+        "maxinstalls": 106453145
+      },
+      {
+        "createdAt": "2025-03-12",
+        "maxinstalls": 106485827
+      },
+      {
+        "createdAt": "2025-03-13",
+        "maxinstalls": 106526109
+      },
+      {
+        "createdAt": "2025-03-14",
+        "maxinstalls": 106570031
+      },
+      {
+        "createdAt": "2025-03-15",
+        "maxinstalls": 106586966
+      },
+      {
+        "createdAt": "2025-03-16",
+        "maxinstalls": 106610383
+      },
+      {
+        "createdAt": "2025-03-17",
+        "maxinstalls": 106634621
+      },
+      {
+        "createdAt": "2025-03-18",
+        "maxinstalls": 106673675
+      },
+      {
+        "createdAt": "2025-03-19",
+        "maxinstalls": 106719568
+      },
+      {
+        "createdAt": "2025-03-20",
+        "maxinstalls": 106749388
+      },
+      {
+        "createdAt": "2025-03-21",
+        "maxinstalls": 106802486
+      },
+      {
+        "createdAt": "2025-03-22",
+        "maxinstalls": 106818922
+      },
+      {
+        "createdAt": "2025-03-23",
+        "maxinstalls": 106852490
+      },
+      {
+        "createdAt": "2025-03-24",
+        "maxinstalls": 106896533
+      },
+      {
+        "createdAt": "2025-03-27",
+        "maxinstalls": 107025769
+      },
+      {
+        "createdAt": "2025-03-28",
+        "maxinstalls": 107073681
+      },
+      {
+        "createdAt": "2025-03-29",
+        "maxinstalls": 107111949
+      },
+      {
+        "createdAt": "2025-03-30",
+        "maxinstalls": 107111949
+      },
+      {
+        "createdAt": "2025-03-30",
+        "maxinstalls": 107141928
+      },
+      {
+        "createdAt": "2025-03-31",
+        "maxinstalls": 107156448
+      },
+      {
+        "createdAt": "2025-03-31",
+        "maxinstalls": 107167925
+      },
+      {
+        "createdAt": "2025-04-01",
+        "maxinstalls": 107167925
+      },
+      {
+        "createdAt": "2025-04-01",
+        "maxinstalls": 107216765
+      },
+      {
+        "createdAt": "2025-04-02",
+        "maxinstalls": 107253699
+      },
+      {
+        "createdAt": "2025-04-02",
+        "maxinstalls": 107265652
+      },
+      {
+        "createdAt": "2025-04-03",
+        "maxinstalls": 107274500
+      },
+      {
+        "createdAt": "2025-04-05",
+        "maxinstalls": 107372539
+      },
+      {
+        "createdAt": "2025-04-06",
+        "maxinstalls": 107398635
+      },
+      {
+        "createdAt": "2025-04-07",
+        "maxinstalls": 107429993
+      },
+      {
+        "createdAt": "2025-04-07",
+        "maxinstalls": 107421388
+      },
+      {
+        "createdAt": "2025-04-08",
+        "maxinstalls": 107463932
+      },
+      {
+        "createdAt": "2025-04-08",
+        "maxinstalls": 107475328
+      },
+      {
+        "createdAt": "2025-04-09",
+        "maxinstalls": 107514013
+      },
+      {
+        "createdAt": "2025-04-09",
+        "maxinstalls": 107475328
+      },
+      {
+        "createdAt": "2025-04-10",
+        "maxinstalls": 107514013
+      },
+      {
+        "createdAt": "2025-04-10",
+        "maxinstalls": 107541606
+      },
+      {
+        "createdAt": "2025-04-11",
+        "maxinstalls": 107591226
+      },
+      {
+        "createdAt": "2025-04-11",
+        "maxinstalls": 107541606
+      },
+      {
+        "createdAt": "2025-04-12",
+        "maxinstalls": 107591226
+      },
+      {
+        "createdAt": "2025-04-12",
+        "maxinstalls": 107608359
+      },
+      {
+        "createdAt": "2025-04-13",
+        "maxinstalls": 107632676
+      },
+      {
+        "createdAt": "2025-04-14",
+        "maxinstalls": 107654691
+      },
+      {
+        "createdAt": "2025-04-14",
+        "maxinstalls": 107632676
+      },
+      {
+        "createdAt": "2025-04-15",
+        "maxinstalls": 107654691
+      },
+      {
+        "createdAt": "2025-04-15",
+        "maxinstalls": 107703474
+      },
+      {
+        "createdAt": "2025-04-16",
+        "maxinstalls": 107726376
+      },
+      {
+        "createdAt": "2025-04-17",
+        "maxinstalls": 107768838
+      },
+      {
+        "createdAt": "2025-04-18",
+        "maxinstalls": 107810638
+      },
+      {
+        "createdAt": "2025-04-19",
+        "maxinstalls": 107810638
+      },
+      {
+        "createdAt": "2025-04-20",
+        "maxinstalls": 107810638
+      },
+      {
+        "createdAt": "2025-04-21",
+        "maxinstalls": 107895758
+      },
+      {
+        "createdAt": "2025-04-22",
+        "maxinstalls": 107914885
+      },
+      {
+        "createdAt": "2025-04-23",
+        "maxinstalls": 107967694
+      },
+      {
+        "createdAt": "2025-04-24",
+        "maxinstalls": 108000653
+      },
+      {
+        "createdAt": "2025-04-25",
+        "maxinstalls": 108064303
+      },
+      {
+        "createdAt": "2025-04-26",
+        "maxinstalls": 108064303
+      },
+      {
+        "createdAt": "2025-04-27",
+        "maxinstalls": 108114435
+      },
+      {
+        "createdAt": "2025-04-28",
+        "maxinstalls": 108145366
+      },
+      {
+        "createdAt": "2025-04-29",
+        "maxinstalls": 108188586
+      },
+      {
+        "createdAt": "2025-04-30",
+        "maxinstalls": 108228838
+      },
+      {
+        "createdAt": "2025-05-01",
+        "maxinstalls": 108270206
+      },
+      {
+        "createdAt": "2025-05-02",
+        "maxinstalls": 108316026
+      },
+      {
+        "createdAt": "2025-05-03",
+        "maxinstalls": 108337562
+      },
+      {
+        "createdAt": "2025-05-04",
+        "maxinstalls": 108370136
+      },
+      {
+        "createdAt": "2025-05-05",
+        "maxinstalls": 108398326
+      },
+      {
+        "createdAt": "2025-05-06",
+        "maxinstalls": 108443461
+      },
+      {
+        "createdAt": "2025-05-07",
+        "maxinstalls": 108489130
+      },
+      {
+        "createdAt": "2025-05-08",
+        "maxinstalls": 108535553
+      },
+      {
+        "createdAt": "2025-05-09",
+        "maxinstalls": 108579286
+      },
+      {
+        "createdAt": "2025-05-10",
+        "maxinstalls": 108617759
+      },
+      {
+        "createdAt": "2025-05-11",
+        "maxinstalls": 108645903
+      },
+      {
+        "createdAt": "2025-05-12",
+        "maxinstalls": 108674163
+      },
+      {
+        "createdAt": "2025-05-13",
+        "maxinstalls": 108726577
+      },
+      {
+        "createdAt": "2025-05-14",
+        "maxinstalls": 108757694
+      },
+      {
+        "createdAt": "2025-05-15",
+        "maxinstalls": 108806061
+      },
+      {
+        "createdAt": "2025-05-16",
+        "maxinstalls": 108837928
+      },
+      {
+        "createdAt": "2025-05-17",
+        "maxinstalls": 108861355
+      },
+      {
+        "createdAt": "2025-05-18",
+        "maxinstalls": 108901316
+      },
+      {
+        "createdAt": "2025-05-19",
+        "maxinstalls": 108933732
+      },
+      {
+        "createdAt": "2025-05-20",
+        "maxinstalls": 108973406
+      },
+      {
+        "createdAt": "2025-05-21",
+        "maxinstalls": 109009264
+      },
+      {
+        "createdAt": "2025-05-22",
+        "maxinstalls": 109047030
+      },
+      {
+        "createdAt": "2025-05-23",
+        "maxinstalls": 109095293
+      },
+      {
+        "createdAt": "2025-05-24",
+        "maxinstalls": 109121800
+      },
+      {
+        "createdAt": "2025-05-25",
+        "maxinstalls": 109152444
+      },
+      {
+        "createdAt": "2025-05-26",
+        "maxinstalls": 109176165
+      },
+      {
+        "createdAt": "2025-05-27",
+        "maxinstalls": 109233287
+      },
+      {
+        "createdAt": "2025-05-28",
+        "maxinstalls": 109266672
+      },
+      {
+        "createdAt": "2025-05-29",
+        "maxinstalls": 109294489
+      },
+      {
+        "createdAt": "2025-05-30",
+        "maxinstalls": 109336732
+      },
+      {
+        "createdAt": "2025-05-31",
+        "maxinstalls": 109370089
+      },
+      {
+        "createdAt": "2025-06-01",
+        "maxinstalls": 109400043
+      },
+      {
+        "createdAt": "2025-06-02",
+        "maxinstalls": 109424412
+      },
+      {
+        "createdAt": "2025-06-03",
+        "maxinstalls": 109469742
+      },
+      {
+        "createdAt": "2025-06-04",
+        "maxinstalls": 109521545
+      },
+      {
+        "createdAt": "2025-06-05",
+        "maxinstalls": 109544721
+      },
+      {
+        "createdAt": "2025-06-06",
+        "maxinstalls": 109594991
+      },
+      {
+        "createdAt": "2025-06-07",
+        "maxinstalls": 109604446
+      },
+      {
+        "createdAt": "2025-06-08",
+        "maxinstalls": 109643588
+      },
+      {
+        "createdAt": "2025-06-09",
+        "maxinstalls": 109687397
+      },
+      {
+        "createdAt": "2025-06-10",
+        "maxinstalls": 109726953
+      },
+      {
+        "createdAt": "2025-06-11",
+        "maxinstalls": 109764182
+      },
+      {
+        "createdAt": "2025-06-12",
+        "maxinstalls": 109786884
+      },
+      {
+        "createdAt": "2025-06-13",
+        "maxinstalls": 109827217
+      },
+      {
+        "createdAt": "2025-06-14",
+        "maxinstalls": 109855460
+      },
+      {
+        "createdAt": "2025-06-15",
+        "maxinstalls": 109881184
+      },
+      {
+        "createdAt": "2025-06-16",
+        "maxinstalls": 109918955
+      },
+      {
+        "createdAt": "2025-06-17",
+        "maxinstalls": 109954889
+      },
+      {
+        "createdAt": "2025-06-18",
+        "maxinstalls": 110007447
+      },
+      {
+        "createdAt": "2025-06-19",
+        "maxinstalls": 110028289
+      },
+      {
+        "createdAt": "2025-06-20",
+        "maxinstalls": 110062382
+      },
+      {
+        "createdAt": "2025-06-21",
+        "maxinstalls": 110091293
+      },
+      {
+        "createdAt": "2025-06-22",
+        "maxinstalls": 110115327
+      },
+      {
+        "createdAt": "2025-06-23",
+        "maxinstalls": 110137328
+      },
+      {
+        "createdAt": "2025-06-24",
+        "maxinstalls": 110171416
+      },
+      {
+        "createdAt": "2025-06-25",
+        "maxinstalls": 110210205
+      },
+      {
+        "createdAt": "2025-06-26",
+        "maxinstalls": 110243405
+      },
+      {
+        "createdAt": "2025-06-27",
+        "maxinstalls": 110280928
+      },
+      {
+        "createdAt": "2025-06-28",
+        "maxinstalls": 110296205
+      },
+      {
+        "createdAt": "2025-06-29",
+        "maxinstalls": 110334586
+      }
+    ]
+  },
+  "category": {
+    "name": "Ativação",
+    "slug": "ativacao",
+    "documentId": "taxf2a74inf8433xd1c8bdso"
+  }
+}

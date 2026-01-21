@@ -1,0 +1,304 @@
+{
+  "documentId": "msdqnn3f0fbzyibwdalmd0nw",
+  "name": "TOTAL DE NOVAS INSTALAÇÕES (ACUMULADAS)",
+  "slug": "area-total-de-novas-instalacoes-acumuladas",
+  "kind": "area",
+  "xField": "createdAt",
+  "yField": "maxinstalls",
+  "description": "Novas instalações que foram acumuladas durante todo o tempo de vida do app. A cada dia, as novas instalações vão sendo somadas com o histórico.\n\nPeríodo de atualização Google: D-1",
+  "combineData": true,
+  "labels": {
+    "default": "Instalações acumuladas"
+  },
+  "colors": {
+    "default": "#09738a",
+    "pv": "blue",
+    "uv": "green"
+  },
+  "config": {
+    "add-competitors": "False",
+    "aggregationMode": "sum",
+    "increase-is-positive": "True",
+    "invert-y-axis": "False",
+    "is-pro": "False",
+    "is-public": "True",
+    "show-percentage": "False",
+    "title": {
+      "align": "center",
+      "position": "top",
+      "text": "TOTAL DE NOVAS INSTALAÇÕES (ACUMULADAS)"
+    },
+    "tooltip": {
+      "format": "0.000a",
+      "shared": true,
+      "xDateFormat": "dd/MM/yyyy"
+    },
+    "xAxis": {
+      "format": "dd/MM",
+      "label": "Data",
+      "rotateLabels": true
+    },
+    "yAxis": {
+      "format": "0.000a",
+      "label": "Instalações acumuladas"
+    }
+  },
+  "exampleData": {
+    "appId": [
+      {
+        "createdAt": "2025-03-01",
+        "maxinstalls": 3018366
+      },
+      {
+        "createdAt": "2025-03-02",
+        "maxinstalls": 3020068
+      },
+      {
+        "createdAt": "2025-03-03",
+        "maxinstalls": 3021698
+      },
+      {
+        "createdAt": "2025-03-04",
+        "maxinstalls": 3022615
+      },
+      {
+        "createdAt": "2025-03-05",
+        "maxinstalls": 3024266
+      },
+      {
+        "createdAt": "2025-03-06",
+        "maxinstalls": 3025287
+      },
+      {
+        "createdAt": "2025-03-07",
+        "maxinstalls": 3027009
+      },
+      {
+        "createdAt": "2025-03-08",
+        "maxinstalls": 3029392
+      },
+      {
+        "createdAt": "2025-03-09",
+        "maxinstalls": 3030751
+      },
+      {
+        "createdAt": "2025-03-10",
+        "maxinstalls": 3033747
+      },
+      {
+        "createdAt": "2025-03-11",
+        "maxinstalls": 3035509
+      },
+      {
+        "createdAt": "2025-03-12",
+        "maxinstalls": 3036815
+      },
+      {
+        "createdAt": "2025-03-13",
+        "maxinstalls": 3037646
+      },
+      {
+        "createdAt": "2025-03-14",
+        "maxinstalls": 3040178
+      },
+      {
+        "createdAt": "2025-03-15",
+        "maxinstalls": 3042330
+      },
+      {
+        "createdAt": "2025-03-16",
+        "maxinstalls": 3043531
+      },
+      {
+        "createdAt": "2025-03-17",
+        "maxinstalls": 3044400
+      },
+      {
+        "createdAt": "2025-03-18",
+        "maxinstalls": 3045622
+      },
+      {
+        "createdAt": "2025-03-19",
+        "maxinstalls": 3050153
+      },
+      {
+        "createdAt": "2025-03-20",
+        "maxinstalls": 3051499
+      },
+      {
+        "createdAt": "2025-03-21",
+        "maxinstalls": 3053245
+      },
+      {
+        "createdAt": "2025-03-22",
+        "maxinstalls": 3054883
+      },
+      {
+        "createdAt": "2025-03-23",
+        "maxinstalls": 3056479
+      },
+      {
+        "createdAt": "2025-03-24",
+        "maxinstalls": 3058378
+      },
+      {
+        "createdAt": "2025-03-27",
+        "maxinstalls": 3063530
+      },
+      {
+        "createdAt": "2025-03-28",
+        "maxinstalls": 3063755
+      },
+      {
+        "createdAt": "2025-03-29",
+        "maxinstalls": 3065076
+      }
+    ]
+  },
+  "dataSource": {
+    "type": "api",
+    "id": "1061",
+    "url": "http://metrics-api:39120/data-rank/line/total_new_installations_accumulated",
+    "method": "POST",
+    "params": {},
+    "body": {
+      "appId": "{{.AppID}}",
+      "country": "{{.Country}}",
+      "endDate": "{{.EndDate}}",
+      "internalId": "{{.InternalID}}",
+      "lang": "{{.Lang}}",
+      "startDate": "{{.StartDate}}",
+      "store": "{{.Store}}"
+    },
+    "headers": {}
+  },
+  "stores": [
+    "google"
+  ],
+  "source": "Store",
+  "data": {
+    "br.com.bb.android_google_br_pt-BR": [
+      {
+        "createdAt": "2025-06-01",
+        "maxinstalls": 109400043
+      },
+      {
+        "createdAt": "2025-06-02",
+        "maxinstalls": 109424412
+      },
+      {
+        "createdAt": "2025-06-03",
+        "maxinstalls": 109469742
+      },
+      {
+        "createdAt": "2025-06-04",
+        "maxinstalls": 109521545
+      },
+      {
+        "createdAt": "2025-06-05",
+        "maxinstalls": 109544721
+      },
+      {
+        "createdAt": "2025-06-06",
+        "maxinstalls": 109594991
+      },
+      {
+        "createdAt": "2025-06-07",
+        "maxinstalls": 109604446
+      },
+      {
+        "createdAt": "2025-06-08",
+        "maxinstalls": 109643588
+      },
+      {
+        "createdAt": "2025-06-09",
+        "maxinstalls": 109687397
+      },
+      {
+        "createdAt": "2025-06-10",
+        "maxinstalls": 109726953
+      },
+      {
+        "createdAt": "2025-06-11",
+        "maxinstalls": 109764182
+      },
+      {
+        "createdAt": "2025-06-12",
+        "maxinstalls": 109786884
+      },
+      {
+        "createdAt": "2025-06-13",
+        "maxinstalls": 109827217
+      },
+      {
+        "createdAt": "2025-06-14",
+        "maxinstalls": 109855460
+      },
+      {
+        "createdAt": "2025-06-15",
+        "maxinstalls": 109881184
+      },
+      {
+        "createdAt": "2025-06-16",
+        "maxinstalls": 109918955
+      },
+      {
+        "createdAt": "2025-06-17",
+        "maxinstalls": 109954889
+      },
+      {
+        "createdAt": "2025-06-18",
+        "maxinstalls": 110007447
+      },
+      {
+        "createdAt": "2025-06-19",
+        "maxinstalls": 110028289
+      },
+      {
+        "createdAt": "2025-06-20",
+        "maxinstalls": 110062382
+      },
+      {
+        "createdAt": "2025-06-21",
+        "maxinstalls": 110091293
+      },
+      {
+        "createdAt": "2025-06-22",
+        "maxinstalls": 110115327
+      },
+      {
+        "createdAt": "2025-06-23",
+        "maxinstalls": 110137328
+      },
+      {
+        "createdAt": "2025-06-24",
+        "maxinstalls": 110171416
+      },
+      {
+        "createdAt": "2025-06-25",
+        "maxinstalls": 110210205
+      },
+      {
+        "createdAt": "2025-06-26",
+        "maxinstalls": 110243405
+      },
+      {
+        "createdAt": "2025-06-27",
+        "maxinstalls": 110280928
+      },
+      {
+        "createdAt": "2025-06-28",
+        "maxinstalls": 110296205
+      },
+      {
+        "createdAt": "2025-06-29",
+        "maxinstalls": 110334586
+      }
+    ]
+  },
+  "category": {
+    "name": "Ativação",
+    "slug": "ativacao",
+    "documentId": "taxf2a74inf8433xd1c8bdso"
+  }
+}

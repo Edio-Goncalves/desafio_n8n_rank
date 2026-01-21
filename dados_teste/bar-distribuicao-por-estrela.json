@@ -1,0 +1,133 @@
+{
+  "documentId": "dbg52c7j893m3hn0a6ktor9j",
+  "name": "DISTRIBUIÇÃO POR ESTRELA (BAR CHART)",
+  "slug": "bar-distribuicao-por-estrela",
+  "kind": "bar",
+  "xField": "score",
+  "yField": "total",
+  "description": "Distribuição das notas (ratings) que foram atribuídas aos comentários (reviews) no período.\n\nPeríodo de atualização Google: D-3\nPeríodo de atualização Apple: D-3",
+  "combineData": true,
+  "labels": null,
+  "colors": {
+    "default": "#09738a"
+  },
+  "config": {
+    "add-competitors": "False",
+    "aggregationMode": "sum",
+    "color": {
+      "byField": "score",
+      "mapping": {
+        "1": "#dc5b57",
+        "2": "#dd915f",
+        "3": "#4a8ddc",
+        "4": "#f3c911",
+        "5": "#33ae81"
+      }
+    },
+    "invert-y-axis": "False",
+    "is-pro": "False",
+    "is-public": "False",
+    "legend": {
+      "align": "left",
+      "position": "top",
+      "symbolType": "line"
+    },
+    "show-percentage": "True",
+    "sort": {
+      "field": "score",
+      "order": "asc"
+    },
+    "title": {
+      "align": "center",
+      "position": "top",
+      "text": "DISTRIBUIÇÃO POR ESTRELA"
+    },
+    "tooltip": {
+      "format": "0",
+      "shared": true
+    },
+    "xAxis": {
+      "format": "0",
+      "label": "Nota"
+    },
+    "yAxis": {
+      "format": "0",
+      "label": "Total de reviews"
+    }
+  },
+  "exampleData": {
+    "appId": [
+      {
+        "score": 4,
+        "total": 100
+      },
+      {
+        "score": 2,
+        "total": 112
+      },
+      {
+        "score": 3,
+        "total": 118
+      },
+      {
+        "score": 1,
+        "total": 474
+      },
+      {
+        "score": 5,
+        "total": 425
+      }
+    ]
+  },
+  "dataSource": {
+    "type": "api",
+    "id": "1651",
+    "url": "http://metrics-api:39120/data-rank/pizza/star_distribution",
+    "method": "POST",
+    "params": null,
+    "body": {
+      "appId": "{{.AppID}}",
+      "country": "{{.Country}}",
+      "endDate": "{{.EndDate}}",
+      "internalId": "{{.InternalID}}",
+      "lang": "{{.Lang}}",
+      "startDate": "{{.StartDate}}",
+      "store": "{{.Store}}"
+    },
+    "headers": null
+  },
+  "stores": [
+    "google",
+    "apple"
+  ],
+  "source": "Store",
+  "data": {
+    "br.com.bb.android_google_br_pt-BR": [
+      {
+        "score": 3,
+        "total": 275
+      },
+      {
+        "score": 4,
+        "total": 533
+      },
+      {
+        "score": 1,
+        "total": 1406
+      },
+      {
+        "score": 5,
+        "total": 10087
+      },
+      {
+        "score": 2,
+        "total": 281
+      }
+    ]
+  },
+  "category": {
+    "name": "Satisfação",
+    "slug": "satisfacao",
+    "documentId": "fclgwsltljmkd11ieukxy3ff"
+  }
+}

@@ -1,0 +1,4139 @@
+{
+  "documentId": "grkq4xfrisyt0crilejwx1ao",
+  "name": "ACOMPANHAMENTO DE KEYWORDS",
+  "slug": "table-acompanhamento-de-keywords",
+  "kind": "table",
+  "xField": "None",
+  "yField": "columns",
+  "description": "Tabela com dados (do último mês) relacionados às keywords registradas pelo app (moda da posição, média da variação diária da posição, competitividade e volume de busca).\n\nPeríodo de atualização Google: D-1\nPeríodo de atualização Apple: D-1",
+  "combineData": true,
+  "labels": null,
+  "colors": {
+    "default": "#09738a"
+  },
+  "config": {
+    "add-competitors": "False",
+    "aggregationMode": "separate",
+    "increase-is-positive": "False",
+    "invert-y-axis": "False",
+    "is-pro": "False",
+    "is-public": "True",
+    "kind": "table",
+    "labelColorRules": [
+      {
+        "color": "green",
+        "condition": "value < 0",
+        "field": "change_from_previous_day"
+      },
+      {
+        "color": "red",
+        "condition": "value > 0",
+        "field": "change_from_previous_day"
+      },
+      {
+        "color": "gray",
+        "condition": "value === 0",
+        "field": "change_from_previous_day"
+      }
+    ],
+    "show-percentage": "False",
+    "sort": {
+      "field": "position",
+      "order": "asc"
+    },
+    "title": {
+      "align": "center",
+      "position": "top",
+      "text": "ACOMPANHAMENTO DE KEYWORDS"
+    },
+    "yAxis": [
+      {
+        "field": "keyword",
+        "format": "string",
+        "label": "Keyword"
+      },
+      {
+        "field": "position",
+        "format": "0",
+        "label": "Posição"
+      },
+      {
+        "field": "change_from_previous_day",
+        "format": "0.00",
+        "label": "Diferença média em comparação ao dia anterior"
+      },
+      {
+        "field": "competitivity",
+        "format": "string",
+        "label": "Competitividade"
+      },
+      {
+        "field": "search_volume",
+        "format": "string",
+        "label": "Volume de busca"
+      }
+    ],
+    "yField": [
+      "keyword",
+      "position",
+      "change_from_previous_day",
+      "competitivity",
+      "search_volume"
+    ]
+  },
+  "exampleData": {
+    "appId": [
+      {
+        "columns": [
+          {
+            "field": "keyword",
+            "type": "raw",
+            "value": "lca"
+          },
+          {
+            "field": "position",
+            "type": "raw",
+            "value": 20
+          },
+          {
+            "field": "change_from_previous_day",
+            "type": "raw",
+            "value": 0.37
+          },
+          {
+            "field": "competitivity",
+            "type": "raw",
+            "value": "very low"
+          },
+          {
+            "field": "search_volume",
+            "type": "raw",
+            "value": "high (75.89%)"
+          }
+        ],
+        "date": ""
+      },
+      {
+        "columns": [
+          {
+            "field": "keyword",
+            "type": "raw",
+            "value": "rendimento diário"
+          },
+          {
+            "field": "position",
+            "type": "raw",
+            "value": 8
+          },
+          {
+            "field": "change_from_previous_day",
+            "type": "raw",
+            "value": -0.3
+          },
+          {
+            "field": "competitivity",
+            "type": "raw",
+            "value": "low"
+          },
+          {
+            "field": "search_volume",
+            "type": "raw",
+            "value": "low (28.54%)"
+          }
+        ],
+        "date": ""
+      },
+      {
+        "columns": [
+          {
+            "field": "keyword",
+            "type": "raw",
+            "value": "reserva de investimentos"
+          },
+          {
+            "field": "position",
+            "type": "raw",
+            "value": 30
+          },
+          {
+            "field": "change_from_previous_day",
+            "type": "raw",
+            "value": -0.1
+          },
+          {
+            "field": "competitivity",
+            "type": "raw",
+            "value": "very low"
+          },
+          {
+            "field": "search_volume",
+            "type": "raw",
+            "value": "very low (7.63%)"
+          }
+        ],
+        "date": ""
+      },
+      {
+        "columns": [
+          {
+            "field": "keyword",
+            "type": "raw",
+            "value": "investimentos sem taxas"
+          },
+          {
+            "field": "position",
+            "type": "raw",
+            "value": 41
+          },
+          {
+            "field": "change_from_previous_day",
+            "type": "raw",
+            "value": 0
+          },
+          {
+            "field": "competitivity",
+            "type": "raw",
+            "value": "high"
+          },
+          {
+            "field": "search_volume",
+            "type": "raw",
+            "value": "very low (8.92%)"
+          }
+        ],
+        "date": ""
+      },
+      {
+        "columns": [
+          {
+            "field": "keyword",
+            "type": "raw",
+            "value": "fundos de investimento"
+          },
+          {
+            "field": "position",
+            "type": "raw",
+            "value": 6
+          },
+          {
+            "field": "change_from_previous_day",
+            "type": "raw",
+            "value": 0.3
+          },
+          {
+            "field": "competitivity",
+            "type": "raw",
+            "value": "low"
+          },
+          {
+            "field": "search_volume",
+            "type": "raw",
+            "value": "high (75.89%)"
+          }
+        ],
+        "date": ""
+      },
+      {
+        "columns": [
+          {
+            "field": "keyword",
+            "type": "raw",
+            "value": "investimento digital"
+          },
+          {
+            "field": "position",
+            "type": "raw",
+            "value": 4
+          },
+          {
+            "field": "change_from_previous_day",
+            "type": "raw",
+            "value": -0.13
+          },
+          {
+            "field": "competitivity",
+            "type": "raw",
+            "value": "medium"
+          },
+          {
+            "field": "search_volume",
+            "type": "raw",
+            "value": "low (28.54%)"
+          }
+        ],
+        "date": ""
+      },
+      {
+        "columns": [
+          {
+            "field": "keyword",
+            "type": "raw",
+            "value": "investir dinheiro"
+          },
+          {
+            "field": "position",
+            "type": "raw",
+            "value": 7
+          },
+          {
+            "field": "change_from_previous_day",
+            "type": "raw",
+            "value": -0.03
+          },
+          {
+            "field": "competitivity",
+            "type": "raw",
+            "value": "high"
+          },
+          {
+            "field": "search_volume",
+            "type": "raw",
+            "value": "medium (51.5%)"
+          }
+        ],
+        "date": ""
+      },
+      {
+        "columns": [
+          {
+            "field": "keyword",
+            "type": "raw",
+            "value": "fundos"
+          },
+          {
+            "field": "position",
+            "type": "raw",
+            "value": 0
+          },
+          {
+            "field": "change_from_previous_day",
+            "type": "raw",
+            "value": 0
+          },
+          {
+            "field": "competitivity",
+            "type": "raw",
+            "value": "very low"
+          },
+          {
+            "field": "search_volume",
+            "type": "raw",
+            "value": "very high (93.77%)"
+          }
+        ],
+        "date": ""
+      }
+    ]
+  },
+  "dataSource": {
+    "type": "api",
+    "id": "1595",
+    "url": "http://metrics-api:39120/data-rank/table/ranking_volume_table",
+    "method": "POST",
+    "params": null,
+    "body": {
+      "appId": "{{.AppID}}",
+      "country": "{{.Country}}",
+      "endDate": "{{.EndDate}}",
+      "internalId": "{{.InternalID}}",
+      "lang": "{{.Lang}}",
+      "startDate": "{{.StartDate}}",
+      "store": "{{.Store}}"
+    },
+    "headers": null
+  },
+  "stores": [
+    "google",
+    "apple"
+  ],
+  "source": "Store",
+  "data": {
+    "br.com.bb.android_google_br_pt-BR": [
+      {
+        "columns": [
+          {
+            "field": "keyword",
+            "type": "raw",
+            "value": "empréstimo online seguro"
+          },
+          {
+            "field": "position",
+            "type": "raw",
+            "value": 63
+          },
+          {
+            "field": "change_from_previous_day",
+            "type": "raw",
+            "value": 0.04
+          },
+          {
+            "field": "competitivity",
+            "type": "raw",
+            "value": "very high"
+          },
+          {
+            "field": "search_volume",
+            "type": "raw",
+            "value": "medium (52.03%)"
+          }
+        ],
+        "date": ""
+      },
+      {
+        "columns": [
+          {
+            "field": "keyword",
+            "type": "raw",
+            "value": "conta sem tarifas"
+          },
+          {
+            "field": "position",
+            "type": "raw",
+            "value": 7
+          },
+          {
+            "field": "change_from_previous_day",
+            "type": "raw",
+            "value": 0
+          },
+          {
+            "field": "competitivity",
+            "type": "raw",
+            "value": "high"
+          },
+          {
+            "field": "search_volume",
+            "type": "raw",
+            "value": "low (28.99%)"
+          }
+        ],
+        "date": ""
+      },
+      {
+        "columns": [
+          {
+            "field": "keyword",
+            "type": "raw",
+            "value": "conta grátis"
+          },
+          {
+            "field": "position",
+            "type": "raw",
+            "value": 3
+          },
+          {
+            "field": "change_from_previous_day",
+            "type": "raw",
+            "value": 0
+          },
+          {
+            "field": "competitivity",
+            "type": "raw",
+            "value": "very low"
+          },
+          {
+            "field": "search_volume",
+            "type": "raw",
+            "value": "medium (52.03%)"
+          }
+        ],
+        "date": ""
+      },
+      {
+        "columns": [
+          {
+            "field": "keyword",
+            "type": "raw",
+            "value": "cartão virtual online"
+          },
+          {
+            "field": "position",
+            "type": "raw",
+            "value": 81
+          },
+          {
+            "field": "change_from_previous_day",
+            "type": "raw",
+            "value": 1.32
+          },
+          {
+            "field": "competitivity",
+            "type": "raw",
+            "value": "low"
+          },
+          {
+            "field": "search_volume",
+            "type": "raw",
+            "value": "very low (9.14%)"
+          }
+        ],
+        "date": ""
+      },
+      {
+        "columns": [
+          {
+            "field": "keyword",
+            "type": "raw",
+            "value": "emprestimo consignado"
+          },
+          {
+            "field": "position",
+            "type": "raw",
+            "value": 20
+          },
+          {
+            "field": "change_from_previous_day",
+            "type": "raw",
+            "value": 0
+          },
+          {
+            "field": "competitivity",
+            "type": "raw",
+            "value": "very high"
+          },
+          {
+            "field": "search_volume",
+            "type": "raw",
+            "value": "very high (93.88%)"
+          }
+        ],
+        "date": ""
+      },
+      {
+        "columns": [
+          {
+            "field": "keyword",
+            "type": "raw",
+            "value": "pagar boleto"
+          },
+          {
+            "field": "position",
+            "type": "raw",
+            "value": 19
+          },
+          {
+            "field": "change_from_previous_day",
+            "type": "raw",
+            "value": 0
+          },
+          {
+            "field": "competitivity",
+            "type": "raw",
+            "value": "low"
+          },
+          {
+            "field": "search_volume",
+            "type": "raw",
+            "value": "medium (52.03%)"
+          }
+        ],
+        "date": ""
+      },
+      {
+        "columns": [
+          {
+            "field": "keyword",
+            "type": "raw",
+            "value": "cartão de crédito com conta digital"
+          },
+          {
+            "field": "position",
+            "type": "raw",
+            "value": 11
+          },
+          {
+            "field": "change_from_previous_day",
+            "type": "raw",
+            "value": 0
+          },
+          {
+            "field": "competitivity",
+            "type": "raw",
+            "value": "very high"
+          },
+          {
+            "field": "search_volume",
+            "type": "raw",
+            "value": "very low (9.14%)"
+          }
+        ],
+        "date": ""
+      },
+      {
+        "columns": [
+          {
+            "field": "keyword",
+            "type": "raw",
+            "value": "transferências"
+          },
+          {
+            "field": "position",
+            "type": "raw",
+            "value": 60
+          },
+          {
+            "field": "change_from_previous_day",
+            "type": "raw",
+            "value": 0
+          },
+          {
+            "field": "competitivity",
+            "type": "raw",
+            "value": "very low"
+          },
+          {
+            "field": "search_volume",
+            "type": "raw",
+            "value": "high (76.24%)"
+          }
+        ],
+        "date": ""
+      },
+      {
+        "columns": [
+          {
+            "field": "keyword",
+            "type": "raw",
+            "value": "seguro de vida"
+          },
+          {
+            "field": "position",
+            "type": "raw",
+            "value": 22
+          },
+          {
+            "field": "change_from_previous_day",
+            "type": "raw",
+            "value": 0
+          },
+          {
+            "field": "competitivity",
+            "type": "raw",
+            "value": "very high"
+          },
+          {
+            "field": "search_volume",
+            "type": "raw",
+            "value": "high (76.24%)"
+          }
+        ],
+        "date": ""
+      },
+      {
+        "columns": [
+          {
+            "field": "keyword",
+            "type": "raw",
+            "value": "pagar com pix"
+          },
+          {
+            "field": "position",
+            "type": "raw",
+            "value": 4
+          },
+          {
+            "field": "change_from_previous_day",
+            "type": "raw",
+            "value": 0
+          },
+          {
+            "field": "competitivity",
+            "type": "raw",
+            "value": "very low"
+          },
+          {
+            "field": "search_volume",
+            "type": "raw",
+            "value": "low (28.99%)"
+          }
+        ],
+        "date": ""
+      },
+      {
+        "columns": [
+          {
+            "field": "keyword",
+            "type": "raw",
+            "value": "poupança"
+          },
+          {
+            "field": "position",
+            "type": "raw",
+            "value": 16
+          },
+          {
+            "field": "change_from_previous_day",
+            "type": "raw",
+            "value": 0
+          },
+          {
+            "field": "competitivity",
+            "type": "raw",
+            "value": "very low"
+          },
+          {
+            "field": "search_volume",
+            "type": "raw",
+            "value": "high (76.24%)"
+          }
+        ],
+        "date": ""
+      },
+      {
+        "columns": [
+          {
+            "field": "keyword",
+            "type": "raw",
+            "value": "abrir conta digital"
+          },
+          {
+            "field": "position",
+            "type": "raw",
+            "value": 2
+          },
+          {
+            "field": "change_from_previous_day",
+            "type": "raw",
+            "value": -0.14
+          },
+          {
+            "field": "competitivity",
+            "type": "raw",
+            "value": "very high"
+          },
+          {
+            "field": "search_volume",
+            "type": "raw",
+            "value": "high (76.24%)"
+          }
+        ],
+        "date": ""
+      },
+      {
+        "columns": [
+          {
+            "field": "keyword",
+            "type": "raw",
+            "value": "banco digital grátis"
+          },
+          {
+            "field": "position",
+            "type": "raw",
+            "value": 8
+          },
+          {
+            "field": "change_from_previous_day",
+            "type": "raw",
+            "value": -0.07
+          },
+          {
+            "field": "competitivity",
+            "type": "raw",
+            "value": "very high"
+          },
+          {
+            "field": "search_volume",
+            "type": "raw",
+            "value": "very low (9.14%)"
+          }
+        ],
+        "date": ""
+      },
+      {
+        "columns": [
+          {
+            "field": "keyword",
+            "type": "raw",
+            "value": "banco"
+          },
+          {
+            "field": "position",
+            "type": "raw",
+            "value": 1
+          },
+          {
+            "field": "change_from_previous_day",
+            "type": "raw",
+            "value": -0.11
+          },
+          {
+            "field": "competitivity",
+            "type": "raw",
+            "value": "very low"
+          },
+          {
+            "field": "search_volume",
+            "type": "raw",
+            "value": "very high (93.88%)"
+          }
+        ],
+        "date": ""
+      },
+      {
+        "columns": [
+          {
+            "field": "keyword",
+            "type": "raw",
+            "value": "saldo"
+          },
+          {
+            "field": "position",
+            "type": "raw",
+            "value": 41
+          },
+          {
+            "field": "change_from_previous_day",
+            "type": "raw",
+            "value": 0
+          },
+          {
+            "field": "competitivity",
+            "type": "raw",
+            "value": "very low"
+          },
+          {
+            "field": "search_volume",
+            "type": "raw",
+            "value": "high (76.24%)"
+          }
+        ],
+        "date": ""
+      },
+      {
+        "columns": [
+          {
+            "field": "keyword",
+            "type": "raw",
+            "value": "parcelamento pix"
+          },
+          {
+            "field": "position",
+            "type": "raw",
+            "value": 21
+          },
+          {
+            "field": "change_from_previous_day",
+            "type": "raw",
+            "value": -0.15
+          },
+          {
+            "field": "competitivity",
+            "type": "raw",
+            "value": "medium"
+          },
+          {
+            "field": "search_volume",
+            "type": "raw",
+            "value": "medium (52.03%)"
+          }
+        ],
+        "date": ""
+      },
+      {
+        "columns": [
+          {
+            "field": "keyword",
+            "type": "raw",
+            "value": "fazer transferências"
+          },
+          {
+            "field": "position",
+            "type": "raw",
+            "value": 53
+          },
+          {
+            "field": "change_from_previous_day",
+            "type": "raw",
+            "value": 1.41
+          },
+          {
+            "field": "competitivity",
+            "type": "raw",
+            "value": "very low"
+          },
+          {
+            "field": "search_volume",
+            "type": "raw",
+            "value": "low (28.99%)"
+          }
+        ],
+        "date": ""
+      },
+      {
+        "columns": [
+          {
+            "field": "keyword",
+            "type": "raw",
+            "value": "pagamentos"
+          },
+          {
+            "field": "position",
+            "type": "raw",
+            "value": 36
+          },
+          {
+            "field": "change_from_previous_day",
+            "type": "raw",
+            "value": -0.04
+          },
+          {
+            "field": "competitivity",
+            "type": "raw",
+            "value": "very low"
+          },
+          {
+            "field": "search_volume",
+            "type": "raw",
+            "value": "very high (93.88%)"
+          }
+        ],
+        "date": ""
+      },
+      {
+        "columns": [
+          {
+            "field": "keyword",
+            "type": "raw",
+            "value": "renda fixa"
+          },
+          {
+            "field": "position",
+            "type": "raw",
+            "value": 19
+          },
+          {
+            "field": "change_from_previous_day",
+            "type": "raw",
+            "value": 0
+          },
+          {
+            "field": "competitivity",
+            "type": "raw",
+            "value": "low"
+          },
+          {
+            "field": "search_volume",
+            "type": "raw",
+            "value": "high (76.24%)"
+          }
+        ],
+        "date": ""
+      },
+      {
+        "columns": [
+          {
+            "field": "keyword",
+            "type": "raw",
+            "value": "pedir cartão de crédito"
+          },
+          {
+            "field": "position",
+            "type": "raw",
+            "value": 31
+          },
+          {
+            "field": "change_from_previous_day",
+            "type": "raw",
+            "value": 0
+          },
+          {
+            "field": "competitivity",
+            "type": "raw",
+            "value": "very high"
+          },
+          {
+            "field": "search_volume",
+            "type": "raw",
+            "value": "high (76.24%)"
+          }
+        ],
+        "date": ""
+      },
+      {
+        "columns": [
+          {
+            "field": "keyword",
+            "type": "raw",
+            "value": "conta digital"
+          },
+          {
+            "field": "position",
+            "type": "raw",
+            "value": 7
+          },
+          {
+            "field": "change_from_previous_day",
+            "type": "raw",
+            "value": 0
+          },
+          {
+            "field": "competitivity",
+            "type": "raw",
+            "value": "high"
+          },
+          {
+            "field": "search_volume",
+            "type": "raw",
+            "value": "high (76.24%)"
+          }
+        ],
+        "date": ""
+      },
+      {
+        "columns": [
+          {
+            "field": "keyword",
+            "type": "raw",
+            "value": "empréstimo de dinheiro"
+          },
+          {
+            "field": "position",
+            "type": "raw",
+            "value": 26
+          },
+          {
+            "field": "change_from_previous_day",
+            "type": "raw",
+            "value": 0
+          },
+          {
+            "field": "competitivity",
+            "type": "raw",
+            "value": "high"
+          },
+          {
+            "field": "search_volume",
+            "type": "raw",
+            "value": "medium (52.03%)"
+          }
+        ],
+        "date": ""
+      },
+      {
+        "columns": [
+          {
+            "field": "keyword",
+            "type": "raw",
+            "value": "pedir empréstimo"
+          },
+          {
+            "field": "position",
+            "type": "raw",
+            "value": 36
+          },
+          {
+            "field": "change_from_previous_day",
+            "type": "raw",
+            "value": 0
+          },
+          {
+            "field": "competitivity",
+            "type": "raw",
+            "value": "very high"
+          },
+          {
+            "field": "search_volume",
+            "type": "raw",
+            "value": "medium (52.03%)"
+          }
+        ],
+        "date": ""
+      },
+      {
+        "columns": [
+          {
+            "field": "keyword",
+            "type": "raw",
+            "value": "consulta de saldo"
+          },
+          {
+            "field": "position",
+            "type": "raw",
+            "value": 23
+          },
+          {
+            "field": "change_from_previous_day",
+            "type": "raw",
+            "value": -0.04
+          },
+          {
+            "field": "competitivity",
+            "type": "raw",
+            "value": "very low"
+          },
+          {
+            "field": "search_volume",
+            "type": "raw",
+            "value": "medium (52.03%)"
+          }
+        ],
+        "date": ""
+      },
+      {
+        "columns": [
+          {
+            "field": "keyword",
+            "type": "raw",
+            "value": "saldo fgts"
+          },
+          {
+            "field": "position",
+            "type": "raw",
+            "value": 14
+          },
+          {
+            "field": "change_from_previous_day",
+            "type": "raw",
+            "value": 0
+          },
+          {
+            "field": "competitivity",
+            "type": "raw",
+            "value": "low"
+          },
+          {
+            "field": "search_volume",
+            "type": "raw",
+            "value": "high (76.24%)"
+          }
+        ],
+        "date": ""
+      },
+      {
+        "columns": [
+          {
+            "field": "keyword",
+            "type": "raw",
+            "value": "abrir"
+          },
+          {
+            "field": "position",
+            "type": "raw",
+            "value": 50
+          },
+          {
+            "field": "change_from_previous_day",
+            "type": "raw",
+            "value": 0
+          },
+          {
+            "field": "competitivity",
+            "type": "raw",
+            "value": "very low"
+          },
+          {
+            "field": "search_volume",
+            "type": "raw",
+            "value": "high (76.24%)"
+          }
+        ],
+        "date": ""
+      },
+      {
+        "columns": [
+          {
+            "field": "keyword",
+            "type": "raw",
+            "value": "pagar ipva"
+          },
+          {
+            "field": "position",
+            "type": "raw",
+            "value": 23
+          },
+          {
+            "field": "change_from_previous_day",
+            "type": "raw",
+            "value": 0.04
+          },
+          {
+            "field": "competitivity",
+            "type": "raw",
+            "value": "low"
+          },
+          {
+            "field": "search_volume",
+            "type": "raw",
+            "value": "high (76.24%)"
+          }
+        ],
+        "date": ""
+      },
+      {
+        "columns": [
+          {
+            "field": "keyword",
+            "type": "raw",
+            "value": "cartão de débito"
+          },
+          {
+            "field": "position",
+            "type": "raw",
+            "value": 18
+          },
+          {
+            "field": "change_from_previous_day",
+            "type": "raw",
+            "value": 0
+          },
+          {
+            "field": "competitivity",
+            "type": "raw",
+            "value": "low"
+          },
+          {
+            "field": "search_volume",
+            "type": "raw",
+            "value": "medium (52.03%)"
+          }
+        ],
+        "date": ""
+      },
+      {
+        "columns": [
+          {
+            "field": "keyword",
+            "type": "raw",
+            "value": "abrir conta corrente"
+          },
+          {
+            "field": "position",
+            "type": "raw",
+            "value": 2
+          },
+          {
+            "field": "change_from_previous_day",
+            "type": "raw",
+            "value": 0
+          },
+          {
+            "field": "competitivity",
+            "type": "raw",
+            "value": "high"
+          },
+          {
+            "field": "search_volume",
+            "type": "raw",
+            "value": "low (28.99%)"
+          }
+        ],
+        "date": ""
+      },
+      {
+        "columns": [
+          {
+            "field": "keyword",
+            "type": "raw",
+            "value": "conta pj"
+          },
+          {
+            "field": "position",
+            "type": "raw",
+            "value": 15
+          },
+          {
+            "field": "change_from_previous_day",
+            "type": "raw",
+            "value": -0.11
+          },
+          {
+            "field": "competitivity",
+            "type": "raw",
+            "value": "very high"
+          },
+          {
+            "field": "search_volume",
+            "type": "raw",
+            "value": "high (76.24%)"
+          }
+        ],
+        "date": ""
+      },
+      {
+        "columns": [
+          {
+            "field": "keyword",
+            "type": "raw",
+            "value": "parcelar pix"
+          },
+          {
+            "field": "position",
+            "type": "raw",
+            "value": 12
+          },
+          {
+            "field": "change_from_previous_day",
+            "type": "raw",
+            "value": 0
+          },
+          {
+            "field": "competitivity",
+            "type": "raw",
+            "value": "medium"
+          },
+          {
+            "field": "search_volume",
+            "type": "raw",
+            "value": "medium (52.03%)"
+          }
+        ],
+        "date": ""
+      },
+      {
+        "columns": [
+          {
+            "field": "keyword",
+            "type": "raw",
+            "value": "banco digital pj"
+          },
+          {
+            "field": "position",
+            "type": "raw",
+            "value": 11
+          },
+          {
+            "field": "change_from_previous_day",
+            "type": "raw",
+            "value": -0.04
+          },
+          {
+            "field": "competitivity",
+            "type": "raw",
+            "value": "very high"
+          },
+          {
+            "field": "search_volume",
+            "type": "raw",
+            "value": "low (28.99%)"
+          }
+        ],
+        "date": ""
+      },
+      {
+        "columns": [
+          {
+            "field": "keyword",
+            "type": "raw",
+            "value": "extrato"
+          },
+          {
+            "field": "position",
+            "type": "raw",
+            "value": 6
+          },
+          {
+            "field": "change_from_previous_day",
+            "type": "raw",
+            "value": 0
+          },
+          {
+            "field": "competitivity",
+            "type": "raw",
+            "value": "very low"
+          },
+          {
+            "field": "search_volume",
+            "type": "raw",
+            "value": "high (76.24%)"
+          }
+        ],
+        "date": ""
+      },
+      {
+        "columns": [
+          {
+            "field": "keyword",
+            "type": "raw",
+            "value": "saque aniversario"
+          },
+          {
+            "field": "position",
+            "type": "raw",
+            "value": 21
+          },
+          {
+            "field": "change_from_previous_day",
+            "type": "raw",
+            "value": 0
+          },
+          {
+            "field": "competitivity",
+            "type": "raw",
+            "value": "low"
+          },
+          {
+            "field": "search_volume",
+            "type": "raw",
+            "value": "high (76.24%)"
+          }
+        ],
+        "date": ""
+      },
+      {
+        "columns": [
+          {
+            "field": "keyword",
+            "type": "raw",
+            "value": "fundos de investimentos"
+          },
+          {
+            "field": "position",
+            "type": "raw",
+            "value": 72
+          },
+          {
+            "field": "change_from_previous_day",
+            "type": "raw",
+            "value": -0.14
+          },
+          {
+            "field": "competitivity",
+            "type": "raw",
+            "value": "low"
+          },
+          {
+            "field": "search_volume",
+            "type": "raw",
+            "value": "high (76.24%)"
+          }
+        ],
+        "date": ""
+      },
+      {
+        "columns": [
+          {
+            "field": "keyword",
+            "type": "raw",
+            "value": "organizar finanças"
+          },
+          {
+            "field": "position",
+            "type": "raw",
+            "value": 86
+          },
+          {
+            "field": "change_from_previous_day",
+            "type": "raw",
+            "value": -0.17
+          },
+          {
+            "field": "competitivity",
+            "type": "raw",
+            "value": "high"
+          },
+          {
+            "field": "search_volume",
+            "type": "raw",
+            "value": "low (28.99%)"
+          }
+        ],
+        "date": ""
+      },
+      {
+        "columns": [
+          {
+            "field": "keyword",
+            "type": "raw",
+            "value": "conta salario"
+          },
+          {
+            "field": "position",
+            "type": "raw",
+            "value": 2
+          },
+          {
+            "field": "change_from_previous_day",
+            "type": "raw",
+            "value": 0
+          },
+          {
+            "field": "competitivity",
+            "type": "raw",
+            "value": "low"
+          },
+          {
+            "field": "search_volume",
+            "type": "raw",
+            "value": "medium (52.03%)"
+          }
+        ],
+        "date": ""
+      },
+      {
+        "columns": [
+          {
+            "field": "keyword",
+            "type": "raw",
+            "value": "conta virtual"
+          },
+          {
+            "field": "position",
+            "type": "raw",
+            "value": 6
+          },
+          {
+            "field": "change_from_previous_day",
+            "type": "raw",
+            "value": 0
+          },
+          {
+            "field": "competitivity",
+            "type": "raw",
+            "value": "very high"
+          },
+          {
+            "field": "search_volume",
+            "type": "raw",
+            "value": "low (28.99%)"
+          }
+        ],
+        "date": ""
+      },
+      {
+        "columns": [
+          {
+            "field": "keyword",
+            "type": "raw",
+            "value": "cartões de crédito online"
+          },
+          {
+            "field": "position",
+            "type": "raw",
+            "value": 43
+          },
+          {
+            "field": "change_from_previous_day",
+            "type": "raw",
+            "value": -0.04
+          },
+          {
+            "field": "competitivity",
+            "type": "raw",
+            "value": "high"
+          },
+          {
+            "field": "search_volume",
+            "type": "raw",
+            "value": "medium (52.03%)"
+          }
+        ],
+        "date": ""
+      },
+      {
+        "columns": [
+          {
+            "field": "keyword",
+            "type": "raw",
+            "value": "antecipar fgts"
+          },
+          {
+            "field": "position",
+            "type": "raw",
+            "value": 18
+          },
+          {
+            "field": "change_from_previous_day",
+            "type": "raw",
+            "value": -0.04
+          },
+          {
+            "field": "competitivity",
+            "type": "raw",
+            "value": "very high"
+          },
+          {
+            "field": "search_volume",
+            "type": "raw",
+            "value": "high (76.24%)"
+          }
+        ],
+        "date": ""
+      },
+      {
+        "columns": [
+          {
+            "field": "keyword",
+            "type": "raw",
+            "value": "cartão digital"
+          },
+          {
+            "field": "position",
+            "type": "raw",
+            "value": 45
+          },
+          {
+            "field": "change_from_previous_day",
+            "type": "raw",
+            "value": 0
+          },
+          {
+            "field": "competitivity",
+            "type": "raw",
+            "value": "high"
+          },
+          {
+            "field": "search_volume",
+            "type": "raw",
+            "value": "medium (52.03%)"
+          }
+        ],
+        "date": ""
+      },
+      {
+        "columns": [
+          {
+            "field": "keyword",
+            "type": "raw",
+            "value": "empréstimo para aposentado"
+          },
+          {
+            "field": "position",
+            "type": "raw",
+            "value": 28
+          },
+          {
+            "field": "change_from_previous_day",
+            "type": "raw",
+            "value": -0.04
+          },
+          {
+            "field": "competitivity",
+            "type": "raw",
+            "value": "very high"
+          },
+          {
+            "field": "search_volume",
+            "type": "raw",
+            "value": "high (76.24%)"
+          }
+        ],
+        "date": ""
+      },
+      {
+        "columns": [
+          {
+            "field": "keyword",
+            "type": "raw",
+            "value": "investimento"
+          },
+          {
+            "field": "position",
+            "type": "raw",
+            "value": 111
+          },
+          {
+            "field": "change_from_previous_day",
+            "type": "raw",
+            "value": 0
+          },
+          {
+            "field": "competitivity",
+            "type": "raw",
+            "value": "low"
+          },
+          {
+            "field": "search_volume",
+            "type": "raw",
+            "value": "very high (93.88%)"
+          }
+        ],
+        "date": ""
+      },
+      {
+        "columns": [
+          {
+            "field": "keyword",
+            "type": "raw",
+            "value": "cashback"
+          },
+          {
+            "field": "position",
+            "type": "raw",
+            "value": 48
+          },
+          {
+            "field": "change_from_previous_day",
+            "type": "raw",
+            "value": 0.04
+          },
+          {
+            "field": "competitivity",
+            "type": "raw",
+            "value": "very low"
+          },
+          {
+            "field": "search_volume",
+            "type": "raw",
+            "value": "high (76.24%)"
+          }
+        ],
+        "date": ""
+      },
+      {
+        "columns": [
+          {
+            "field": "keyword",
+            "type": "raw",
+            "value": "conta banco"
+          },
+          {
+            "field": "position",
+            "type": "raw",
+            "value": 2
+          },
+          {
+            "field": "change_from_previous_day",
+            "type": "raw",
+            "value": -0.07
+          },
+          {
+            "field": "competitivity",
+            "type": "raw",
+            "value": "low"
+          },
+          {
+            "field": "search_volume",
+            "type": "raw",
+            "value": "medium (52.03%)"
+          }
+        ],
+        "date": ""
+      },
+      {
+        "columns": [
+          {
+            "field": "keyword",
+            "type": "raw",
+            "value": "internet banking"
+          },
+          {
+            "field": "position",
+            "type": "raw",
+            "value": 10
+          },
+          {
+            "field": "change_from_previous_day",
+            "type": "raw",
+            "value": -0.04
+          },
+          {
+            "field": "competitivity",
+            "type": "raw",
+            "value": "very low"
+          },
+          {
+            "field": "search_volume",
+            "type": "raw",
+            "value": "very high (93.88%)"
+          }
+        ],
+        "date": ""
+      },
+      {
+        "columns": [
+          {
+            "field": "keyword",
+            "type": "raw",
+            "value": "consórcio"
+          },
+          {
+            "field": "position",
+            "type": "raw",
+            "value": 65
+          },
+          {
+            "field": "change_from_previous_day",
+            "type": "raw",
+            "value": -0.08
+          },
+          {
+            "field": "competitivity",
+            "type": "raw",
+            "value": "high"
+          },
+          {
+            "field": "search_volume",
+            "type": "raw",
+            "value": "very high (93.88%)"
+          }
+        ],
+        "date": ""
+      },
+      {
+        "columns": [
+          {
+            "field": "keyword",
+            "type": "raw",
+            "value": "cartao de credito sem anuidade"
+          },
+          {
+            "field": "position",
+            "type": "raw",
+            "value": 32
+          },
+          {
+            "field": "change_from_previous_day",
+            "type": "raw",
+            "value": 0
+          },
+          {
+            "field": "competitivity",
+            "type": "raw",
+            "value": "very high"
+          },
+          {
+            "field": "search_volume",
+            "type": "raw",
+            "value": "high (76.24%)"
+          }
+        ],
+        "date": ""
+      },
+      {
+        "columns": [
+          {
+            "field": "keyword",
+            "type": "raw",
+            "value": "pagar boletos"
+          },
+          {
+            "field": "position",
+            "type": "raw",
+            "value": 21
+          },
+          {
+            "field": "change_from_previous_day",
+            "type": "raw",
+            "value": -0.04
+          },
+          {
+            "field": "competitivity",
+            "type": "raw",
+            "value": "low"
+          },
+          {
+            "field": "search_volume",
+            "type": "raw",
+            "value": "medium (52.03%)"
+          }
+        ],
+        "date": ""
+      },
+      {
+        "columns": [
+          {
+            "field": "keyword",
+            "type": "raw",
+            "value": "shopping bb"
+          },
+          {
+            "field": "position",
+            "type": "raw",
+            "value": 1
+          },
+          {
+            "field": "change_from_previous_day",
+            "type": "raw",
+            "value": 0
+          },
+          {
+            "field": "competitivity",
+            "type": "raw",
+            "value": "very low"
+          },
+          {
+            "field": "search_volume",
+            "type": "raw",
+            "value": "low (28.99%)"
+          }
+        ],
+        "date": ""
+      },
+      {
+        "columns": [
+          {
+            "field": "keyword",
+            "type": "raw",
+            "value": "carta de credito"
+          },
+          {
+            "field": "position",
+            "type": "raw",
+            "value": 46
+          },
+          {
+            "field": "change_from_previous_day",
+            "type": "raw",
+            "value": -0.07
+          },
+          {
+            "field": "competitivity",
+            "type": "raw",
+            "value": "high"
+          },
+          {
+            "field": "search_volume",
+            "type": "raw",
+            "value": "high (76.24%)"
+          }
+        ],
+        "date": ""
+      },
+      {
+        "columns": [
+          {
+            "field": "keyword",
+            "type": "raw",
+            "value": "consultar extratos"
+          },
+          {
+            "field": "position",
+            "type": "raw",
+            "value": 33
+          },
+          {
+            "field": "change_from_previous_day",
+            "type": "raw",
+            "value": 0
+          },
+          {
+            "field": "competitivity",
+            "type": "raw",
+            "value": "very low"
+          },
+          {
+            "field": "search_volume",
+            "type": "raw",
+            "value": "very low (9.14%)"
+          }
+        ],
+        "date": ""
+      },
+      {
+        "columns": [
+          {
+            "field": "keyword",
+            "type": "raw",
+            "value": "rendimento de poupança"
+          },
+          {
+            "field": "position",
+            "type": "raw",
+            "value": 21
+          },
+          {
+            "field": "change_from_previous_day",
+            "type": "raw",
+            "value": -0.07
+          },
+          {
+            "field": "competitivity",
+            "type": "raw",
+            "value": "very low"
+          },
+          {
+            "field": "search_volume",
+            "type": "raw",
+            "value": "low (28.99%)"
+          }
+        ],
+        "date": ""
+      },
+      {
+        "columns": [
+          {
+            "field": "keyword",
+            "type": "raw",
+            "value": "tesouro direto"
+          },
+          {
+            "field": "position",
+            "type": "raw",
+            "value": 12
+          },
+          {
+            "field": "change_from_previous_day",
+            "type": "raw",
+            "value": -0.07
+          },
+          {
+            "field": "competitivity",
+            "type": "raw",
+            "value": "very low"
+          },
+          {
+            "field": "search_volume",
+            "type": "raw",
+            "value": "very high (93.88%)"
+          }
+        ],
+        "date": ""
+      },
+      {
+        "columns": [
+          {
+            "field": "keyword",
+            "type": "raw",
+            "value": "banco do brasil"
+          },
+          {
+            "field": "position",
+            "type": "raw",
+            "value": 1
+          },
+          {
+            "field": "change_from_previous_day",
+            "type": "raw",
+            "value": 0
+          },
+          {
+            "field": "competitivity",
+            "type": "raw",
+            "value": "very low"
+          },
+          {
+            "field": "search_volume",
+            "type": "raw",
+            "value": "very high (100.0%)"
+          }
+        ],
+        "date": ""
+      },
+      {
+        "columns": [
+          {
+            "field": "keyword",
+            "type": "raw",
+            "value": "abrir conta banco digital"
+          },
+          {
+            "field": "position",
+            "type": "raw",
+            "value": 4
+          },
+          {
+            "field": "change_from_previous_day",
+            "type": "raw",
+            "value": 0
+          },
+          {
+            "field": "competitivity",
+            "type": "raw",
+            "value": "very high"
+          },
+          {
+            "field": "search_volume",
+            "type": "raw",
+            "value": "low (28.99%)"
+          }
+        ],
+        "date": ""
+      },
+      {
+        "columns": [
+          {
+            "field": "keyword",
+            "type": "raw",
+            "value": "abrir conta pj"
+          },
+          {
+            "field": "position",
+            "type": "raw",
+            "value": 15
+          },
+          {
+            "field": "change_from_previous_day",
+            "type": "raw",
+            "value": 0
+          },
+          {
+            "field": "competitivity",
+            "type": "raw",
+            "value": "very high"
+          },
+          {
+            "field": "search_volume",
+            "type": "raw",
+            "value": "medium (52.03%)"
+          }
+        ],
+        "date": ""
+      },
+      {
+        "columns": [
+          {
+            "field": "keyword",
+            "type": "raw",
+            "value": "conta digital sem taxas"
+          },
+          {
+            "field": "position",
+            "type": "raw",
+            "value": 22
+          },
+          {
+            "field": "change_from_previous_day",
+            "type": "raw",
+            "value": -0.04
+          },
+          {
+            "field": "competitivity",
+            "type": "raw",
+            "value": "very high"
+          },
+          {
+            "field": "search_volume",
+            "type": "raw",
+            "value": "very low (9.14%)"
+          }
+        ],
+        "date": ""
+      },
+      {
+        "columns": [
+          {
+            "field": "keyword",
+            "type": "raw",
+            "value": "conta pj gratuita"
+          },
+          {
+            "field": "position",
+            "type": "raw",
+            "value": 19
+          },
+          {
+            "field": "change_from_previous_day",
+            "type": "raw",
+            "value": 0.04
+          },
+          {
+            "field": "competitivity",
+            "type": "raw",
+            "value": "very high"
+          },
+          {
+            "field": "search_volume",
+            "type": "raw",
+            "value": "medium (52.03%)"
+          }
+        ],
+        "date": ""
+      },
+      {
+        "columns": [
+          {
+            "field": "keyword",
+            "type": "raw",
+            "value": "conta digital sem anuidade"
+          },
+          {
+            "field": "position",
+            "type": "raw",
+            "value": 7
+          },
+          {
+            "field": "change_from_previous_day",
+            "type": "raw",
+            "value": 0
+          },
+          {
+            "field": "competitivity",
+            "type": "raw",
+            "value": "very high"
+          },
+          {
+            "field": "search_volume",
+            "type": "raw",
+            "value": "very low (9.14%)"
+          }
+        ],
+        "date": ""
+      },
+      {
+        "columns": [
+          {
+            "field": "keyword",
+            "type": "raw",
+            "value": "seguro celular"
+          },
+          {
+            "field": "position",
+            "type": "raw",
+            "value": 21
+          },
+          {
+            "field": "change_from_previous_day",
+            "type": "raw",
+            "value": -0.04
+          },
+          {
+            "field": "competitivity",
+            "type": "raw",
+            "value": "very high"
+          },
+          {
+            "field": "search_volume",
+            "type": "raw",
+            "value": "high (76.24%)"
+          }
+        ],
+        "date": ""
+      },
+      {
+        "columns": [
+          {
+            "field": "keyword",
+            "type": "raw",
+            "value": "crédito consignado"
+          },
+          {
+            "field": "position",
+            "type": "raw",
+            "value": 17
+          },
+          {
+            "field": "change_from_previous_day",
+            "type": "raw",
+            "value": 0
+          },
+          {
+            "field": "competitivity",
+            "type": "raw",
+            "value": "medium"
+          },
+          {
+            "field": "search_volume",
+            "type": "raw",
+            "value": "high (76.24%)"
+          }
+        ],
+        "date": ""
+      },
+      {
+        "columns": [
+          {
+            "field": "keyword",
+            "type": "raw",
+            "value": "pasep"
+          },
+          {
+            "field": "position",
+            "type": "raw",
+            "value": 8
+          },
+          {
+            "field": "change_from_previous_day",
+            "type": "raw",
+            "value": -0.04
+          },
+          {
+            "field": "competitivity",
+            "type": "raw",
+            "value": "very low"
+          },
+          {
+            "field": "search_volume",
+            "type": "raw",
+            "value": "high (76.24%)"
+          }
+        ],
+        "date": ""
+      },
+      {
+        "columns": [
+          {
+            "field": "keyword",
+            "type": "raw",
+            "value": "cartão sem anuidade"
+          },
+          {
+            "field": "position",
+            "type": "raw",
+            "value": 29
+          },
+          {
+            "field": "change_from_previous_day",
+            "type": "raw",
+            "value": -0.04
+          },
+          {
+            "field": "competitivity",
+            "type": "raw",
+            "value": "high"
+          },
+          {
+            "field": "search_volume",
+            "type": "raw",
+            "value": "medium (52.03%)"
+          }
+        ],
+        "date": ""
+      },
+      {
+        "columns": [
+          {
+            "field": "keyword",
+            "type": "raw",
+            "value": "finanças"
+          },
+          {
+            "field": "position",
+            "type": "raw",
+            "value": 6
+          },
+          {
+            "field": "change_from_previous_day",
+            "type": "raw",
+            "value": -0.39
+          },
+          {
+            "field": "competitivity",
+            "type": "raw",
+            "value": "very low"
+          },
+          {
+            "field": "search_volume",
+            "type": "raw",
+            "value": "high (76.24%)"
+          }
+        ],
+        "date": ""
+      },
+      {
+        "columns": [
+          {
+            "field": "keyword",
+            "type": "raw",
+            "value": "cash back"
+          },
+          {
+            "field": "position",
+            "type": "raw",
+            "value": 42
+          },
+          {
+            "field": "change_from_previous_day",
+            "type": "raw",
+            "value": -0.32
+          },
+          {
+            "field": "competitivity",
+            "type": "raw",
+            "value": "very low"
+          },
+          {
+            "field": "search_volume",
+            "type": "raw",
+            "value": "medium (52.03%)"
+          }
+        ],
+        "date": ""
+      },
+      {
+        "columns": [
+          {
+            "field": "keyword",
+            "type": "raw",
+            "value": "pix saque"
+          },
+          {
+            "field": "position",
+            "type": "raw",
+            "value": 13
+          },
+          {
+            "field": "change_from_previous_day",
+            "type": "raw",
+            "value": -0.18
+          },
+          {
+            "field": "competitivity",
+            "type": "raw",
+            "value": "very low"
+          },
+          {
+            "field": "search_volume",
+            "type": "raw",
+            "value": "medium (52.03%)"
+          }
+        ],
+        "date": ""
+      },
+      {
+        "columns": [
+          {
+            "field": "keyword",
+            "type": "raw",
+            "value": "ver saldo"
+          },
+          {
+            "field": "position",
+            "type": "raw",
+            "value": 38
+          },
+          {
+            "field": "change_from_previous_day",
+            "type": "raw",
+            "value": 0
+          },
+          {
+            "field": "competitivity",
+            "type": "raw",
+            "value": "very low"
+          },
+          {
+            "field": "search_volume",
+            "type": "raw",
+            "value": "low (28.99%)"
+          }
+        ],
+        "date": ""
+      },
+      {
+        "columns": [
+          {
+            "field": "keyword",
+            "type": "raw",
+            "value": "cdb"
+          },
+          {
+            "field": "position",
+            "type": "raw",
+            "value": 18
+          },
+          {
+            "field": "change_from_previous_day",
+            "type": "raw",
+            "value": -0.04
+          },
+          {
+            "field": "competitivity",
+            "type": "raw",
+            "value": "very low"
+          },
+          {
+            "field": "search_volume",
+            "type": "raw",
+            "value": "very high (93.88%)"
+          }
+        ],
+        "date": ""
+      },
+      {
+        "columns": [
+          {
+            "field": "keyword",
+            "type": "raw",
+            "value": "empréstimo"
+          },
+          {
+            "field": "position",
+            "type": "raw",
+            "value": 52
+          },
+          {
+            "field": "change_from_previous_day",
+            "type": "raw",
+            "value": 0
+          },
+          {
+            "field": "competitivity",
+            "type": "raw",
+            "value": "very high"
+          },
+          {
+            "field": "search_volume",
+            "type": "raw",
+            "value": "very high (93.88%)"
+          }
+        ],
+        "date": ""
+      },
+      {
+        "columns": [
+          {
+            "field": "keyword",
+            "type": "raw",
+            "value": "cartão débito"
+          },
+          {
+            "field": "position",
+            "type": "raw",
+            "value": 21
+          },
+          {
+            "field": "change_from_previous_day",
+            "type": "raw",
+            "value": 0
+          },
+          {
+            "field": "competitivity",
+            "type": "raw",
+            "value": "low"
+          },
+          {
+            "field": "search_volume",
+            "type": "raw",
+            "value": "medium (52.03%)"
+          }
+        ],
+        "date": ""
+      },
+      {
+        "columns": [
+          {
+            "field": "keyword",
+            "type": "raw",
+            "value": "poupança digital"
+          },
+          {
+            "field": "position",
+            "type": "raw",
+            "value": 5
+          },
+          {
+            "field": "change_from_previous_day",
+            "type": "raw",
+            "value": 0
+          },
+          {
+            "field": "competitivity",
+            "type": "raw",
+            "value": "high"
+          },
+          {
+            "field": "search_volume",
+            "type": "raw",
+            "value": "low (28.99%)"
+          }
+        ],
+        "date": ""
+      },
+      {
+        "columns": [
+          {
+            "field": "keyword",
+            "type": "raw",
+            "value": "pix"
+          },
+          {
+            "field": "position",
+            "type": "raw",
+            "value": 3
+          },
+          {
+            "field": "change_from_previous_day",
+            "type": "raw",
+            "value": -0.04
+          },
+          {
+            "field": "competitivity",
+            "type": "raw",
+            "value": "very low"
+          },
+          {
+            "field": "search_volume",
+            "type": "raw",
+            "value": "very high (93.88%)"
+          }
+        ],
+        "date": ""
+      },
+      {
+        "columns": [
+          {
+            "field": "keyword",
+            "type": "raw",
+            "value": "crédito"
+          },
+          {
+            "field": "position",
+            "type": "raw",
+            "value": 13
+          },
+          {
+            "field": "change_from_previous_day",
+            "type": "raw",
+            "value": -0.04
+          },
+          {
+            "field": "competitivity",
+            "type": "raw",
+            "value": "low"
+          },
+          {
+            "field": "search_volume",
+            "type": "raw",
+            "value": "high (76.24%)"
+          }
+        ],
+        "date": ""
+      },
+      {
+        "columns": [
+          {
+            "field": "keyword",
+            "type": "raw",
+            "value": "transferência bancária"
+          },
+          {
+            "field": "position",
+            "type": "raw",
+            "value": 6
+          },
+          {
+            "field": "change_from_previous_day",
+            "type": "raw",
+            "value": 0.04
+          },
+          {
+            "field": "competitivity",
+            "type": "raw",
+            "value": "very low"
+          },
+          {
+            "field": "search_volume",
+            "type": "raw",
+            "value": "medium (52.03%)"
+          }
+        ],
+        "date": ""
+      },
+      {
+        "columns": [
+          {
+            "field": "keyword",
+            "type": "raw",
+            "value": "nuinvest"
+          },
+          {
+            "field": "position",
+            "type": "raw",
+            "value": 17
+          },
+          {
+            "field": "change_from_previous_day",
+            "type": "raw",
+            "value": -0.04
+          },
+          {
+            "field": "competitivity",
+            "type": "raw",
+            "value": "medium"
+          },
+          {
+            "field": "search_volume",
+            "type": "raw",
+            "value": "high (76.24%)"
+          }
+        ],
+        "date": ""
+      },
+      {
+        "columns": [
+          {
+            "field": "keyword",
+            "type": "raw",
+            "value": "abra sua conta"
+          },
+          {
+            "field": "position",
+            "type": "raw",
+            "value": 5
+          },
+          {
+            "field": "change_from_previous_day",
+            "type": "raw",
+            "value": 0.04
+          },
+          {
+            "field": "competitivity",
+            "type": "raw",
+            "value": "medium"
+          },
+          {
+            "field": "search_volume",
+            "type": "raw",
+            "value": "low (28.99%)"
+          }
+        ],
+        "date": ""
+      },
+      {
+        "columns": [
+          {
+            "field": "keyword",
+            "type": "raw",
+            "value": "minhas finanças"
+          },
+          {
+            "field": "position",
+            "type": "raw",
+            "value": 68
+          },
+          {
+            "field": "change_from_previous_day",
+            "type": "raw",
+            "value": 1
+          },
+          {
+            "field": "competitivity",
+            "type": "raw",
+            "value": "very low"
+          },
+          {
+            "field": "search_volume",
+            "type": "raw",
+            "value": "medium (52.03%)"
+          }
+        ],
+        "date": ""
+      },
+      {
+        "columns": [
+          {
+            "field": "keyword",
+            "type": "raw",
+            "value": "cartão crédito online"
+          },
+          {
+            "field": "position",
+            "type": "raw",
+            "value": 33
+          },
+          {
+            "field": "change_from_previous_day",
+            "type": "raw",
+            "value": 0.07
+          },
+          {
+            "field": "competitivity",
+            "type": "raw",
+            "value": "high"
+          },
+          {
+            "field": "search_volume",
+            "type": "raw",
+            "value": "low (28.99%)"
+          }
+        ],
+        "date": ""
+      },
+      {
+        "columns": [
+          {
+            "field": "keyword",
+            "type": "raw",
+            "value": "seguro empréstimo"
+          },
+          {
+            "field": "position",
+            "type": "raw",
+            "value": 23
+          },
+          {
+            "field": "change_from_previous_day",
+            "type": "raw",
+            "value": 0.07
+          },
+          {
+            "field": "competitivity",
+            "type": "raw",
+            "value": "very low"
+          },
+          {
+            "field": "search_volume",
+            "type": "raw",
+            "value": "low (28.99%)"
+          }
+        ],
+        "date": ""
+      },
+      {
+        "columns": [
+          {
+            "field": "keyword",
+            "type": "raw",
+            "value": "conta gratuita"
+          },
+          {
+            "field": "position",
+            "type": "raw",
+            "value": 5
+          },
+          {
+            "field": "change_from_previous_day",
+            "type": "raw",
+            "value": 0
+          },
+          {
+            "field": "competitivity",
+            "type": "raw",
+            "value": "high"
+          },
+          {
+            "field": "search_volume",
+            "type": "raw",
+            "value": "low (28.99%)"
+          }
+        ],
+        "date": ""
+      },
+      {
+        "columns": [
+          {
+            "field": "keyword",
+            "type": "raw",
+            "value": "banco digital"
+          },
+          {
+            "field": "position",
+            "type": "raw",
+            "value": 13
+          },
+          {
+            "field": "change_from_previous_day",
+            "type": "raw",
+            "value": 0.04
+          },
+          {
+            "field": "competitivity",
+            "type": "raw",
+            "value": "high"
+          },
+          {
+            "field": "search_volume",
+            "type": "raw",
+            "value": "high (76.24%)"
+          }
+        ],
+        "date": ""
+      },
+      {
+        "columns": [
+          {
+            "field": "keyword",
+            "type": "raw",
+            "value": "conta para empresas"
+          },
+          {
+            "field": "position",
+            "type": "raw",
+            "value": 14
+          },
+          {
+            "field": "change_from_previous_day",
+            "type": "raw",
+            "value": -0.04
+          },
+          {
+            "field": "competitivity",
+            "type": "raw",
+            "value": "very high"
+          },
+          {
+            "field": "search_volume",
+            "type": "raw",
+            "value": "low (28.99%)"
+          }
+        ],
+        "date": ""
+      },
+      {
+        "columns": [
+          {
+            "field": "keyword",
+            "type": "raw",
+            "value": "investimentos"
+          },
+          {
+            "field": "position",
+            "type": "raw",
+            "value": 76
+          },
+          {
+            "field": "change_from_previous_day",
+            "type": "raw",
+            "value": -0.08
+          },
+          {
+            "field": "competitivity",
+            "type": "raw",
+            "value": "low"
+          },
+          {
+            "field": "search_volume",
+            "type": "raw",
+            "value": "very high (93.88%)"
+          }
+        ],
+        "date": ""
+      },
+      {
+        "columns": [
+          {
+            "field": "keyword",
+            "type": "raw",
+            "value": "investir dinheiro"
+          },
+          {
+            "field": "position",
+            "type": "raw",
+            "value": 59
+          },
+          {
+            "field": "change_from_previous_day",
+            "type": "raw",
+            "value": -0.08
+          },
+          {
+            "field": "competitivity",
+            "type": "raw",
+            "value": "high"
+          },
+          {
+            "field": "search_volume",
+            "type": "raw",
+            "value": "medium (52.03%)"
+          }
+        ],
+        "date": ""
+      },
+      {
+        "columns": [
+          {
+            "field": "keyword",
+            "type": "raw",
+            "value": "conta digital sem tarifas"
+          },
+          {
+            "field": "position",
+            "type": "raw",
+            "value": 6
+          },
+          {
+            "field": "change_from_previous_day",
+            "type": "raw",
+            "value": -0.07
+          },
+          {
+            "field": "competitivity",
+            "type": "raw",
+            "value": "very high"
+          },
+          {
+            "field": "search_volume",
+            "type": "raw",
+            "value": "very low (9.14%)"
+          }
+        ],
+        "date": ""
+      },
+      {
+        "columns": [
+          {
+            "field": "keyword",
+            "type": "raw",
+            "value": "financiamento"
+          },
+          {
+            "field": "position",
+            "type": "raw",
+            "value": 28
+          },
+          {
+            "field": "change_from_previous_day",
+            "type": "raw",
+            "value": 0
+          },
+          {
+            "field": "competitivity",
+            "type": "raw",
+            "value": "high"
+          },
+          {
+            "field": "search_volume",
+            "type": "raw",
+            "value": "high (76.24%)"
+          }
+        ],
+        "date": ""
+      },
+      {
+        "columns": [
+          {
+            "field": "keyword",
+            "type": "raw",
+            "value": "conta para mei"
+          },
+          {
+            "field": "position",
+            "type": "raw",
+            "value": 13
+          },
+          {
+            "field": "change_from_previous_day",
+            "type": "raw",
+            "value": -0.04
+          },
+          {
+            "field": "competitivity",
+            "type": "raw",
+            "value": "high"
+          },
+          {
+            "field": "search_volume",
+            "type": "raw",
+            "value": "low (25.43%)"
+          }
+        ],
+        "date": ""
+      },
+      {
+        "columns": [
+          {
+            "field": "keyword",
+            "type": "raw",
+            "value": "conta digital online"
+          },
+          {
+            "field": "position",
+            "type": "raw",
+            "value": 5
+          },
+          {
+            "field": "change_from_previous_day",
+            "type": "raw",
+            "value": 0
+          },
+          {
+            "field": "competitivity",
+            "type": "raw",
+            "value": "very high"
+          },
+          {
+            "field": "search_volume",
+            "type": "raw",
+            "value": "very low (9.14%)"
+          }
+        ],
+        "date": ""
+      },
+      {
+        "columns": [
+          {
+            "field": "keyword",
+            "type": "raw",
+            "value": "empréstimo consignado"
+          },
+          {
+            "field": "position",
+            "type": "raw",
+            "value": 18
+          },
+          {
+            "field": "change_from_previous_day",
+            "type": "raw",
+            "value": 0
+          },
+          {
+            "field": "competitivity",
+            "type": "raw",
+            "value": "very high"
+          },
+          {
+            "field": "search_volume",
+            "type": "raw",
+            "value": "very high (93.88%)"
+          }
+        ],
+        "date": ""
+      },
+      {
+        "columns": [
+          {
+            "field": "keyword",
+            "type": "raw",
+            "value": "programa desenrola"
+          },
+          {
+            "field": "position",
+            "type": "raw",
+            "value": 13
+          },
+          {
+            "field": "change_from_previous_day",
+            "type": "raw",
+            "value": 0
+          },
+          {
+            "field": "competitivity",
+            "type": "raw",
+            "value": "medium"
+          },
+          {
+            "field": "search_volume",
+            "type": "raw",
+            "value": "low (28.99%)"
+          }
+        ],
+        "date": ""
+      },
+      {
+        "columns": [
+          {
+            "field": "keyword",
+            "type": "raw",
+            "value": "pagar boleto com cartão de crédito"
+          },
+          {
+            "field": "position",
+            "type": "raw",
+            "value": 40
+          },
+          {
+            "field": "change_from_previous_day",
+            "type": "raw",
+            "value": 0
+          },
+          {
+            "field": "competitivity",
+            "type": "raw",
+            "value": "medium"
+          },
+          {
+            "field": "search_volume",
+            "type": "raw",
+            "value": "high (76.24%)"
+          }
+        ],
+        "date": ""
+      },
+      {
+        "columns": [
+          {
+            "field": "keyword",
+            "type": "raw",
+            "value": "poupança caixa"
+          },
+          {
+            "field": "position",
+            "type": "raw",
+            "value": 5
+          },
+          {
+            "field": "change_from_previous_day",
+            "type": "raw",
+            "value": 0.07
+          },
+          {
+            "field": "competitivity",
+            "type": "raw",
+            "value": "very low"
+          },
+          {
+            "field": "search_volume",
+            "type": "raw",
+            "value": "medium (52.03%)"
+          }
+        ],
+        "date": ""
+      },
+      {
+        "columns": [
+          {
+            "field": "keyword",
+            "type": "raw",
+            "value": "parcelar cartão de crédito"
+          },
+          {
+            "field": "position",
+            "type": "raw",
+            "value": 53
+          },
+          {
+            "field": "change_from_previous_day",
+            "type": "raw",
+            "value": -0.71
+          },
+          {
+            "field": "competitivity",
+            "type": "raw",
+            "value": "low"
+          },
+          {
+            "field": "search_volume",
+            "type": "raw",
+            "value": "low (28.99%)"
+          }
+        ],
+        "date": ""
+      },
+      {
+        "columns": [
+          {
+            "field": "keyword",
+            "type": "raw",
+            "value": "cartão de crédito"
+          },
+          {
+            "field": "position",
+            "type": "raw",
+            "value": 15
+          },
+          {
+            "field": "change_from_previous_day",
+            "type": "raw",
+            "value": 0
+          },
+          {
+            "field": "competitivity",
+            "type": "raw",
+            "value": "high"
+          },
+          {
+            "field": "search_volume",
+            "type": "raw",
+            "value": "very high (93.88%)"
+          }
+        ],
+        "date": ""
+      },
+      {
+        "columns": [
+          {
+            "field": "keyword",
+            "type": "raw",
+            "value": "débito"
+          },
+          {
+            "field": "position",
+            "type": "raw",
+            "value": 26
+          },
+          {
+            "field": "change_from_previous_day",
+            "type": "raw",
+            "value": 0
+          },
+          {
+            "field": "competitivity",
+            "type": "raw",
+            "value": "very low"
+          },
+          {
+            "field": "search_volume",
+            "type": "raw",
+            "value": "high (76.24%)"
+          }
+        ],
+        "date": ""
+      },
+      {
+        "columns": [
+          {
+            "field": "keyword",
+            "type": "raw",
+            "value": "emprestimo pessoal"
+          },
+          {
+            "field": "position",
+            "type": "raw",
+            "value": 37
+          },
+          {
+            "field": "change_from_previous_day",
+            "type": "raw",
+            "value": 0.04
+          },
+          {
+            "field": "competitivity",
+            "type": "raw",
+            "value": "very high"
+          },
+          {
+            "field": "search_volume",
+            "type": "raw",
+            "value": "very high (93.88%)"
+          }
+        ],
+        "date": ""
+      },
+      {
+        "columns": [
+          {
+            "field": "keyword",
+            "type": "raw",
+            "value": "digital"
+          },
+          {
+            "field": "position",
+            "type": "raw",
+            "value": 39
+          },
+          {
+            "field": "change_from_previous_day",
+            "type": "raw",
+            "value": 0
+          },
+          {
+            "field": "competitivity",
+            "type": "raw",
+            "value": "very low"
+          },
+          {
+            "field": "search_volume",
+            "type": "raw",
+            "value": "high (76.24%)"
+          }
+        ],
+        "date": ""
+      },
+      {
+        "columns": [
+          {
+            "field": "keyword",
+            "type": "raw",
+            "value": "conta"
+          },
+          {
+            "field": "position",
+            "type": "raw",
+            "value": 5
+          },
+          {
+            "field": "change_from_previous_day",
+            "type": "raw",
+            "value": 0
+          },
+          {
+            "field": "competitivity",
+            "type": "raw",
+            "value": "very low"
+          },
+          {
+            "field": "search_volume",
+            "type": "raw",
+            "value": "very high (93.88%)"
+          }
+        ],
+        "date": ""
+      },
+      {
+        "columns": [
+          {
+            "field": "keyword",
+            "type": "raw",
+            "value": "saque aniversário"
+          },
+          {
+            "field": "position",
+            "type": "raw",
+            "value": 21
+          },
+          {
+            "field": "change_from_previous_day",
+            "type": "raw",
+            "value": -0.07
+          },
+          {
+            "field": "competitivity",
+            "type": "raw",
+            "value": "low"
+          },
+          {
+            "field": "search_volume",
+            "type": "raw",
+            "value": "very high (93.88%)"
+          }
+        ],
+        "date": ""
+      },
+      {
+        "columns": [
+          {
+            "field": "keyword",
+            "type": "raw",
+            "value": "conta corrente"
+          },
+          {
+            "field": "position",
+            "type": "raw",
+            "value": 2
+          },
+          {
+            "field": "change_from_previous_day",
+            "type": "raw",
+            "value": 0
+          },
+          {
+            "field": "competitivity",
+            "type": "raw",
+            "value": "low"
+          },
+          {
+            "field": "search_volume",
+            "type": "raw",
+            "value": "high (76.24%)"
+          }
+        ],
+        "date": ""
+      },
+      {
+        "columns": [
+          {
+            "field": "keyword",
+            "type": "raw",
+            "value": "transferencias bancárias"
+          },
+          {
+            "field": "position",
+            "type": "raw",
+            "value": 3
+          },
+          {
+            "field": "change_from_previous_day",
+            "type": "raw",
+            "value": 0
+          },
+          {
+            "field": "competitivity",
+            "type": "raw",
+            "value": "very low"
+          },
+          {
+            "field": "search_volume",
+            "type": "raw",
+            "value": "low (28.99%)"
+          }
+        ],
+        "date": ""
+      },
+      {
+        "columns": [
+          {
+            "field": "keyword",
+            "type": "raw",
+            "value": "cartão"
+          },
+          {
+            "field": "position",
+            "type": "raw",
+            "value": 16
+          },
+          {
+            "field": "change_from_previous_day",
+            "type": "raw",
+            "value": 0.04
+          },
+          {
+            "field": "competitivity",
+            "type": "raw",
+            "value": "low"
+          },
+          {
+            "field": "search_volume",
+            "type": "raw",
+            "value": "high (76.24%)"
+          }
+        ],
+        "date": ""
+      },
+      {
+        "columns": [
+          {
+            "field": "keyword",
+            "type": "raw",
+            "value": "open finance"
+          },
+          {
+            "field": "position",
+            "type": "raw",
+            "value": 7
+          },
+          {
+            "field": "change_from_previous_day",
+            "type": "raw",
+            "value": 0
+          },
+          {
+            "field": "competitivity",
+            "type": "raw",
+            "value": "very low"
+          },
+          {
+            "field": "search_volume",
+            "type": "raw",
+            "value": "high (76.24%)"
+          }
+        ],
+        "date": ""
+      },
+      {
+        "columns": [
+          {
+            "field": "keyword",
+            "type": "raw",
+            "value": "cartão sem tarifa"
+          },
+          {
+            "field": "position",
+            "type": "raw",
+            "value": 50
+          },
+          {
+            "field": "change_from_previous_day",
+            "type": "raw",
+            "value": 0
+          },
+          {
+            "field": "competitivity",
+            "type": "raw",
+            "value": "high"
+          },
+          {
+            "field": "search_volume",
+            "type": "raw",
+            "value": "very low (9.14%)"
+          }
+        ],
+        "date": ""
+      },
+      {
+        "columns": [
+          {
+            "field": "keyword",
+            "type": "raw",
+            "value": "serviços financeiros"
+          },
+          {
+            "field": "position",
+            "type": "raw",
+            "value": 44
+          },
+          {
+            "field": "change_from_previous_day",
+            "type": "raw",
+            "value": 0
+          },
+          {
+            "field": "competitivity",
+            "type": "raw",
+            "value": "low"
+          },
+          {
+            "field": "search_volume",
+            "type": "raw",
+            "value": "medium (52.03%)"
+          }
+        ],
+        "date": ""
+      },
+      {
+        "columns": [
+          {
+            "field": "keyword",
+            "type": "raw",
+            "value": "fgts"
+          },
+          {
+            "field": "position",
+            "type": "raw",
+            "value": 14
+          },
+          {
+            "field": "change_from_previous_day",
+            "type": "raw",
+            "value": 0
+          },
+          {
+            "field": "competitivity",
+            "type": "raw",
+            "value": "very low"
+          },
+          {
+            "field": "search_volume",
+            "type": "raw",
+            "value": "very high (93.88%)"
+          }
+        ],
+        "date": ""
+      },
+      {
+        "columns": [
+          {
+            "field": "keyword",
+            "type": "raw",
+            "value": "abrir conta"
+          },
+          {
+            "field": "position",
+            "type": "raw",
+            "value": 3
+          },
+          {
+            "field": "change_from_previous_day",
+            "type": "raw",
+            "value": 0
+          },
+          {
+            "field": "competitivity",
+            "type": "raw",
+            "value": "high"
+          },
+          {
+            "field": "search_volume",
+            "type": "raw",
+            "value": "medium (52.03%)"
+          }
+        ],
+        "date": ""
+      },
+      {
+        "columns": [
+          {
+            "field": "keyword",
+            "type": "raw",
+            "value": "banco digital gratuito"
+          },
+          {
+            "field": "position",
+            "type": "raw",
+            "value": 12
+          },
+          {
+            "field": "change_from_previous_day",
+            "type": "raw",
+            "value": -0.04
+          },
+          {
+            "field": "competitivity",
+            "type": "raw",
+            "value": "very high"
+          },
+          {
+            "field": "search_volume",
+            "type": "raw",
+            "value": "very low (17.48%)"
+          }
+        ],
+        "date": ""
+      },
+      {
+        "columns": [
+          {
+            "field": "keyword",
+            "type": "raw",
+            "value": "consultar saldo"
+          },
+          {
+            "field": "position",
+            "type": "raw",
+            "value": 33
+          },
+          {
+            "field": "change_from_previous_day",
+            "type": "raw",
+            "value": -0.07
+          },
+          {
+            "field": "competitivity",
+            "type": "raw",
+            "value": "very low"
+          },
+          {
+            "field": "search_volume",
+            "type": "raw",
+            "value": "medium (52.03%)"
+          }
+        ],
+        "date": ""
+      },
+      {
+        "columns": [
+          {
+            "field": "keyword",
+            "type": "raw",
+            "value": "dívidas"
+          },
+          {
+            "field": "position",
+            "type": "raw",
+            "value": 21
+          },
+          {
+            "field": "change_from_previous_day",
+            "type": "raw",
+            "value": -0.04
+          },
+          {
+            "field": "competitivity",
+            "type": "raw",
+            "value": "low"
+          },
+          {
+            "field": "search_volume",
+            "type": "raw",
+            "value": "medium (52.03%)"
+          }
+        ],
+        "date": ""
+      },
+      {
+        "columns": [
+          {
+            "field": "keyword",
+            "type": "raw",
+            "value": "pagamento"
+          },
+          {
+            "field": "position",
+            "type": "raw",
+            "value": 30
+          },
+          {
+            "field": "change_from_previous_day",
+            "type": "raw",
+            "value": 0
+          },
+          {
+            "field": "competitivity",
+            "type": "raw",
+            "value": "very low"
+          },
+          {
+            "field": "search_volume",
+            "type": "raw",
+            "value": "very high (93.88%)"
+          }
+        ],
+        "date": ""
+      },
+      {
+        "columns": [
+          {
+            "field": "keyword",
+            "type": "raw",
+            "value": "pix grátis"
+          },
+          {
+            "field": "position",
+            "type": "raw",
+            "value": 18
+          },
+          {
+            "field": "change_from_previous_day",
+            "type": "raw",
+            "value": 0
+          },
+          {
+            "field": "competitivity",
+            "type": "raw",
+            "value": "low"
+          },
+          {
+            "field": "search_volume",
+            "type": "raw",
+            "value": "medium (52.03%)"
+          }
+        ],
+        "date": ""
+      },
+      {
+        "columns": [
+          {
+            "field": "keyword",
+            "type": "raw",
+            "value": "banco online"
+          },
+          {
+            "field": "position",
+            "type": "raw",
+            "value": 6
+          },
+          {
+            "field": "change_from_previous_day",
+            "type": "raw",
+            "value": 0
+          },
+          {
+            "field": "competitivity",
+            "type": "raw",
+            "value": "high"
+          },
+          {
+            "field": "search_volume",
+            "type": "raw",
+            "value": "medium (52.03%)"
+          }
+        ],
+        "date": ""
+      },
+      {
+        "columns": [
+          {
+            "field": "keyword",
+            "type": "raw",
+            "value": "pronampe"
+          },
+          {
+            "field": "position",
+            "type": "raw",
+            "value": 6
+          },
+          {
+            "field": "change_from_previous_day",
+            "type": "raw",
+            "value": 0
+          },
+          {
+            "field": "competitivity",
+            "type": "raw",
+            "value": "medium"
+          },
+          {
+            "field": "search_volume",
+            "type": "raw",
+            "value": "high (76.24%)"
+          }
+        ],
+        "date": ""
+      },
+      {
+        "columns": [
+          {
+            "field": "keyword",
+            "type": "raw",
+            "value": "bb investimentos"
+          },
+          {
+            "field": "position",
+            "type": "raw",
+            "value": 2
+          },
+          {
+            "field": "change_from_previous_day",
+            "type": "raw",
+            "value": 0
+          },
+          {
+            "field": "competitivity",
+            "type": "raw",
+            "value": "very low"
+          },
+          {
+            "field": "search_volume",
+            "type": "raw",
+            "value": "high (76.24%)"
+          }
+        ],
+        "date": ""
+      },
+      {
+        "columns": [
+          {
+            "field": "keyword",
+            "type": "raw",
+            "value": "abrir conta virtual"
+          },
+          {
+            "field": "position",
+            "type": "raw",
+            "value": 2
+          },
+          {
+            "field": "change_from_previous_day",
+            "type": "raw",
+            "value": 0
+          },
+          {
+            "field": "competitivity",
+            "type": "raw",
+            "value": "very high"
+          },
+          {
+            "field": "search_volume",
+            "type": "raw",
+            "value": "very low (9.14%)"
+          }
+        ],
+        "date": ""
+      },
+      {
+        "columns": [
+          {
+            "field": "keyword",
+            "type": "raw",
+            "value": "fundos de investimento"
+          },
+          {
+            "field": "position",
+            "type": "raw",
+            "value": 62
+          },
+          {
+            "field": "change_from_previous_day",
+            "type": "raw",
+            "value": -0.14
+          },
+          {
+            "field": "competitivity",
+            "type": "raw",
+            "value": "low"
+          },
+          {
+            "field": "search_volume",
+            "type": "raw",
+            "value": "high (76.24%)"
+          }
+        ],
+        "date": ""
+      },
+      {
+        "columns": [
+          {
+            "field": "keyword",
+            "type": "raw",
+            "value": "renda variável"
+          },
+          {
+            "field": "position",
+            "type": "raw",
+            "value": 45
+          },
+          {
+            "field": "change_from_previous_day",
+            "type": "raw",
+            "value": -0.07
+          },
+          {
+            "field": "competitivity",
+            "type": "raw",
+            "value": "very low"
+          },
+          {
+            "field": "search_volume",
+            "type": "raw",
+            "value": "medium (52.03%)"
+          }
+        ],
+        "date": ""
+      },
+      {
+        "columns": [
+          {
+            "field": "keyword",
+            "type": "raw",
+            "value": "capital de giro"
+          },
+          {
+            "field": "position",
+            "type": "raw",
+            "value": 14
+          },
+          {
+            "field": "change_from_previous_day",
+            "type": "raw",
+            "value": -0.07
+          },
+          {
+            "field": "competitivity",
+            "type": "raw",
+            "value": "low"
+          },
+          {
+            "field": "search_volume",
+            "type": "raw",
+            "value": "high (76.24%)"
+          }
+        ],
+        "date": ""
+      },
+      {
+        "columns": [
+          {
+            "field": "keyword",
+            "type": "raw",
+            "value": "pagar contas"
+          },
+          {
+            "field": "position",
+            "type": "raw",
+            "value": 40
+          },
+          {
+            "field": "change_from_previous_day",
+            "type": "raw",
+            "value": -0.04
+          },
+          {
+            "field": "competitivity",
+            "type": "raw",
+            "value": "very low"
+          },
+          {
+            "field": "search_volume",
+            "type": "raw",
+            "value": "medium (52.03%)"
+          }
+        ],
+        "date": ""
+      },
+      {
+        "columns": [
+          {
+            "field": "keyword",
+            "type": "raw",
+            "value": "rendimento poupança"
+          },
+          {
+            "field": "position",
+            "type": "raw",
+            "value": 5
+          },
+          {
+            "field": "change_from_previous_day",
+            "type": "raw",
+            "value": -0.68
+          },
+          {
+            "field": "competitivity",
+            "type": "raw",
+            "value": "very low"
+          },
+          {
+            "field": "search_volume",
+            "type": "raw",
+            "value": "high (76.24%)"
+          }
+        ],
+        "date": ""
+      },
+      {
+        "columns": [
+          {
+            "field": "keyword",
+            "type": "raw",
+            "value": "ipva"
+          },
+          {
+            "field": "position",
+            "type": "raw",
+            "value": 23
+          },
+          {
+            "field": "change_from_previous_day",
+            "type": "raw",
+            "value": 0
+          },
+          {
+            "field": "competitivity",
+            "type": "raw",
+            "value": "very low"
+          },
+          {
+            "field": "search_volume",
+            "type": "raw",
+            "value": "very high (93.88%)"
+          }
+        ],
+        "date": ""
+      },
+      {
+        "columns": [
+          {
+            "field": "keyword",
+            "type": "raw",
+            "value": "transferência"
+          },
+          {
+            "field": "position",
+            "type": "raw",
+            "value": 63
+          },
+          {
+            "field": "change_from_previous_day",
+            "type": "raw",
+            "value": 0
+          },
+          {
+            "field": "competitivity",
+            "type": "raw",
+            "value": "very low"
+          },
+          {
+            "field": "search_volume",
+            "type": "raw",
+            "value": "high (76.24%)"
+          }
+        ],
+        "date": ""
+      },
+      {
+        "columns": [
+          {
+            "field": "keyword",
+            "type": "raw",
+            "value": "cartao de credito"
+          },
+          {
+            "field": "position",
+            "type": "raw",
+            "value": 17
+          },
+          {
+            "field": "change_from_previous_day",
+            "type": "raw",
+            "value": 0.07
+          },
+          {
+            "field": "competitivity",
+            "type": "raw",
+            "value": "high"
+          },
+          {
+            "field": "search_volume",
+            "type": "raw",
+            "value": "very high (93.88%)"
+          }
+        ],
+        "date": ""
+      },
+      {
+        "columns": [
+          {
+            "field": "keyword",
+            "type": "raw",
+            "value": "investir"
+          },
+          {
+            "field": "position",
+            "type": "raw",
+            "value": 82
+          },
+          {
+            "field": "change_from_previous_day",
+            "type": "raw",
+            "value": 0
+          },
+          {
+            "field": "competitivity",
+            "type": "raw",
+            "value": "low"
+          },
+          {
+            "field": "search_volume",
+            "type": "raw",
+            "value": "very high (93.88%)"
+          }
+        ],
+        "date": ""
+      }
+    ]
+  },
+  "category": {
+    "name": "Aquisição",
+    "slug": "aquisicao",
+    "documentId": "n0ghyzy58ii9xuj7bc7ctvyk"
+  }
+}

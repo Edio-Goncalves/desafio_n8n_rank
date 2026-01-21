@@ -1,0 +1,521 @@
+{
+  "name": "[2.00]_bigNumberItems_parse_and_insights",
+  "nodes": [
+    {
+      "parameters": {
+        "workflowInputs": {
+          "values": [
+            {
+              "name": "batchId"
+            },
+            {
+              "name": "bigNumberItems",
+              "type": "array"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -672,
+        -144
+      ],
+      "id": "9b221cab-6db2-4ae4-9663-2f64f2c911fe",
+      "name": "When Executed by Another Workflow"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "6724a1af-0baf-4fd8-85f0-43e78b9cede9",
+              "name": "batchId",
+              "value": "={{ $json.batchId }}",
+              "type": "string"
+            },
+            {
+              "id": "6639b785-217a-4cd6-9de3-ad3cc6de729c",
+              "name": "bigNumberItems",
+              "value": "={{ $json.bigNumberItems }}",
+              "type": "array"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -432,
+        -144
+      ],
+      "id": "fa8bdc98-4eeb-4181-892f-3e1155228861",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "bigNumberItems",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        -224,
+        -144
+      ],
+      "id": "07f3a6e1-41b5-4525-8148-5bbe0e75bc90",
+      "name": "Split Out"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "d6a5e87c-819a-409b-b234-30a697977b87",
+              "leftValue": "={{ $json.status }}",
+              "rightValue": "ready",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        16,
+        -144
+      ],
+      "id": "b0bcd94f-dc5e-4668-9543-de6d182b69e8",
+      "name": "If2"
+    },
+    {
+      "parameters": {
+        "jsCode": "// warn_pie — apenas passa o item (já validado no normalize)\n\nreturn $input.all().map(({ json }) => ({\n  json\n}));"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        336,
+        -64
+      ],
+      "id": "d5a88cb9-7a7d-48f8-8b7b-0e9cd85200b0",
+      "name": "warn_bigNumber",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "jsCode": "// n8n Code node — parse_big_number (data-first) for ALL items\n\nfunction parseBigNumberData(data) {\n  const first = Array.isArray(data) ? data[0] : null;\n\n  return {\n    value: first?.big_number ?? null,\n    variations: first?.variations ?? null,\n    percentage: first?.percentage?.value ?? null,\n  };\n}\n\nreturn $input.all().map(({ json }) => {\n  // defensivo: se cair aqui item não-ready, não quebra\n  if (json.status && json.status !== \"ready\") {\n    const { data, appKey, payload, ...rest } = json;\n    return { json: { ...rest, payload: null } };\n  }\n\n  const parsed = parseBigNumberData(json.data);\n\n  // limpa campos internos\n  const { data, appKey, payload, ...rest } = json;\n\n  return {\n    json: {\n      ...rest,\n      payload: parsed,\n    }\n  };\n});"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        336,
+        -224
+      ],
+      "id": "54f4da98-90b6-4b29-8ee0-ccab3080df27",
+      "name": "parse_bigNumber",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Você é um Analista de Métricas de Produto.\n\nSeu objetivo é gerar INSIGHTS EXECUTIVOS curtos e acionáveis a partir de dados agregados (ratings, distribuições, médias), sem explicações longas.\n\nVocê receberá como entrada:\n- Um título da métrica {{ $json.title }}\n- Um contexto explicativo {{ $json.context }}\n- Informações de defasagem de atualização\n- Um objeto JSON com métricas agregadas e distribuições (ex: total, média, proporções, séries categóricas) {{ $json.analysis.toJsonString() }}\n\nOs dados representam apenas o estado atual da métrica.\n\nTAREFA:\n- Identificar o principal padrão ou desvio relevante\n- Apontar um impacto potencial de negócio\n- Sugerir uma recomendação prática\n\nFORMATO DE RESPOSTA (OBRIGATÓRIO):\n- Responder em NO MÁXIMO 5 LINHAS\n- Usar frases curtas e diretas\n- Não repetir números em excesso\n- Não usar listas longas\n\nESTRUTURA FIXA:\n\nInsight:\n<1 frase objetiva sobre o padrão observado>\n\nImpacto:\n<1 frase sobre risco ou oportunidade>\n\nRecomendação:\n<1–2 frases com ação prática>\n\nREGRAS:\n- Não inventar histórico inexistente\n- Usar termos como “indício” ou “sinal potencial”\n- Linguagem executiva, clara e sucinta",
+        "batching": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.7,
+      "position": [
+        1360,
+        -208
+      ],
+      "id": "7ae736a9-01ce-435a-85d0-ec7d1b3e0046",
+      "name": "Basic LLM Chain2"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4.1-mini"
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        1264,
+        -16
+      ],
+      "id": "312fa470-9277-4175-b589-85bd42a26e25",
+      "name": "OpenAI Chat Model3",
+      "credentials": {
+        "openAiApi": {
+          "id": "359UYsT5wB2V8yWR",
+          "name": "OpenAi account 8"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "0e14bade-eafc-4323-a5ec-6fb0387e7613",
+              "name": "parse_bigNumber",
+              "value": "={{ \n  (() => {\n    const { analysis, ...rest } = $('parse_bigNumber').item.json;\n    return rest;\n  })()\n}}",
+              "type": "object"
+            },
+            {
+              "id": "47bc7f58-c1fb-4af0-a438-0c5f596b9057",
+              "name": "parse_bigNumber.insights",
+              "value": "={{ $json.text }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1728,
+        -208
+      ],
+      "id": "5216d32a-a831-4a54-a5ab-88f8c97bf084",
+      "name": "Edit Fields4"
+    },
+    {
+      "parameters": {
+        "jsCode": "// n8n Code node — build_analysis_big_number\n// Entrada: widget kind=big_number já parseado\n// Saída: adiciona json.analysis = { features, preview }\n\nfunction toNumber(v) {\n  const n = Number(v);\n  return Number.isFinite(n) ? n : null;\n}\n\nfunction round(n, d = 4) {\n  if (!Number.isFinite(n)) return null;\n  const p = 10 ** d;\n  return Math.round(n * p) / p;\n}\n\nfunction directionFrom(type, value) {\n  if (type === \"up\") return \"up\";\n  if (type === \"down\") return \"down\";\n  if (value !== null) return value >= 0 ? \"up\" : \"down\";\n  return null;\n}\n\nreturn $input.all().map(({ json }) => {\n  const base = {\n    batchId: json.batchId ?? null,\n    fileId: json.fileId ?? null,\n    filename: json.filename ?? null,\n    slug: json.slug ?? null,\n    kind: json.kind ?? null,\n    categorySlug: json.categorySlug ?? null,\n    title: json.title ?? null,\n    context: json.context ?? null,\n    status: json.status ?? null,\n    validation: json.validation ?? null,\n    warning: json.warning ?? null,\n    payload: json.payload ?? null // UI permanece intacto\n  };\n\n  // Caso não esteja pronto\n  if (json.status !== \"ready\" || !json.payload) {\n    return { json: { ...base, analysis: null } };\n  }\n\n  const p = json.payload;\n  const value = toNumber(p.value);\n\n  const mType = p?.variations?.month?.type ?? null;\n  const mVal  = toNumber(p?.variations?.month?.value);\n\n  const yType = p?.variations?.year?.type ?? null;\n  const yVal  = toNumber(p?.variations?.year?.value);\n\n  const analysis = {\n    features: {\n      // valor principal\n      value,\n\n      // variação mensal\n      monthVariationValue: round(mVal, 4),\n      monthVariationDirection: directionFrom(mType, mVal),\n\n      // variação anual\n      yearVariationValue: round(yVal, 4),\n      yearVariationDirection: directionFrom(yType, yVal),\n\n      // percentual bruto (se existir)\n      percentage: (p.percentage === null || p.percentage === undefined)\n        ? null\n        : round(toNumber(p.percentage), 4),\n\n      // flags úteis pra IA\n      hasMonthVariation: mVal !== null,\n      hasYearVariation: yVal !== null,\n      isGrowingMonth: mVal !== null && mVal > 0,\n      isGrowingYear: yVal !== null && yVal > 0\n    },\n\n    preview: {\n      // preview minimalista (big number não precisa de série)\n      value,\n      month: mVal !== null\n        ? { direction: directionFrom(mType, mVal), value: round(mVal, 2) }\n        : null,\n      year: yVal !== null\n        ? { direction: directionFrom(yType, yVal), value: round(yVal, 2) }\n        : null\n    }\n  };\n\n  return { json: { ...base, analysis } };\n});\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        656,
+        -224
+      ],
+      "id": "6ccf233a-267a-4c6f-bd98-69b6f22737e8",
+      "name": "build_analysis_bigNumber"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        1008,
+        -224
+      ],
+      "id": "42ee4a42-a2ec-40c9-b168-a874cf839e1f",
+      "name": "loop_bigNumber"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        2064,
+        -208
+      ],
+      "id": "ecbad2d9-972c-4c97-901e-729be558e39b",
+      "name": "Merge3"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://webhook.digital-ai.tech/webhook/coleta_fan-in",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "batchId",
+              "value": "={{ $('Edit Fields').item.json.batchId }}"
+            },
+            {
+              "name": "kind",
+              "value": "big_number"
+            },
+            {
+              "name": "data",
+              "value": "={{ $json.bigNumber_data }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        2512,
+        -208
+      ],
+      "id": "f8ca71fb-d22b-4bca-994b-e9dcb496fb1c",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "aggregate": "aggregateAllItemData",
+        "destinationFieldName": "bigNumber_data",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        2288,
+        -208
+      ],
+      "id": "bc404f25-bef2-4bce-a415-7205c2d18366",
+      "name": "Aggregate"
+    }
+  ],
+  "pinData": {
+    "When Executed by Another Workflow": [
+      {
+        "json": {
+          "batchId": "2026-01-20T22:56:14.094Z",
+          "bigNumberItems": [
+            {
+              "batchId": "2026-01-20T22:56:14.094Z",
+              "fileId": "g9j7efzn3gvxloqsq4in5uyy",
+              "filename": "card-instalacoes-acumuladas.json",
+              "slug": "card-instalacoes-acumuladas",
+              "kind": "big_number",
+              "categorySlug": "ativacao",
+              "title": "INSTALAÇÕES ACUMULADAS",
+              "context": "Novas instalações que foram acumuladas durante todo o tempo de vida do app. A cada dia, as novas instalações vão sendo somadas com o histórico.\n\nPeríodo de atualização Google: D-1\nPeríodo de atualização Apple: D-2",
+              "payload": {
+                "br.com.bb.android_google_br_pt-BR": [
+                  {
+                    "big_number": 110334586,
+                    "percentage": {
+                      "value": null
+                    },
+                    "variations": {
+                      "month": {
+                        "type": "up",
+                        "value": 0.79
+                      },
+                      "year": {
+                        "type": "up",
+                        "value": 11.42
+                      }
+                    }
+                  }
+                ]
+              },
+              "appKey": "br.com.bb.android_google_br_pt-BR",
+              "data": [
+                {
+                  "big_number": 110334586,
+                  "percentage": {
+                    "value": null
+                  },
+                  "variations": {
+                    "month": {
+                      "type": "up",
+                      "value": 0.79
+                    },
+                    "year": {
+                      "type": "up",
+                      "value": 11.42
+                    }
+                  }
+                }
+              ],
+              "status": "ready",
+              "validation": {
+                "isValid": true,
+                "code": null,
+                "errors": []
+              },
+              "warning": null
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "connections": {
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Split Out",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If2": {
+      "main": [
+        [
+          {
+            "node": "parse_bigNumber",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "warn_bigNumber",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "warn_bigNumber": {
+      "main": [
+        [
+          {
+            "node": "Merge3",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "parse_bigNumber": {
+      "main": [
+        [
+          {
+            "node": "build_analysis_bigNumber",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Basic LLM Chain2": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model3": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Basic LLM Chain2",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields4": {
+      "main": [
+        [
+          {
+            "node": "loop_bigNumber",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "build_analysis_bigNumber": {
+      "main": [
+        [
+          {
+            "node": "loop_bigNumber",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "loop_bigNumber": {
+      "main": [
+        [
+          {
+            "node": "Merge3",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Basic LLM Chain2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Out": {
+      "main": [
+        [
+          {
+            "node": "If2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aggregate": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge3": {
+      "main": [
+        [
+          {
+            "node": "Aggregate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "f2cb15b7-edf8-4f93-aedf-af8e5624a166",
+  "meta": {
+    "instanceId": "33738330930e3881dd5571eca013f36ddf8aab20e4ea5c1f2ebaf4a2b4668ac6"
+  },
+  "id": "VvIOYFNyEEAnWEYK",
+  "tags": []
+}

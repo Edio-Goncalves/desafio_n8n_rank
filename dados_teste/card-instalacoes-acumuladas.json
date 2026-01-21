@@ -1,0 +1,99 @@
+{
+  "documentId": "g9j7efzn3gvxloqsq4in5uyy",
+  "name": "INSTALAÇÕES ACUMULADAS",
+  "slug": "card-instalacoes-acumuladas",
+  "kind": "big_number",
+  "xField": "None",
+  "yField": "big_number",
+  "description": "Novas instalações que foram acumuladas durante todo o tempo de vida do app. A cada dia, as novas instalações vão sendo somadas com o histórico.\n\nPeríodo de atualização Google: D-1\nPeríodo de atualização Apple: D-2",
+  "combineData": true,
+  "labels": null,
+  "colors": {
+    "default": "#09738a"
+  },
+  "config": {
+    "add-competitors": "False",
+    "aggregationMode": "sum",
+    "bigNumber": {
+      "fontWeight": "bold",
+      "format": "0.000a"
+    },
+    "increase-is-positive": "True",
+    "invert-y-axis": "False",
+    "is-pro": "False",
+    "is-public": "True",
+    "show-percentage": "False",
+    "title": {
+      "align": "center",
+      "position": "top",
+      "text": "INSTALAÇÕES ACUMULADAS"
+    }
+  },
+  "exampleData": {
+    "appId": [
+      {
+        "big_number": 3065076,
+        "percentage": {
+          "value": null
+        },
+        "variations": {
+          "month": {
+            "type": "up",
+            "value": 1.7
+          },
+          "year": {
+            "type": "up",
+            "value": 26.4
+          }
+        }
+      }
+    ]
+  },
+  "dataSource": {
+    "type": "api",
+    "id": "1064",
+    "url": "http://metrics-api:39120/data-rank/big-number/accumulated_installations_card",
+    "method": "POST",
+    "params": null,
+    "body": {
+      "appId": "{{.AppID}}",
+      "country": "{{.Country}}",
+      "endDate": "{{.EndDate}}",
+      "internalId": "{{.InternalID}}",
+      "lang": "{{.Lang}}",
+      "startDate": "{{.StartDate}}",
+      "store": "{{.Store}}"
+    },
+    "headers": null
+  },
+  "stores": [
+    "google",
+    "apple"
+  ],
+  "source": "Store",
+  "data": {
+    "br.com.bb.android_google_br_pt-BR": [
+      {
+        "big_number": 110334586,
+        "percentage": {
+          "value": null
+        },
+        "variations": {
+          "month": {
+            "type": "up",
+            "value": 0.79
+          },
+          "year": {
+            "type": "up",
+            "value": 11.42
+          }
+        }
+      }
+    ]
+  },
+  "category": {
+    "name": "Ativação",
+    "slug": "ativacao",
+    "documentId": "taxf2a74inf8433xd1c8bdso"
+  }
+}

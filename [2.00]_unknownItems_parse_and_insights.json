@@ -1,0 +1,210 @@
+{
+  "name": "[2.00]_unknownItems_parse_and_insights",
+  "nodes": [
+    {
+      "parameters": {
+        "workflowInputs": {
+          "values": [
+            {
+              "name": "batchId"
+            },
+            {
+              "name": "unknownItems",
+              "type": "array"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -576,
+        -176
+      ],
+      "id": "4427f23d-83e8-4f9f-8704-e02ed690dcb2",
+      "name": "When Executed by Another Workflow"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "6724a1af-0baf-4fd8-85f0-43e78b9cede9",
+              "name": "batchId",
+              "value": "={{ $json.batchId }}",
+              "type": "string"
+            },
+            {
+              "id": "6639b785-217a-4cd6-9de3-ad3cc6de729c",
+              "name": "unknownItems",
+              "value": "={{ $json.unknownItems }}",
+              "type": "array"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -336,
+        -176
+      ],
+      "id": "b7c0a3c9-58c8-4a7a-b8a8-ff522b9a58cb",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "unknownItems",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        -128,
+        -176
+      ],
+      "id": "67778613-5320-406e-9733-fd3368b33bd3",
+      "name": "Split Out"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://webhook.digital-ai.tech/webhook/coleta_fan-in",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "batchId",
+              "value": "={{ $('Edit Fields').item.json.batchId }}"
+            },
+            {
+              "name": "kind",
+              "value": "unknown"
+            },
+            {
+              "name": "data",
+              "value": "={{ $json.unknownItems_data }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        368,
+        -176
+      ],
+      "id": "a9f42918-b24b-4f44-b64e-26010198e47a",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "aggregate": "aggregateAllItemData",
+        "destinationFieldName": "unknownItems_data",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        144,
+        -176
+      ],
+      "id": "dd69c376-838d-4731-b0c1-99e567527211",
+      "name": "Aggregate"
+    }
+  ],
+  "pinData": {
+    "When Executed by Another Workflow": [
+      {
+        "json": {
+          "batchId": "2026-01-20T22:56:14.094Z",
+          "unknownItems": [
+            {
+              "batchId": "2026-01-20T22:56:14.094Z",
+              "fileId": null,
+              "filename": "pagina-inteira.json",
+              "slug": null,
+              "kind": null,
+              "categorySlug": null,
+              "title": null,
+              "context": null,
+              "payload": null,
+              "appKey": null,
+              "data": [],
+              "status": "no_data",
+              "validation": {
+                "isValid": false,
+                "code": "NO_DATA",
+                "errors": [
+                  "payload vazio ou sem registros"
+                ]
+              },
+              "warning": {
+                "code": "NO_DATA",
+                "message": "Arquivo sem dados."
+              }
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "connections": {
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Split Out",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aggregate": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Out": {
+      "main": [
+        [
+          {
+            "node": "Aggregate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "17bbe6b5-aab4-4a3f-82d9-473081e2af1d",
+  "meta": {
+    "instanceId": "33738330930e3881dd5571eca013f36ddf8aab20e4ea5c1f2ebaf4a2b4668ac6"
+  },
+  "id": "5DvnNIkYv3XLwbTN",
+  "tags": []
+}

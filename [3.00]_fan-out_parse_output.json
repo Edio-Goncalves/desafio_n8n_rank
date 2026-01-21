@@ -1,0 +1,2406 @@
+{
+  "name": "[3.00]_fan-out_parse_output",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "coleta_fan-in",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -1088,
+        -32
+      ],
+      "id": "fa8b6dc9-0c52-464b-b41f-27c6bcfdecdb",
+      "name": "Webhook",
+      "webhookId": "2a351560-5d78-4ddd-b6e4-36de81597540"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "6000144d-3910-46e3-a866-3f92726e6ad5",
+              "name": "batchId",
+              "value": "={{ $json.body.batchId }}",
+              "type": "string"
+            },
+            {
+              "id": "92b78002-12f0-4230-8a6c-faba0986a112",
+              "name": "kind",
+              "value": "={{ $json.body.kind }}",
+              "type": "string"
+            },
+            {
+              "id": "a707aaab-9656-4dd2-a6d0-086a984fce31",
+              "name": "data",
+              "value": "={{ $json.body.data }}",
+              "type": "array"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -768,
+        -32
+      ],
+      "id": "96619bf6-31b5-40b8-98da-cac28f6ffa16",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "operation": "upsert",
+        "dataTableId": {
+          "__rl": true,
+          "value": "S5M8qfABpmHzfoKj",
+          "mode": "list",
+          "cachedResultName": "fan_in_batches",
+          "cachedResultUrl": "/projects/TZkXS03Aq3SyoD4n/datatables/S5M8qfABpmHzfoKj"
+        },
+        "matchType": "allConditions",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "batch_id",
+              "keyValue": "={{ $json.batchId }}"
+            }
+          ]
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "batch_id": "={{ $json.batchId }}",
+            "pie": "={{ JSON.stringify($json.data) }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "batch_id",
+              "displayName": "batch_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "pie",
+              "displayName": "pie",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "bar",
+              "displayName": "bar",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "area",
+              "displayName": "area",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "table",
+              "displayName": "table",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "big_number",
+              "displayName": "big_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "unknown",
+              "displayName": "unknown",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1,
+      "position": [
+        -16,
+        -464
+      ],
+      "id": "a758415a-93b4-4bc4-ab05-cee051f63495",
+      "name": "Upsert row(s)"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.kind }}",
+                    "rightValue": "pie",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "b6969859-e194-4d9f-b4bd-339add7bab0e"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "pie"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "1be81881-581b-4a2c-a3df-0620fad003d7",
+                    "leftValue": "={{ $json.kind }}",
+                    "rightValue": "bar",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "bar"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "b2484960-f2de-45d8-b0ac-03b07557dc45",
+                    "leftValue": "={{ $json.kind }}",
+                    "rightValue": "area",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "area"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "700474d9-ec59-47a8-9d7b-3e5552f3f4b9",
+                    "leftValue": "={{ $json.kind }}",
+                    "rightValue": "table",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "table"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "591c74ed-0704-4319-a803-64a99747f86e",
+                    "leftValue": "={{ $json.kind }}",
+                    "rightValue": "big_number",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "big_number"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "e34d3ece-0512-47f1-97bd-aefcf7ad3d6f",
+                    "leftValue": "={{ $json.kind }}",
+                    "rightValue": "unknown",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "unknown"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.3,
+      "position": [
+        -416,
+        -96
+      ],
+      "id": "9eec16c6-ca10-4fb2-8ffe-ef32e74d900f",
+      "name": "Switch"
+    },
+    {
+      "parameters": {
+        "operation": "upsert",
+        "dataTableId": {
+          "__rl": true,
+          "value": "S5M8qfABpmHzfoKj",
+          "mode": "list",
+          "cachedResultName": "fan_in_batches",
+          "cachedResultUrl": "/projects/TZkXS03Aq3SyoD4n/datatables/S5M8qfABpmHzfoKj"
+        },
+        "matchType": "allConditions",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "batch_id",
+              "keyValue": "={{ $json.batchId }}"
+            }
+          ]
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "bar": "={{ JSON.stringify($json.data) }}",
+            "batch_id": "={{ $json.batchId }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "batch_id",
+              "displayName": "batch_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "pie",
+              "displayName": "pie",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "bar",
+              "displayName": "bar",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "area",
+              "displayName": "area",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "table",
+              "displayName": "table",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "big_number",
+              "displayName": "big_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "unknown",
+              "displayName": "unknown",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1,
+      "position": [
+        -16,
+        -288
+      ],
+      "id": "53e88826-f556-49dd-8899-6fe0381aaec0",
+      "name": "Upsert row(s)1"
+    },
+    {
+      "parameters": {
+        "operation": "upsert",
+        "dataTableId": {
+          "__rl": true,
+          "value": "S5M8qfABpmHzfoKj",
+          "mode": "list",
+          "cachedResultName": "fan_in_batches",
+          "cachedResultUrl": "/projects/TZkXS03Aq3SyoD4n/datatables/S5M8qfABpmHzfoKj"
+        },
+        "matchType": "allConditions",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "batch_id",
+              "keyValue": "={{ $json.batchId }}"
+            }
+          ]
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "batch_id": "={{ $json.batchId }}",
+            "area": "={{ JSON.stringify($json.data) }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "batch_id",
+              "displayName": "batch_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "pie",
+              "displayName": "pie",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "bar",
+              "displayName": "bar",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "area",
+              "displayName": "area",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "table",
+              "displayName": "table",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "big_number",
+              "displayName": "big_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "unknown",
+              "displayName": "unknown",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1,
+      "position": [
+        -16,
+        -112
+      ],
+      "id": "0b17c34e-0e2c-44fc-b526-3298815927a6",
+      "name": "Upsert row(s)2"
+    },
+    {
+      "parameters": {
+        "operation": "upsert",
+        "dataTableId": {
+          "__rl": true,
+          "value": "S5M8qfABpmHzfoKj",
+          "mode": "list",
+          "cachedResultName": "fan_in_batches",
+          "cachedResultUrl": "/projects/TZkXS03Aq3SyoD4n/datatables/S5M8qfABpmHzfoKj"
+        },
+        "matchType": "allConditions",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "batch_id",
+              "keyValue": "={{ $json.batchId }}"
+            }
+          ]
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "batch_id": "={{ $json.batchId }}",
+            "table": "={{ JSON.stringify($json.data) }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "batch_id",
+              "displayName": "batch_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "pie",
+              "displayName": "pie",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "bar",
+              "displayName": "bar",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "area",
+              "displayName": "area",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "table",
+              "displayName": "table",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "big_number",
+              "displayName": "big_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "unknown",
+              "displayName": "unknown",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1,
+      "position": [
+        -16,
+        64
+      ],
+      "id": "d67ff600-4c01-43ac-8b77-24967441c48b",
+      "name": "Upsert row(s)3"
+    },
+    {
+      "parameters": {
+        "operation": "upsert",
+        "dataTableId": {
+          "__rl": true,
+          "value": "S5M8qfABpmHzfoKj",
+          "mode": "list",
+          "cachedResultName": "fan_in_batches",
+          "cachedResultUrl": "/projects/TZkXS03Aq3SyoD4n/datatables/S5M8qfABpmHzfoKj"
+        },
+        "matchType": "allConditions",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "batch_id",
+              "keyValue": "={{ $json.batchId }}"
+            }
+          ]
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "batch_id": "={{ $json.batchId }}",
+            "big_number": "={{ JSON.stringify($json.data) }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "batch_id",
+              "displayName": "batch_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "pie",
+              "displayName": "pie",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "bar",
+              "displayName": "bar",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "area",
+              "displayName": "area",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "table",
+              "displayName": "table",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "big_number",
+              "displayName": "big_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "unknown",
+              "displayName": "unknown",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1,
+      "position": [
+        -16,
+        240
+      ],
+      "id": "aae6e427-68c1-491b-847b-92d5a0284a68",
+      "name": "Upsert row(s)4"
+    },
+    {
+      "parameters": {
+        "operation": "upsert",
+        "dataTableId": {
+          "__rl": true,
+          "value": "S5M8qfABpmHzfoKj",
+          "mode": "list",
+          "cachedResultName": "fan_in_batches",
+          "cachedResultUrl": "/projects/TZkXS03Aq3SyoD4n/datatables/S5M8qfABpmHzfoKj"
+        },
+        "matchType": "allConditions",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "batch_id",
+              "keyValue": "={{ $json.batchId }}"
+            }
+          ]
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "batch_id": "={{ $json.batchId }}",
+            "unknown": "={{ JSON.stringify($json.data) }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "batch_id",
+              "displayName": "batch_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "pie",
+              "displayName": "pie",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "bar",
+              "displayName": "bar",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "area",
+              "displayName": "area",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "table",
+              "displayName": "table",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "big_number",
+              "displayName": "big_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "unknown",
+              "displayName": "unknown",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1,
+      "position": [
+        -16,
+        416
+      ],
+      "id": "02c9fc4a-e650-4d28-b5e2-88626ebbc942",
+      "name": "Upsert row(s)5"
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "value": "S5M8qfABpmHzfoKj",
+          "mode": "list",
+          "cachedResultName": "fan_in_batches",
+          "cachedResultUrl": "/projects/TZkXS03Aq3SyoD4n/datatables/S5M8qfABpmHzfoKj"
+        },
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "batch_id",
+              "keyValue": "={{ $('Edit Fields').item.json.batchId }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1,
+      "position": [
+        528,
+        -16
+      ],
+      "id": "15c9fcf3-c7e0-4679-a8ca-919f87c93ccf",
+      "name": "Get row(s)"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "c3d99e51-07ae-4315-b859-e2c7af861651",
+              "leftValue": "={{ $json.pie }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            },
+            {
+              "id": "0e6dfd47-6c15-4e4e-88e8-0f4a2d9c3979",
+              "leftValue": "={{ $json.bar }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            },
+            {
+              "id": "22a92007-1013-4bb4-999a-005cc8aca907",
+              "leftValue": "={{ $json.area }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            },
+            {
+              "id": "912889f5-d854-439a-854b-9ca6fb64e9f8",
+              "leftValue": "={{ $json.table }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            },
+            {
+              "id": "1b414c0b-b7ad-4a50-9f96-641d0819503f",
+              "leftValue": "={{ $json.big_number }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            },
+            {
+              "id": "59d61ad4-29d5-4983-bd3f-b199900620d5",
+              "leftValue": "={{ $json.unknown }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        736,
+        -16
+      ],
+      "id": "7a23bd07-7f85-48f2-8a31-09b15993978f",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1424,
+        -272
+      ],
+      "id": "85281689-c36e-40db-bb3a-483c6e940b89",
+      "name": "Edit Fields1"
+    },
+    {
+      "parameters": {
+        "jsCode": "function safeParse(val, fallback = []) {\n  if (val === null || val === undefined) return fallback;\n  if (typeof val !== 'string') return val; // já é objeto/array\n  const s = val.trim();\n  if (!s) return fallback;\n  try {\n    return JSON.parse(s);\n  } catch (e) {\n    // se veio \"null\" como string\n    if (s === 'null') return fallback;\n    throw new Error(`JSON parse failed: ${e.message}\\nValue starts with: ${s.slice(0, 120)}`);\n  }\n}\n\nconst row = $input.first().json;\n\n// converte cada coluna string -> array\nconst pie = safeParse(row.pie, []);\nconst bar = safeParse(row.bar, []);\nconst area = safeParse(row.area, []);\nconst table = safeParse(row.table, []);\nconst big_number = safeParse(row.big_number, []);\nconst unknown = safeParse(row.unknown, []);\n\n// monta no formato “original” (igual seu set queria entregar)\nconst out = [\n  {\n    batchId: row.batch_id || row.batchId || row.batchId, // garante\n    kind: 'fan_in',\n    data: [\n      ...pie,\n      ...bar,\n      ...area,\n      ...table,\n      ...big_number,\n      ...unknown,\n    ],\n  }\n];\n\nreturn out.map(j => ({ json: j }));"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        944,
+        -112
+      ],
+      "id": "25e2bb93-562b-47df-b377-7efc52f07282",
+      "name": "Code in JavaScript"
+    },
+    {
+      "parameters": {
+        "jsCode": "const input = $input.all();\n\n// espera 1 item com { batchId, kind:\"fan_in\", data:[...] }\nconst root = input[0]?.json ?? {};\nconst batchId = root.batchId ?? null;\n\nconst data = Array.isArray(root.data) ? root.data : [];\n\n// 1) FLATTEN\nconst flattened = data.flatMap((item) => {\n  if (!item || typeof item !== 'object') return [];\n\n  // caso pieItems\n  if (Array.isArray(item.pieItems)) return item.pieItems;\n\n  // caso parse_*\n  const parseKey = Object.keys(item).find((k) => k.startsWith('parse_'));\n  if (parseKey && item[parseKey] && typeof item[parseKey] === 'object') return [item[parseKey]];\n\n  // caso já seja o widget direto\n  return [item];\n});\n\n// 2) FILTER: remove ignore, mantém ready/no_data\nconst widgets = flattened.filter((w) => w && w.status !== 'ignore');\n\n// 3) NORMALIZA: garantir campos mínimos (opcional)\nconst normalizedWidgets = widgets.map((w) => ({\n  batchId: w.batchId ?? batchId,\n  kind: w.kind ?? null,\n  slug: w.slug ?? null,\n  title: w.title ?? null,\n  categorySlug: w.categorySlug ?? null,\n  context: w.context ?? null,\n  status: w.status ?? null,\n  validation: w.validation ?? { isValid: false, code: \"UNKNOWN\", errors: [\"validation ausente\"] },\n  warning: w.warning ?? null,\n  payload: w.payload ?? (w.status === \"no_data\" ? {} : null),\n  insights: w.insights ?? w.insight ?? null,\n  ui: w.ui ?? null,\n  fileId: w.fileId ?? null,\n  filename: w.filename ?? null,\n}));\n\nreturn [\n  {\n    json: {\n      batchId,\n      kind: \"fan_in\",\n      widgetCount: normalizedWidgets.length,\n      widgets: normalizedWidgets,\n    },\n  },\n];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1152,
+        -112
+      ],
+      "id": "bf3a531d-d1ae-4bf7-9531-e646eb319f74",
+      "name": "Code in JavaScript1"
+    }
+  ],
+  "pinData": {
+    "Webhook": [
+      {
+        "json": {
+          "headers": {
+            "host": "webhook.digital-ai.tech",
+            "user-agent": "axios/1.12.0",
+            "content-length": "22039",
+            "accept": "application/json,text/html,application/xhtml+xml,application/xml,text/*;q=0.9, image/*;q=0.8, */*;q=0.7",
+            "accept-encoding": "gzip, compress, deflate, br",
+            "content-type": "application/json",
+            "x-forwarded-for": "172.18.0.1",
+            "x-forwarded-host": "webhook.digital-ai.tech",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "efa08751fb71",
+            "x-real-ip": "172.18.0.1"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "batchId": "2026-01-21T16:09:09.559Z",
+            "kind": "table",
+            "data": [
+              {
+                "parse_table": {
+                  "batchId": "2026-01-21T16:09:09.559Z",
+                  "fileId": "xguk2gig4msgrcvcj9mq19va",
+                  "filename": "table-instalacoes-desinstalacoes-usuarios-ativos-e-abertura-de-contas-adjust.json",
+                  "slug": "table-instalacoes-desinstalacoes-usuarios-ativos-e-abertura-de-contas-adjust",
+                  "kind": "table",
+                  "categorySlug": "adjust",
+                  "title": "INSTALAÇÕES, DESINSTALAÇÕES, USUÁRIOS ATIVOS E ABERTURA DE CONTAS (ADJUST)",
+                  "context": "Tabela que exibe a quantidade de Instalações, Desinstalações, DAU (dados do Google Console) e Abertura de contas (Adjust) do aplicativo no período selecionado.",
+                  "status": "ready",
+                  "validation": {
+                    "isValid": true,
+                    "code": null,
+                    "errors": []
+                  },
+                  "warning": null,
+                  "payload": {
+                    "rowCount": 1,
+                    "fields": [
+                      {
+                        "key": "installs",
+                        "label": "Installs",
+                        "valueType": "number",
+                        "sourceType": "raw"
+                      },
+                      {
+                        "key": "uninstalls",
+                        "label": "Uninstalls",
+                        "valueType": "number",
+                        "sourceType": "raw"
+                      },
+                      {
+                        "key": "dau",
+                        "label": "Dau",
+                        "valueType": "number",
+                        "sourceType": "raw"
+                      },
+                      {
+                        "key": "account_opening",
+                        "label": "Account Opening",
+                        "valueType": "null",
+                        "sourceType": "raw"
+                      }
+                    ],
+                    "rows": [
+                      {
+                        "date": "",
+                        "installs": 934543,
+                        "uninstalls": 2179435,
+                        "dau": 8040085.866666666,
+                        "account_opening": null
+                      }
+                    ]
+                  },
+                  "myNewField": 1,
+                  "insight": "Insight:  \nO número de desinstalações supera em mais que o dobro as instalações, gerando saldo negativo consistente.\n\nImpacto:  \nEsse padrão indica risco de perda de base ativa, comprometendo receita futura e engajamento.\n\nRecomendação:  \nInvestigar causas do churn e priorizar melhorias na experiência inicial para reduzir desinstalações e equilibrar o crescimento."
+                }
+              },
+              {
+                "parse_table": {
+                  "batchId": "2026-01-21T16:09:09.559Z",
+                  "fileId": "grkq4xfrisyt0crilejwx1ao",
+                  "filename": "table-acompanhamento-de-keywords.json",
+                  "slug": "table-acompanhamento-de-keywords",
+                  "kind": "table",
+                  "categorySlug": "aquisicao",
+                  "title": "ACOMPANHAMENTO DE KEYWORDS",
+                  "context": "Tabela com dados (do último mês) relacionados às keywords registradas pelo app (moda da posição, média da variação diária da posição, competitividade e volume de busca).\n\nPeríodo de atualização Google: D-1\nPeríodo de atualização Apple: D-1",
+                  "status": "ready",
+                  "validation": {
+                    "isValid": true,
+                    "code": null,
+                    "errors": []
+                  },
+                  "warning": null,
+                  "payload": {
+                    "rowCount": 126,
+                    "fields": [
+                      {
+                        "key": "keyword",
+                        "label": "Keyword",
+                        "valueType": "string",
+                        "sourceType": "raw"
+                      },
+                      {
+                        "key": "position",
+                        "label": "Position",
+                        "valueType": "number",
+                        "sourceType": "raw"
+                      },
+                      {
+                        "key": "change_from_previous_day",
+                        "label": "Change From Previous Day",
+                        "valueType": "number",
+                        "sourceType": "raw"
+                      },
+                      {
+                        "key": "competitivity",
+                        "label": "Competitivity",
+                        "valueType": "string",
+                        "sourceType": "raw"
+                      },
+                      {
+                        "key": "search_volume",
+                        "label": "Search Volume",
+                        "valueType": "string",
+                        "sourceType": "raw"
+                      }
+                    ],
+                    "rows": [
+                      {
+                        "date": "",
+                        "keyword": "empréstimo online seguro",
+                        "position": 63,
+                        "change_from_previous_day": 0.04,
+                        "competitivity": "very high",
+                        "search_volume": "medium (52.03%)"
+                      },
+                      {
+                        "date": "",
+                        "keyword": "conta sem tarifas",
+                        "position": 7,
+                        "change_from_previous_day": 0,
+                        "competitivity": "high",
+                        "search_volume": "low (28.99%)"
+                      },
+                      {
+                        "date": "",
+                        "keyword": "conta grátis",
+                        "position": 3,
+                        "change_from_previous_day": 0,
+                        "competitivity": "very low",
+                        "search_volume": "medium (52.03%)"
+                      },
+                      {
+                        "date": "",
+                        "keyword": "cartão virtual online",
+                        "position": 81,
+                        "change_from_previous_day": 1.32,
+                        "competitivity": "low",
+                        "search_volume": "very low (9.14%)"
+                      },
+                      {
+                        "date": "",
+                        "keyword": "emprestimo consignado",
+                        "position": 20,
+                        "change_from_previous_day": 0,
+                        "competitivity": "very high",
+                        "search_volume": "very high (93.88%)"
+                      },
+                      {
+                        "date": "",
+                        "keyword": "pagar boleto",
+                        "position": 19,
+                        "change_from_previous_day": 0,
+                        "competitivity": "low",
+                        "search_volume": "medium (52.03%)"
+                      },
+                      {
+                        "date": "",
+                        "keyword": "cartão de crédito com conta digital",
+                        "position": 11,
+                        "change_from_previous_day": 0,
+                        "competitivity": "very high",
+                        "search_volume": "very low (9.14%)"
+                      },
+                      {
+                        "date": "",
+                        "keyword": "transferências",
+                        "position": 60,
+                        "change_from_previous_day": 0,
+                        "competitivity": "very low",
+                        "search_volume": "high (76.24%)"
+                      },
+                      {
+                        "date": "",
+                        "keyword": "seguro de vida",
+                        "position": 22,
+                        "change_from_previous_day": 0,
+                        "competitivity": "very high",
+                        "search_volume": "high (76.24%)"
+                      },
+                      {
+                        "date": "",
+                        "keyword": "pagar com pix",
+                        "position": 4,
+                        "change_from_previous_day": 0,
+                        "competitivity": "very low",
+                        "search_volume": "low (28.99%)"
+                      },
+                      {
+                        "date": "",
+                        "keyword": "poupança",
+                        "position": 16,
+                        "change_from_previous_day": 0,
+                        "competitivity": "very low",
+                        "search_volume": "high (76.24%)"
+                      },
+                      {
+                        "date": "",
+                        "keyword": "abrir conta digital",
+                        "position": 2,
+                        "change_from_previous_day": -0.14,
+                        "competitivity": "very high",
+                        "search_volume": "high (76.24%)"
+                      },
+                      {
+                        "date": "",
+                        "keyword": "banco digital grátis",
+                        "position": 8,
+                        "change_from_previous_day": -0.07,
+                        "competitivity": "very high",
+                        "search_volume": "very low (9.14%)"
+                      },
+                      {
+                        "date": "",
+                        "keyword": "banco",
+                        "position": 1,
+                        "change_from_previous_day": -0.11,
+                        "competitivity": "very low",
+                        "search_volume": "very high (93.88%)"
+                      },
+                      {
+                        "date": "",
+                        "keyword": "saldo",
+                        "position": 41,
+                        "change_from_previous_day": 0,
+                        "competitivity": "very low",
+                        "search_volume": "high (76.24%)"
+                      },
+                      {
+                        "date": "",
+                        "keyword": "parcelamento pix",
+                        "position": 21,
+                        "change_from_previous_day": -0.15,
+                        "competitivity": "medium",
+                        "search_volume": "medium (52.03%)"
+                      },
+                      {
+                        "date": "",
+                        "keyword": "fazer transferências",
+                        "position": 53,
+                        "change_from_previous_day": 1.41,
+                        "competitivity": "very low",
+                        "search_volume": "low (28.99%)"
+                      },
+                      {
+                        "date": "",
+                        "keyword": "pagamentos",
+                        "position": 36,
+                        "change_from_previous_day": -0.04,
+                        "competitivity": "very low",
+                        "search_volume": "very high (93.88%)"
+                      },
+                      {
+                        "date": "",
+                        "keyword": "renda fixa",
+                        "position": 19,
+                        "change_from_previous_day": 0,
+                        "competitivity": "low",
+                        "search_volume": "high (76.24%)"
+                      },
+                      {
+                        "date": "",
+                        "keyword": "pedir cartão de crédito",
+                        "position": 31,
+                        "change_from_previous_day": 0,
+                        "competitivity": "very high",
+                        "search_volume": "high (76.24%)"
+                      },
+                      {
+                        "date": "",
+                        "keyword": "conta digital",
+                        "position": 7,
+                        "change_from_previous_day": 0,
+                        "competitivity": "high",
+                        "search_volume": "high (76.24%)"
+                      },
+                      {
+                        "date": "",
+                        "keyword": "empréstimo de dinheiro",
+                        "position": 26,
+                        "change_from_previous_day": 0,
+                        "competitivity": "high",
+                        "search_volume": "medium (52.03%)"
+                      },
+                      {
+                        "date": "",
+                        "keyword": "pedir empréstimo",
+                        "position": 36,
+                        "change_from_previous_day": 0,
+                        "competitivity": "very high",
+                        "search_volume": "medium (52.03%)"
+                      },
+                      {
+                        "date": "",
+                        "keyword": "consulta de saldo",
+                        "position": 23,
+                        "change_from_previous_day": -0.04,
+                        "competitivity": "very low",
+                        "search_volume": "medium (52.03%)"
+                      },
+                      {
+                        "date": "",
+                        "keyword": "saldo fgts",
+                        "position": 14,
+                        "change_from_previous_day": 0,
+                        "competitivity": "low",
+                        "search_volume": "high (76.24%)"
+                      },
+                      {
+                        "date": "",
+                        "keyword": "abrir",
+                        "position": 50,
+                        "change_from_previous_day": 0,
+                        "competitivity": "very low",
+                        "search_volume": "high (76.24%)"
+                      },
+                      {
+                        "date": "",
+                        "keyword": "pagar ipva",
+                        "position": 23,
+                        "change_from_previous_day": 0.04,
+                        "competitivity": "low",
+                        "search_volume": "high (76.24%)"
+                      },
+                      {
+                        "date": "",
+                        "keyword": "cartão de débito",
+                        "position": 18,
+                        "change_from_previous_day": 0,
+                        "competitivity": "low",
+                        "search_volume": "medium (52.03%)"
+                      },
+                      {
+                        "date": "",
+                        "keyword": "abrir conta corrente",
+                        "position": 2,
+                        "change_from_previous_day": 0,
+                        "competitivity": "high",
+                        "search_volume": "low (28.99%)"
+                      },
+                      {
+                        "date": "",
+                        "keyword": "conta pj",
+                        "position": 15,
+                        "change_from_previous_day": -0.11,
+                        "competitivity": "very high",
+                        "search_volume": "high (76.24%)"
+                      },
+                      {
+                        "date": "",
+                        "keyword": "parcelar pix",
+                        "position": 12,
+                        "change_from_previous_day": 0,
+                        "competitivity": "medium",
+                        "search_volume": "medium (52.03%)"
+                      },
+                      {
+                        "date": "",
+                        "keyword": "banco digital pj",
+                        "position": 11,
+                        "change_from_previous_day": -0.04,
+                        "competitivity": "very high",
+                        "search_volume": "low (28.99%)"
+                      },
+                      {
+                        "date": "",
+                        "keyword": "extrato",
+                        "position": 6,
+                        "change_from_previous_day": 0,
+                        "competitivity": "very low",
+                        "search_volume": "high (76.24%)"
+                      },
+                      {
+                        "date": "",
+                        "keyword": "saque aniversario",
+                        "position": 21,
+                        "change_from_previous_day": 0,
+                        "competitivity": "low",
+                        "search_volume": "high (76.24%)"
+                      },
+                      {
+                        "date": "",
+                        "keyword": "fundos de investimentos",
+                        "position": 72,
+                        "change_from_previous_day": -0.14,
+                        "competitivity": "low",
+                        "search_volume": "high (76.24%)"
+                      },
+                      {
+                        "date": "",
+                        "keyword": "organizar finanças",
+                        "position": 86,
+                        "change_from_previous_day": -0.17,
+                        "competitivity": "high",
+                        "search_volume": "low (28.99%)"
+                      },
+                      {
+                        "date": "",
+                        "keyword": "conta salario",
+                        "position": 2,
+                        "change_from_previous_day": 0,
+                        "competitivity": "low",
+                        "search_volume": "medium (52.03%)"
+                      },
+                      {
+                        "date": "",
+                        "keyword": "conta virtual",
+                        "position": 6,
+                        "change_from_previous_day": 0,
+                        "competitivity": "very high",
+                        "search_volume": "low (28.99%)"
+                      },
+                      {
+                        "date": "",
+                        "keyword": "cartões de crédito online",
+                        "position": 43,
+                        "change_from_previous_day": -0.04,
+                        "competitivity": "high",
+                        "search_volume": "medium (52.03%)"
+                      },
+                      {
+                        "date": "",
+                        "keyword": "antecipar fgts",
+                        "position": 18,
+                        "change_from_previous_day": -0.04,
+                        "competitivity": "very high",
+                        "search_volume": "high (76.24%)"
+                      },
+                      {
+                        "date": "",
+                        "keyword": "cartão digital",
+                        "position": 45,
+                        "change_from_previous_day": 0,
+                        "competitivity": "high",
+                        "search_volume": "medium (52.03%)"
+                      },
+                      {
+                        "date": "",
+                        "keyword": "empréstimo para aposentado",
+                        "position": 28,
+                        "change_from_previous_day": -0.04,
+                        "competitivity": "very high",
+                        "search_volume": "high (76.24%)"
+                      },
+                      {
+                        "date": "",
+                        "keyword": "investimento",
+                        "position": 111,
+                        "change_from_previous_day": 0,
+                        "competitivity": "low",
+                        "search_volume": "very high (93.88%)"
+                      },
+                      {
+                        "date": "",
+                        "keyword": "cashback",
+                        "position": 48,
+                        "change_from_previous_day": 0.04,
+                        "competitivity": "very low",
+                        "search_volume": "high (76.24%)"
+                      },
+                      {
+                        "date": "",
+                        "keyword": "conta banco",
+                        "position": 2,
+                        "change_from_previous_day": -0.07,
+                        "competitivity": "low",
+                        "search_volume": "medium (52.03%)"
+                      },
+                      {
+                        "date": "",
+                        "keyword": "internet banking",
+                        "position": 10,
+                        "change_from_previous_day": -0.04,
+                        "competitivity": "very low",
+                        "search_volume": "very high (93.88%)"
+                      },
+                      {
+                        "date": "",
+                        "keyword": "consórcio",
+                        "position": 65,
+                        "change_from_previous_day": -0.08,
+                        "competitivity": "high",
+                        "search_volume": "very high (93.88%)"
+                      },
+                      {
+                        "date": "",
+                        "keyword": "cartao de credito sem anuidade",
+                        "position": 32,
+                        "change_from_previous_day": 0,
+                        "competitivity": "very high",
+                        "search_volume": "high (76.24%)"
+                      },
+                      {
+                        "date": "",
+                        "keyword": "pagar boletos",
+                        "position": 21,
+                        "change_from_previous_day": -0.04,
+                        "competitivity": "low",
+                        "search_volume": "medium (52.03%)"
+                      },
+                      {
+                        "date": "",
+                        "keyword": "shopping bb",
+                        "position": 1,
+                        "change_from_previous_day": 0,
+                        "competitivity": "very low",
+                        "search_volume": "low (28.99%)"
+                      },
+                      {
+                        "date": "",
+                        "keyword": "carta de credito",
+                        "position": 46,
+                        "change_from_previous_day": -0.07,
+                        "competitivity": "high",
+                        "search_volume": "high (76.24%)"
+                      },
+                      {
+                        "date": "",
+                        "keyword": "consultar extratos",
+                        "position": 33,
+                        "change_from_previous_day": 0,
+                        "competitivity": "very low",
+                        "search_volume": "very low (9.14%)"
+                      },
+                      {
+                        "date": "",
+                        "keyword": "rendimento de poupança",
+                        "position": 21,
+                        "change_from_previous_day": -0.07,
+                        "competitivity": "very low",
+                        "search_volume": "low (28.99%)"
+                      },
+                      {
+                        "date": "",
+                        "keyword": "tesouro direto",
+                        "position": 12,
+                        "change_from_previous_day": -0.07,
+                        "competitivity": "very low",
+                        "search_volume": "very high (93.88%)"
+                      },
+                      {
+                        "date": "",
+                        "keyword": "banco do brasil",
+                        "position": 1,
+                        "change_from_previous_day": 0,
+                        "competitivity": "very low",
+                        "search_volume": "very high (100.0%)"
+                      },
+                      {
+                        "date": "",
+                        "keyword": "abrir conta banco digital",
+                        "position": 4,
+                        "change_from_previous_day": 0,
+                        "competitivity": "very high",
+                        "search_volume": "low (28.99%)"
+                      },
+                      {
+                        "date": "",
+                        "keyword": "abrir conta pj",
+                        "position": 15,
+                        "change_from_previous_day": 0,
+                        "competitivity": "very high",
+                        "search_volume": "medium (52.03%)"
+                      },
+                      {
+                        "date": "",
+                        "keyword": "conta digital sem taxas",
+                        "position": 22,
+                        "change_from_previous_day": -0.04,
+                        "competitivity": "very high",
+                        "search_volume": "very low (9.14%)"
+                      },
+                      {
+                        "date": "",
+                        "keyword": "conta pj gratuita",
+                        "position": 19,
+                        "change_from_previous_day": 0.04,
+                        "competitivity": "very high",
+                        "search_volume": "medium (52.03%)"
+                      },
+                      {
+                        "date": "",
+                        "keyword": "conta digital sem anuidade",
+                        "position": 7,
+                        "change_from_previous_day": 0,
+                        "competitivity": "very high",
+                        "search_volume": "very low (9.14%)"
+                      },
+                      {
+                        "date": "",
+                        "keyword": "seguro celular",
+                        "position": 21,
+                        "change_from_previous_day": -0.04,
+                        "competitivity": "very high",
+                        "search_volume": "high (76.24%)"
+                      },
+                      {
+                        "date": "",
+                        "keyword": "crédito consignado",
+                        "position": 17,
+                        "change_from_previous_day": 0,
+                        "competitivity": "medium",
+                        "search_volume": "high (76.24%)"
+                      },
+                      {
+                        "date": "",
+                        "keyword": "pasep",
+                        "position": 8,
+                        "change_from_previous_day": -0.04,
+                        "competitivity": "very low",
+                        "search_volume": "high (76.24%)"
+                      },
+                      {
+                        "date": "",
+                        "keyword": "cartão sem anuidade",
+                        "position": 29,
+                        "change_from_previous_day": -0.04,
+                        "competitivity": "high",
+                        "search_volume": "medium (52.03%)"
+                      },
+                      {
+                        "date": "",
+                        "keyword": "finanças",
+                        "position": 6,
+                        "change_from_previous_day": -0.39,
+                        "competitivity": "very low",
+                        "search_volume": "high (76.24%)"
+                      },
+                      {
+                        "date": "",
+                        "keyword": "cash back",
+                        "position": 42,
+                        "change_from_previous_day": -0.32,
+                        "competitivity": "very low",
+                        "search_volume": "medium (52.03%)"
+                      },
+                      {
+                        "date": "",
+                        "keyword": "pix saque",
+                        "position": 13,
+                        "change_from_previous_day": -0.18,
+                        "competitivity": "very low",
+                        "search_volume": "medium (52.03%)"
+                      },
+                      {
+                        "date": "",
+                        "keyword": "ver saldo",
+                        "position": 38,
+                        "change_from_previous_day": 0,
+                        "competitivity": "very low",
+                        "search_volume": "low (28.99%)"
+                      },
+                      {
+                        "date": "",
+                        "keyword": "cdb",
+                        "position": 18,
+                        "change_from_previous_day": -0.04,
+                        "competitivity": "very low",
+                        "search_volume": "very high (93.88%)"
+                      },
+                      {
+                        "date": "",
+                        "keyword": "empréstimo",
+                        "position": 52,
+                        "change_from_previous_day": 0,
+                        "competitivity": "very high",
+                        "search_volume": "very high (93.88%)"
+                      },
+                      {
+                        "date": "",
+                        "keyword": "cartão débito",
+                        "position": 21,
+                        "change_from_previous_day": 0,
+                        "competitivity": "low",
+                        "search_volume": "medium (52.03%)"
+                      },
+                      {
+                        "date": "",
+                        "keyword": "poupança digital",
+                        "position": 5,
+                        "change_from_previous_day": 0,
+                        "competitivity": "high",
+                        "search_volume": "low (28.99%)"
+                      },
+                      {
+                        "date": "",
+                        "keyword": "pix",
+                        "position": 3,
+                        "change_from_previous_day": -0.04,
+                        "competitivity": "very low",
+                        "search_volume": "very high (93.88%)"
+                      },
+                      {
+                        "date": "",
+                        "keyword": "crédito",
+                        "position": 13,
+                        "change_from_previous_day": -0.04,
+                        "competitivity": "low",
+                        "search_volume": "high (76.24%)"
+                      },
+                      {
+                        "date": "",
+                        "keyword": "transferência bancária",
+                        "position": 6,
+                        "change_from_previous_day": 0.04,
+                        "competitivity": "very low",
+                        "search_volume": "medium (52.03%)"
+                      },
+                      {
+                        "date": "",
+                        "keyword": "nuinvest",
+                        "position": 17,
+                        "change_from_previous_day": -0.04,
+                        "competitivity": "medium",
+                        "search_volume": "high (76.24%)"
+                      },
+                      {
+                        "date": "",
+                        "keyword": "abra sua conta",
+                        "position": 5,
+                        "change_from_previous_day": 0.04,
+                        "competitivity": "medium",
+                        "search_volume": "low (28.99%)"
+                      },
+                      {
+                        "date": "",
+                        "keyword": "minhas finanças",
+                        "position": 68,
+                        "change_from_previous_day": 1,
+                        "competitivity": "very low",
+                        "search_volume": "medium (52.03%)"
+                      },
+                      {
+                        "date": "",
+                        "keyword": "cartão crédito online",
+                        "position": 33,
+                        "change_from_previous_day": 0.07,
+                        "competitivity": "high",
+                        "search_volume": "low (28.99%)"
+                      },
+                      {
+                        "date": "",
+                        "keyword": "seguro empréstimo",
+                        "position": 23,
+                        "change_from_previous_day": 0.07,
+                        "competitivity": "very low",
+                        "search_volume": "low (28.99%)"
+                      },
+                      {
+                        "date": "",
+                        "keyword": "conta gratuita",
+                        "position": 5,
+                        "change_from_previous_day": 0,
+                        "competitivity": "high",
+                        "search_volume": "low (28.99%)"
+                      },
+                      {
+                        "date": "",
+                        "keyword": "banco digital",
+                        "position": 13,
+                        "change_from_previous_day": 0.04,
+                        "competitivity": "high",
+                        "search_volume": "high (76.24%)"
+                      },
+                      {
+                        "date": "",
+                        "keyword": "conta para empresas",
+                        "position": 14,
+                        "change_from_previous_day": -0.04,
+                        "competitivity": "very high",
+                        "search_volume": "low (28.99%)"
+                      },
+                      {
+                        "date": "",
+                        "keyword": "investimentos",
+                        "position": 76,
+                        "change_from_previous_day": -0.08,
+                        "competitivity": "low",
+                        "search_volume": "very high (93.88%)"
+                      },
+                      {
+                        "date": "",
+                        "keyword": "investir dinheiro",
+                        "position": 59,
+                        "change_from_previous_day": -0.08,
+                        "competitivity": "high",
+                        "search_volume": "medium (52.03%)"
+                      },
+                      {
+                        "date": "",
+                        "keyword": "conta digital sem tarifas",
+                        "position": 6,
+                        "change_from_previous_day": -0.07,
+                        "competitivity": "very high",
+                        "search_volume": "very low (9.14%)"
+                      },
+                      {
+                        "date": "",
+                        "keyword": "financiamento",
+                        "position": 28,
+                        "change_from_previous_day": 0,
+                        "competitivity": "high",
+                        "search_volume": "high (76.24%)"
+                      },
+                      {
+                        "date": "",
+                        "keyword": "conta para mei",
+                        "position": 13,
+                        "change_from_previous_day": -0.04,
+                        "competitivity": "high",
+                        "search_volume": "low (25.43%)"
+                      },
+                      {
+                        "date": "",
+                        "keyword": "conta digital online",
+                        "position": 5,
+                        "change_from_previous_day": 0,
+                        "competitivity": "very high",
+                        "search_volume": "very low (9.14%)"
+                      },
+                      {
+                        "date": "",
+                        "keyword": "empréstimo consignado",
+                        "position": 18,
+                        "change_from_previous_day": 0,
+                        "competitivity": "very high",
+                        "search_volume": "very high (93.88%)"
+                      },
+                      {
+                        "date": "",
+                        "keyword": "programa desenrola",
+                        "position": 13,
+                        "change_from_previous_day": 0,
+                        "competitivity": "medium",
+                        "search_volume": "low (28.99%)"
+                      },
+                      {
+                        "date": "",
+                        "keyword": "pagar boleto com cartão de crédito",
+                        "position": 40,
+                        "change_from_previous_day": 0,
+                        "competitivity": "medium",
+                        "search_volume": "high (76.24%)"
+                      },
+                      {
+                        "date": "",
+                        "keyword": "poupança caixa",
+                        "position": 5,
+                        "change_from_previous_day": 0.07,
+                        "competitivity": "very low",
+                        "search_volume": "medium (52.03%)"
+                      },
+                      {
+                        "date": "",
+                        "keyword": "parcelar cartão de crédito",
+                        "position": 53,
+                        "change_from_previous_day": -0.71,
+                        "competitivity": "low",
+                        "search_volume": "low (28.99%)"
+                      },
+                      {
+                        "date": "",
+                        "keyword": "cartão de crédito",
+                        "position": 15,
+                        "change_from_previous_day": 0,
+                        "competitivity": "high",
+                        "search_volume": "very high (93.88%)"
+                      },
+                      {
+                        "date": "",
+                        "keyword": "débito",
+                        "position": 26,
+                        "change_from_previous_day": 0,
+                        "competitivity": "very low",
+                        "search_volume": "high (76.24%)"
+                      },
+                      {
+                        "date": "",
+                        "keyword": "emprestimo pessoal",
+                        "position": 37,
+                        "change_from_previous_day": 0.04,
+                        "competitivity": "very high",
+                        "search_volume": "very high (93.88%)"
+                      },
+                      {
+                        "date": "",
+                        "keyword": "digital",
+                        "position": 39,
+                        "change_from_previous_day": 0,
+                        "competitivity": "very low",
+                        "search_volume": "high (76.24%)"
+                      },
+                      {
+                        "date": "",
+                        "keyword": "conta",
+                        "position": 5,
+                        "change_from_previous_day": 0,
+                        "competitivity": "very low",
+                        "search_volume": "very high (93.88%)"
+                      },
+                      {
+                        "date": "",
+                        "keyword": "saque aniversário",
+                        "position": 21,
+                        "change_from_previous_day": -0.07,
+                        "competitivity": "low",
+                        "search_volume": "very high (93.88%)"
+                      },
+                      {
+                        "date": "",
+                        "keyword": "conta corrente",
+                        "position": 2,
+                        "change_from_previous_day": 0,
+                        "competitivity": "low",
+                        "search_volume": "high (76.24%)"
+                      },
+                      {
+                        "date": "",
+                        "keyword": "transferencias bancárias",
+                        "position": 3,
+                        "change_from_previous_day": 0,
+                        "competitivity": "very low",
+                        "search_volume": "low (28.99%)"
+                      },
+                      {
+                        "date": "",
+                        "keyword": "cartão",
+                        "position": 16,
+                        "change_from_previous_day": 0.04,
+                        "competitivity": "low",
+                        "search_volume": "high (76.24%)"
+                      },
+                      {
+                        "date": "",
+                        "keyword": "open finance",
+                        "position": 7,
+                        "change_from_previous_day": 0,
+                        "competitivity": "very low",
+                        "search_volume": "high (76.24%)"
+                      },
+                      {
+                        "date": "",
+                        "keyword": "cartão sem tarifa",
+                        "position": 50,
+                        "change_from_previous_day": 0,
+                        "competitivity": "high",
+                        "search_volume": "very low (9.14%)"
+                      },
+                      {
+                        "date": "",
+                        "keyword": "serviços financeiros",
+                        "position": 44,
+                        "change_from_previous_day": 0,
+                        "competitivity": "low",
+                        "search_volume": "medium (52.03%)"
+                      },
+                      {
+                        "date": "",
+                        "keyword": "fgts",
+                        "position": 14,
+                        "change_from_previous_day": 0,
+                        "competitivity": "very low",
+                        "search_volume": "very high (93.88%)"
+                      },
+                      {
+                        "date": "",
+                        "keyword": "abrir conta",
+                        "position": 3,
+                        "change_from_previous_day": 0,
+                        "competitivity": "high",
+                        "search_volume": "medium (52.03%)"
+                      },
+                      {
+                        "date": "",
+                        "keyword": "banco digital gratuito",
+                        "position": 12,
+                        "change_from_previous_day": -0.04,
+                        "competitivity": "very high",
+                        "search_volume": "very low (17.48%)"
+                      },
+                      {
+                        "date": "",
+                        "keyword": "consultar saldo",
+                        "position": 33,
+                        "change_from_previous_day": -0.07,
+                        "competitivity": "very low",
+                        "search_volume": "medium (52.03%)"
+                      },
+                      {
+                        "date": "",
+                        "keyword": "dívidas",
+                        "position": 21,
+                        "change_from_previous_day": -0.04,
+                        "competitivity": "low",
+                        "search_volume": "medium (52.03%)"
+                      },
+                      {
+                        "date": "",
+                        "keyword": "pagamento",
+                        "position": 30,
+                        "change_from_previous_day": 0,
+                        "competitivity": "very low",
+                        "search_volume": "very high (93.88%)"
+                      },
+                      {
+                        "date": "",
+                        "keyword": "pix grátis",
+                        "position": 18,
+                        "change_from_previous_day": 0,
+                        "competitivity": "low",
+                        "search_volume": "medium (52.03%)"
+                      },
+                      {
+                        "date": "",
+                        "keyword": "banco online",
+                        "position": 6,
+                        "change_from_previous_day": 0,
+                        "competitivity": "high",
+                        "search_volume": "medium (52.03%)"
+                      },
+                      {
+                        "date": "",
+                        "keyword": "pronampe",
+                        "position": 6,
+                        "change_from_previous_day": 0,
+                        "competitivity": "medium",
+                        "search_volume": "high (76.24%)"
+                      },
+                      {
+                        "date": "",
+                        "keyword": "bb investimentos",
+                        "position": 2,
+                        "change_from_previous_day": 0,
+                        "competitivity": "very low",
+                        "search_volume": "high (76.24%)"
+                      },
+                      {
+                        "date": "",
+                        "keyword": "abrir conta virtual",
+                        "position": 2,
+                        "change_from_previous_day": 0,
+                        "competitivity": "very high",
+                        "search_volume": "very low (9.14%)"
+                      },
+                      {
+                        "date": "",
+                        "keyword": "fundos de investimento",
+                        "position": 62,
+                        "change_from_previous_day": -0.14,
+                        "competitivity": "low",
+                        "search_volume": "high (76.24%)"
+                      },
+                      {
+                        "date": "",
+                        "keyword": "renda variável",
+                        "position": 45,
+                        "change_from_previous_day": -0.07,
+                        "competitivity": "very low",
+                        "search_volume": "medium (52.03%)"
+                      },
+                      {
+                        "date": "",
+                        "keyword": "capital de giro",
+                        "position": 14,
+                        "change_from_previous_day": -0.07,
+                        "competitivity": "low",
+                        "search_volume": "high (76.24%)"
+                      },
+                      {
+                        "date": "",
+                        "keyword": "pagar contas",
+                        "position": 40,
+                        "change_from_previous_day": -0.04,
+                        "competitivity": "very low",
+                        "search_volume": "medium (52.03%)"
+                      },
+                      {
+                        "date": "",
+                        "keyword": "rendimento poupança",
+                        "position": 5,
+                        "change_from_previous_day": -0.68,
+                        "competitivity": "very low",
+                        "search_volume": "high (76.24%)"
+                      },
+                      {
+                        "date": "",
+                        "keyword": "ipva",
+                        "position": 23,
+                        "change_from_previous_day": 0,
+                        "competitivity": "very low",
+                        "search_volume": "very high (93.88%)"
+                      },
+                      {
+                        "date": "",
+                        "keyword": "transferência",
+                        "position": 63,
+                        "change_from_previous_day": 0,
+                        "competitivity": "very low",
+                        "search_volume": "high (76.24%)"
+                      },
+                      {
+                        "date": "",
+                        "keyword": "cartao de credito",
+                        "position": 17,
+                        "change_from_previous_day": 0.07,
+                        "competitivity": "high",
+                        "search_volume": "very high (93.88%)"
+                      },
+                      {
+                        "date": "",
+                        "keyword": "investir",
+                        "position": 82,
+                        "change_from_previous_day": 0,
+                        "competitivity": "low",
+                        "search_volume": "very high (93.88%)"
+                      }
+                    ]
+                  },
+                  "myNewField": 1,
+                  "insight": "Insight: A maioria das keywords está concentrada em posições médias e long tail, com poucas em top 3, mesmo com alta relevância e volume de buscas.\n\nImpacto: Há sinal potencial de perda de tráfego qualificado e visibilidade em termos estratégicos, afetando captação orgânica.\n\nRecomendação: Priorizar otimização das keywords com alto volume e baixa competitividade na top 10 para melhorar rankings e capturar mais buscas relevantes."
+                }
+              },
+              {
+                "batchId": "2026-01-21T16:09:09.559Z",
+                "fileId": "n3xn9cx764mj3dtg2e1pamyv",
+                "filename": "table-instalacoes-e-estimativa-de-desinstalacoes-e-usuarios-ativos-previsao.json",
+                "slug": "table-instalacoes-e-estimativa-de-desinstalacoes-e-usuarios-ativos-previsao",
+                "kind": "table",
+                "categorySlug": "engajamento",
+                "title": "INSTALAÇÕES E ESTIMATIVA DE DESINSTALAÇÕES E USUÁRIOS ATIVOS (PREVISÃO)",
+                "context": "Tabela que exibe a quantidade de Instalações, e dados preditivos de Desinstalações e DAU dos concorrentes no período selecionado.",
+                "payload": {},
+                "appKey": null,
+                "data": [],
+                "status": "no_data",
+                "validation": {
+                  "isValid": false,
+                  "code": "NO_DATA",
+                  "errors": [
+                    "payload vazio ou sem registros"
+                  ]
+                },
+                "warning": {
+                  "code": "NO_DATA",
+                  "message": "Arquivo sem dados."
+                }
+              }
+            ]
+          },
+          "webhookUrl": "https://webhook.digital-ai.tech/webhook/coleta_fan-in",
+          "executionMode": "production"
+        }
+      }
+    ]
+  },
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "Upsert row(s)",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Upsert row(s)1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Upsert row(s)2",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Upsert row(s)3",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Upsert row(s)4",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Upsert row(s)5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upsert row(s)": {
+      "main": [
+        [
+          {
+            "node": "Get row(s)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upsert row(s)3": {
+      "main": [
+        [
+          {
+            "node": "Get row(s)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upsert row(s)2": {
+      "main": [
+        [
+          {
+            "node": "Get row(s)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upsert row(s)1": {
+      "main": [
+        [
+          {
+            "node": "Get row(s)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upsert row(s)4": {
+      "main": [
+        [
+          {
+            "node": "Get row(s)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upsert row(s)5": {
+      "main": [
+        [
+          {
+            "node": "Get row(s)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s)": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "52e6bff3-897f-4636-ba4e-fd8c1e72e892",
+  "meta": {
+    "instanceId": "33738330930e3881dd5571eca013f36ddf8aab20e4ea5c1f2ebaf4a2b4668ac6"
+  },
+  "id": "lXAOmUlNBLFeBMXs",
+  "tags": []
+}

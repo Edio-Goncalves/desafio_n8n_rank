@@ -1,0 +1,498 @@
+{
+  "name": "[2.00]_bar_parse_and_insights",
+  "nodes": [
+    {
+      "parameters": {
+        "workflowInputs": {
+          "values": [
+            {
+              "name": "batchId"
+            },
+            {
+              "name": "barItems",
+              "type": "array"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -768,
+        -32
+      ],
+      "id": "8d85a616-9971-4c9b-9201-1b3daa91c0bf",
+      "name": "When Executed by Another Workflow"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "6724a1af-0baf-4fd8-85f0-43e78b9cede9",
+              "name": "batchId",
+              "value": "={{ $json.batchId }}",
+              "type": "string"
+            },
+            {
+              "id": "6639b785-217a-4cd6-9de3-ad3cc6de729c",
+              "name": "barItems",
+              "value": "={{ $json.barItems }}",
+              "type": "array"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -528,
+        -32
+      ],
+      "id": "1ba910b8-1fc9-4284-9c72-f0547fb0ab2e",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "barItems",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        -320,
+        -32
+      ],
+      "id": "77e649ce-d4dc-4b2c-835f-b2fd8830e437",
+      "name": "Split Out"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "d6a5e87c-819a-409b-b234-30a697977b87",
+              "leftValue": "={{ $json.status }}",
+              "rightValue": "ready",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -48,
+        -32
+      ],
+      "id": "1ad4ab7b-1797-4351-9576-5c5f1a402b10",
+      "name": "If3"
+    },
+    {
+      "parameters": {
+        "jsCode": "// n8n Code node — parse_bar (data-first) for ALL items\n\nfunction parseBarData(data) {\n  const rows = Array.isArray(data) ? data : [];\n\n  const series = rows\n    .filter(r => r?.score != null && r?.total != null)\n    .map(r => ({\n      label: String(r.score),\n      value: Number(r.total),\n    }))\n    .filter(p => Number.isFinite(p.value) && p.label !== \"NaN\");\n\n  // ordena por score (1,2,3,4,5)\n  series.sort((a, b) => Number(a.label) - Number(b.label));\n\n  const total = series.reduce((acc, r) => acc + r.value, 0);\n\n  const weightedAvg = total\n    ? series.reduce((acc, r) => acc + (Number(r.label) * r.value), 0) / total\n    : null;\n\n  const top = [...series].sort((a, b) => b.value - a.value)[0] || null;\n\n  return {\n    series,\n    metrics: {\n      totalRatings: total,\n      avgRating: Number.isFinite(weightedAvg) ? weightedAvg : null,\n      topScore: top ? top.label : null,\n      topScoreShare: (top && total) ? (top.value / total) : null,\n    }\n  };\n}\n\nreturn $input.all().map(({ json }) => {\n  // segurança: se alguém errar o IF antes, não quebra\n  if (json.status && json.status !== \"ready\") {\n    const { data, appKey, payload, ...rest } = json;\n    return { json: { ...rest, payload: null } };\n  }\n\n  const parsed = parseBarData(json.data);\n\n  const { data, appKey, payload, ...rest } = json;\n\n  return {\n    json: {\n      ...rest,\n      payload: parsed,\n    }\n  };\n});"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        272,
+        -112
+      ],
+      "id": "6445e7e5-fd70-4dfd-9829-eb7999d39ba0",
+      "name": "parse_bar",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "jsCode": "// warn_pie — apenas passa o item (já validado no normalize)\n\nreturn $input.all().map(({ json }) => ({\n  json\n}));"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        272,
+        48
+      ],
+      "id": "ec5c4c34-cebe-4ca3-8575-879ed3123534",
+      "name": "warn_bar",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Você é um Analista de Métricas de Produto.\n\nSeu objetivo é gerar INSIGHTS EXECUTIVOS curtos e acionáveis a partir de dados agregados (ratings, distribuições, médias), sem explicações longas.\n\nVocê receberá como entrada:\n- Um título da métrica {{ $json.title }}\n- Um contexto explicativo {{ $json.context }}\n- Informações de defasagem de atualização\n- Um objeto JSON com métricas agregadas e distribuições (ex: total, média, proporções, séries categóricas) {{ $json.analysis.toJsonString() }}\n\nOs dados representam apenas o estado atual da métrica.\n\nTAREFA:\n- Identificar o principal padrão ou desvio relevante\n- Apontar um impacto potencial de negócio\n- Sugerir uma recomendação prática\n\nFORMATO DE RESPOSTA (OBRIGATÓRIO):\n- Responder em NO MÁXIMO 5 LINHAS\n- Usar frases curtas e diretas\n- Não repetir números em excesso\n- Não usar listas longas\n\nESTRUTURA FIXA:\n\nInsight:\n<1 frase objetiva sobre o padrão observado>\n\nImpacto:\n<1 frase sobre risco ou oportunidade>\n\nRecomendação:\n<1–2 frases com ação prática>\n\nREGRAS:\n- Não inventar histórico inexistente\n- Usar termos como “indício” ou “sinal potencial”\n- Linguagem executiva, clara e sucinta",
+        "batching": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.7,
+      "position": [
+        960,
+        -112
+      ],
+      "id": "c4689e39-be1d-4fbe-9649-943429a726db",
+      "name": "Basic LLM Chain1"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4.1-mini"
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        864,
+        80
+      ],
+      "id": "52d5faff-9948-408b-bf5e-afdcc46cd54d",
+      "name": "OpenAI Chat Model2",
+      "credentials": {
+        "openAiApi": {
+          "id": "359UYsT5wB2V8yWR",
+          "name": "OpenAi account 8"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// n8n Code node — build_analysis_bar\n// Entrada: items com json.kind === \"bar\" e json.payload = { series, metrics }\n// Saída: adiciona json.analysis = { features, preview }\n\nfunction safeArray(v) {\n  return Array.isArray(v) ? v : [];\n}\n\nfunction toNumber(v) {\n  const n = Number(v);\n  return Number.isFinite(n) ? n : null;\n}\n\nfunction round(n, d = 4) {\n  if (!Number.isFinite(n)) return null;\n  const p = 10 ** d;\n  return Math.round(n * p) / p;\n}\n\nfunction seriesPreview(series, limit = 10) {\n  const arr = safeArray(series);\n  if (arr.length <= limit) return arr;\n  const head = arr.slice(0, Math.ceil(limit / 2));\n  const tail = arr.slice(arr.length - Math.floor(limit / 2));\n  return [...head, { _truncated: true, total: arr.length }, ...tail];\n}\n\nfunction normalizeBarSeries(series) {\n  const arr = safeArray(series)\n    .map(p => ({\n      label: p?.label != null ? String(p.label) : null,\n      value: toNumber(p?.value)\n    }))\n    .filter(p => p.label !== null && p.value !== null);\n\n  // tenta ordenar por score numérico quando for \"1..5\"\n  const allNumericLabels = arr.every(p => Number.isFinite(Number(p.label)));\n  const sorted = allNumericLabels\n    ? [...arr].sort((a, b) => Number(a.label) - Number(b.label))\n    : [...arr];\n\n  return sorted;\n}\n\nfunction buildBarFeatures(payload) {\n  const series = normalizeBarSeries(payload?.series);\n  const metrics = payload?.metrics ?? {};\n\n  // total (prioriza o metrics.totalRatings se bater com a soma)\n  const sum = series.reduce((acc, p) => acc + (p.value ?? 0), 0);\n  const totalRatings = toNumber(metrics.totalRatings);\n  const total = (totalRatings !== null) ? totalRatings : sum;\n\n  // shares por barra\n  const withShare = series.map(p => ({\n    ...p,\n    share: total ? round(p.value / total, 6) : null\n  }));\n\n  // top e bottom\n  const top = [...withShare].sort((a, b) => (b.value ?? 0) - (a.value ?? 0))[0] || null;\n  const bottom = [...withShare].sort((a, b) => (a.value ?? 0) - (b.value ?? 0))[0] || null;\n\n  // avg rating: usa metrics.avgRating se vier pronto; senão calcula ponderado\n  const avgFromMetrics = toNumber(metrics.avgRating);\n  const weightedAvg = total\n    ? series.reduce((acc, p) => acc + (Number(p.label) * p.value), 0) / total\n    : null;\n  const avgRating = (avgFromMetrics !== null) ? avgFromMetrics : weightedAvg;\n\n  // concentração (HHI simples) e polarização 1-2 vs 4-5\n  const hhi = total\n    ? round(withShare.reduce((acc, p) => acc + (p.share ? p.share * p.share : 0), 0), 6)\n    : null;\n\n  const low = withShare\n    .filter(p => [\"1\", \"2\"].includes(p.label))\n    .reduce((acc, p) => acc + (p.value ?? 0), 0);\n\n  const high = withShare\n    .filter(p => [\"4\", \"5\"].includes(p.label))\n    .reduce((acc, p) => acc + (p.value ?? 0), 0);\n\n  const neutral = withShare\n    .filter(p => [\"3\"].includes(p.label))\n    .reduce((acc, p) => acc + (p.value ?? 0), 0);\n\n  const positiveShare = total ? round(high / total, 6) : null;\n  const negativeShare = total ? round(low / total, 6) : null;\n  const neutralShare  = total ? round(neutral / total, 6) : null;\n\n  return {\n    features: {\n      // base\n      totalRatings: total,\n      avgRating: round(toNumber(avgRating), 6),\n\n      // top/bottom\n      topScore: (top?.label ?? metrics.topScore ?? null),\n      topScoreValue: top ? top.value : null,\n      topScoreShare: round(toNumber(metrics.topScoreShare ?? top?.share), 6),\n\n      bottomScore: bottom?.label ?? null,\n      bottomScoreValue: bottom ? bottom.value : null,\n      bottomScoreShare: bottom ? bottom.share : null,\n\n      // shape da série\n      seriesCount: series.length,\n      hasAllScores_1_to_5: [\"1\",\"2\",\"3\",\"4\",\"5\"].every(s => series.some(p => p.label === s)),\n\n      // distribuição útil pra IA\n      positiveShare,   // 4-5\n      neutralShare,    // 3\n      negativeShare,   // 1-2\n\n      // concentração\n      concentrationHHI: hhi\n    },\n    preview: {\n      series: seriesPreview(withShare, 10)\n    }\n  };\n}\n\nreturn $input.all().map(({ json }) => {\n  // defensivo: se não for bar ou não estiver ready\n  if (json?.kind !== \"bar\" || json?.status !== \"ready\") {\n    return {\n      json: {\n        ...json,\n        analysis: {\n          features: { note: \"NOT_READY_OR_NOT_BAR\" },\n          preview: {}\n        }\n      }\n    };\n  }\n\n  const out = buildBarFeatures(json.payload);\n\n  return {\n    json: {\n      ...json,\n      analysis: out\n    }\n  };\n});\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        592,
+        -112
+      ],
+      "id": "40167f65-1023-4884-b205-804f05fa3d25",
+      "name": "build_analysis_bar"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "0e14bade-eafc-4323-a5ec-6fb0387e7613",
+              "name": "parse_bar",
+              "value": "={{ \n  (() => {\n    const { analysis, ...rest } = $('parse_bar').item.json;\n    return rest;\n  })()\n}}",
+              "type": "object"
+            },
+            {
+              "id": "47bc7f58-c1fb-4af0-a438-0c5f596b9057",
+              "name": "parse_bar.insights",
+              "value": "={{ $json.text }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1392,
+        -112
+      ],
+      "id": "d7f49301-b752-4351-92c8-a9272856a9fe",
+      "name": "Edit Fields3"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        1696,
+        -96
+      ],
+      "id": "baa710c1-fd1c-418a-bcda-3046d90ead5f",
+      "name": "Merge4"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://webhook.digital-ai.tech/webhook/coleta_fan-in",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "batchId",
+              "value": "={{ $('Edit Fields').item.json.batchId }}"
+            },
+            {
+              "name": "kind",
+              "value": "bar"
+            },
+            {
+              "name": "data",
+              "value": "={{ $json.bar_data }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        2192,
+        -96
+      ],
+      "id": "8fd7af90-eadc-42a9-ab26-add99b854432",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "aggregate": "aggregateAllItemData",
+        "destinationFieldName": "bar_data",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        1968,
+        -96
+      ],
+      "id": "8fbd517c-cd70-40ee-bbdc-9f780e4b787c",
+      "name": "Aggregate"
+    }
+  ],
+  "pinData": {
+    "When Executed by Another Workflow": [
+      {
+        "json": {
+          "batchId": "2026-01-20T22:56:14.094Z",
+          "barItems": [
+            {
+              "batchId": "2026-01-20T22:56:14.094Z",
+              "fileId": "dbg52c7j893m3hn0a6ktor9j",
+              "filename": "bar-distribuicao-por-estrela.json",
+              "slug": "bar-distribuicao-por-estrela",
+              "kind": "bar",
+              "categorySlug": "satisfacao",
+              "title": "DISTRIBUIÇÃO POR ESTRELA (BAR CHART)",
+              "context": "Distribuição das notas (ratings) que foram atribuídas aos comentários (reviews) no período.\n\nPeríodo de atualização Google: D-3\nPeríodo de atualização Apple: D-3",
+              "payload": {
+                "br.com.bb.android_google_br_pt-BR": [
+                  {
+                    "score": 3,
+                    "total": 275
+                  },
+                  {
+                    "score": 4,
+                    "total": 533
+                  },
+                  {
+                    "score": 1,
+                    "total": 1406
+                  },
+                  {
+                    "score": 5,
+                    "total": 10087
+                  },
+                  {
+                    "score": 2,
+                    "total": 281
+                  }
+                ]
+              },
+              "appKey": "br.com.bb.android_google_br_pt-BR",
+              "data": [
+                {
+                  "score": 3,
+                  "total": 275
+                },
+                {
+                  "score": 4,
+                  "total": 533
+                },
+                {
+                  "score": 1,
+                  "total": 1406
+                },
+                {
+                  "score": 5,
+                  "total": 10087
+                },
+                {
+                  "score": 2,
+                  "total": 281
+                }
+              ],
+              "status": "ready",
+              "validation": {
+                "isValid": true,
+                "code": null,
+                "errors": []
+              },
+              "warning": null
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "connections": {
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Split Out",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If3": {
+      "main": [
+        [
+          {
+            "node": "parse_bar",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "warn_bar",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "parse_bar": {
+      "main": [
+        [
+          {
+            "node": "build_analysis_bar",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "warn_bar": {
+      "main": [
+        [
+          {
+            "node": "Merge4",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Basic LLM Chain1": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model2": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Basic LLM Chain1",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "build_analysis_bar": {
+      "main": [
+        [
+          {
+            "node": "Basic LLM Chain1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields3": {
+      "main": [
+        [
+          {
+            "node": "Merge4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Out": {
+      "main": [
+        [
+          {
+            "node": "If3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aggregate": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge4": {
+      "main": [
+        [
+          {
+            "node": "Aggregate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "215cffab-8efa-4959-a717-50a8ffaba6db",
+  "meta": {
+    "instanceId": "33738330930e3881dd5571eca013f36ddf8aab20e4ea5c1f2ebaf4a2b4668ac6"
+  },
+  "id": "QgnRepQeLkavdbKl",
+  "tags": []
+}

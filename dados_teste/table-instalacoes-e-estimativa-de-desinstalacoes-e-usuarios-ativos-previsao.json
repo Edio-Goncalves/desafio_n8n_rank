@@ -1,0 +1,117 @@
+{
+  "documentId": "n3xn9cx764mj3dtg2e1pamyv",
+  "name": "INSTALAÇÕES E ESTIMATIVA DE DESINSTALAÇÕES E USUÁRIOS ATIVOS (PREVISÃO)",
+  "slug": "table-instalacoes-e-estimativa-de-desinstalacoes-e-usuarios-ativos-previsao",
+  "kind": "table",
+  "xField": "None",
+  "yField": "columns",
+  "description": "Tabela que exibe a quantidade de Instalações, e dados preditivos de Desinstalações e DAU dos concorrentes no período selecionado.",
+  "combineData": true,
+  "labels": null,
+  "colors": {
+    "default": "#09738a"
+  },
+  "config": {
+    "add-competitors": "True",
+    "aggregationMode": "average",
+    "increase-is-positive": "True",
+    "invert-y-axis": "False",
+    "is-pro": "False",
+    "is-public": "False",
+    "kind": "table",
+    "show-percentage": "False",
+    "sort": {
+      "field": "installs",
+      "order": "desc"
+    },
+    "title": {
+      "align": "center",
+      "position": "top",
+      "text": "INSTALAÇÕES E ESTIMATIVA DE DESINSTALAÇÕES E USUÁRIOS ATIVOS"
+    },
+    "yAxis": [
+      {
+        "field": "title",
+        "format": "string",
+        "label": "Aplicativo"
+      },
+      {
+        "field": "installs",
+        "format": "0.000a",
+        "label": "Instalações"
+      },
+      {
+        "field": "uninstalls",
+        "format": "0.000a",
+        "label": "Desinstalações"
+      },
+      {
+        "field": "dau",
+        "format": "0.000a",
+        "label": "DAU"
+      }
+    ],
+    "yField": [
+      "title",
+      "installs",
+      "uninstalls",
+      "dau"
+    ]
+  },
+  "exampleData": {
+    "appId": [
+      {
+        "columns": [
+          {
+            "field": "title",
+            "type": "raw",
+            "value": "BB: Banco, Conta, Pix, Crédito"
+          },
+          {
+            "field": "installs",
+            "type": "raw",
+            "value": 2381849
+          },
+          {
+            "field": "uninstalls",
+            "type": "raw",
+            "value": 3846437
+          },
+          {
+            "field": "dau",
+            "type": "raw",
+            "value": 7322111.253968254
+          }
+        ],
+        "date": ""
+      }
+    ]
+  },
+  "dataSource": {
+    "type": "api",
+    "id": "1606",
+    "url": "http://metrics-api:39120/data-rank/table/installs_uninstalls_estimation_and_dau_estimation_table",
+    "method": "POST",
+    "params": null,
+    "body": {
+      "appId": "{{.AppID}}",
+      "country": "{{.Country}}",
+      "endDate": "{{.EndDate}}",
+      "internalId": "{{.InternalID}}",
+      "lang": "{{.Lang}}",
+      "startDate": "{{.StartDate}}",
+      "store": "{{.Store}}"
+    },
+    "headers": null
+  },
+  "stores": [
+    "google"
+  ],
+  "source": "Console",
+  "data": {},
+  "category": {
+    "name": "Engajamento",
+    "slug": "engajamento",
+    "documentId": "g90j664vfdq7btipplwoa5mg"
+  }
+}
